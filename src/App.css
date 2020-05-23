@@ -1,12 +1,3 @@
  .user-listing ul.collection {
    margin: 0;
  }
-
-
-
- /* Chat Panel */
- .chat-panel {
-   max-height: 87vh;
-   height: 87vh;
-   background-color: #bfdfff;
- }

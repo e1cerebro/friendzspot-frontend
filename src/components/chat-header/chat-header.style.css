@@ -1,0 +1,25 @@
+.chat-panel__header {
+    background-color: #212121;
+    padding: 13px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+.chat-panel__header_left {
+    display: flex;
+    align-items: center;
+}
+
+.chat-panel__header_right i.friendzspot-icon {
+    font-size: 43px;
+}
+
+.chat-panel__header_left .user-info {
+    margin-left: 20px;
+}
+
+span.user-info__username {
+    display: block;
+}

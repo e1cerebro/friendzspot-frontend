@@ -26,12 +26,11 @@ li.chat-listing-single:hover {
 }
 
 .username {
-    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
+    font-weight: 600;
 }
 
 p.last-message {
-    font-family: 'Yanone Kaffeesatz', sans-serif;
     font-weight: 400;
     margin: -1px 0px;
 }

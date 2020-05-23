@@ -1,0 +1,35 @@
+.owner .chat-msg-text {
+    background-color: #366aff;
+    color: #fff;
+    width: 376px;
+    border-radius: 20px 20px 0 20px;
+}
+
+
+.chat-msg.owner {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 13px 0;
+}
+
+.chat-msg {
+    display: flex;
+    flex-direction: row;
+    padding: 13px 0;
+}
+
+small.chat-msg-date {
+    display: block;
+    border-top: 1px solid #fff;
+}
+
+
+.chat-msg-text {
+    background-color: #f1f2f6;
+    width: 376px;
+    padding: 15px;
+    border-radius: 20px 20px 20px 0;
+    line-height: 1.5;
+    font-size: 14px;
+    font-weight: 500;
+}
