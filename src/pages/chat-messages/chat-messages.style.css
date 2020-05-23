@@ -1,0 +1,27 @@
+.chat-section .user-listing {
+    max-height: 87vh;
+    height: 87vh;
+    background-color: #fff5d7;
+    padding: 0;
+
+
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #664160;
+    background-color: rgba(255, 156, 0, .77);
+}
+
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px #a3a3a3;
+    border-radius: 10px;
+}
+
+.chat-section .user-listing {
+    max-height: 87vh;
+    height: 87vh;
+    background-color: #fff5d7;
+    padding: 0;
+    overflow-y: scroll;
+}

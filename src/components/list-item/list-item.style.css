@@ -1,0 +1,37 @@
+li.chat-listing-single {
+    background-color: white;
+    display: flex;
+    cursor: pointer;
+    padding: 16px 10px;
+    border-bottom: 1px solid #dadada;
+    transition: all 1s;
+}
+
+li.chat-listing-single:hover {
+    background-color: #e2e2e2;
+}
+
+
+.chat-list-single-user-info {
+    display: flex;
+    align-items: center;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.chat-info {
+    width: 100%;
+    margin-left: 25px;
+}
+
+.username {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+}
+
+p.last-message {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-weight: 400;
+    margin: -1px 0px;
+}
