@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import UserListings from '../../components/user-listings/UserListings';
 import SearchField from '../../shared/search-field/SearchField';
-
-import './chat-messages.style.css';
 import ChatHeader from '../../components/chat-header/ChatHeader';
 import ChatMessages from '../../components/chat-messages/ChatMessages';
 import SendMessageBox from '../../components/send-mesage-box/SendMessageBox';
-
 import BackgroundImage from '../../images/chat-bg.jpg';
+import './chat-messages.style.css';
+import SocketContext from '../../contexts/socket-context';
 
 const chatMessages = () => {
+  //const socket = useContext(SocketContext);
   return (
     <div className='row chat-section'>
-      <div className='col s4 user-listing scroll'>
+      <div className='col s4' style={{ padding: 0 }}>
         <SearchField />
         <UserListings />
       </div>

@@ -7,15 +7,14 @@
 
 
 .chat-msg.owner {
-    display: flex;
     flex-direction: row-reverse;
-    padding: 13px 0;
 }
 
 .chat-msg {
     display: flex;
     flex-direction: row;
     padding: 13px 0;
+    margin: 0 10px;
 }
 
 small.chat-msg-date {

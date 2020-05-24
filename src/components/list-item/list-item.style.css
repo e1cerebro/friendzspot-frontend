@@ -12,7 +12,7 @@ li.chat-listing-single:hover {
 }
 
 
-.chat-list-single-user-info {
+.chat-info__single-item {
     display: flex;
     align-items: center;
     flex-flow: row;

@@ -1,5 +1,6 @@
 import React from 'react';
 import ListItem from '../list-item/ListItem';
+import './user-listings-style.css';
 
 const UserListings = () => {
   const USERS_ONLINE = [
@@ -34,13 +35,13 @@ const UserListings = () => {
       messageTime: '7.50 a.m.',
     },
     {
-      id: 'wrwrw5',
+      id: 'wrwrw5s',
       name: 'Joy Michael',
       lastMessage: 'Hey how are you doing',
       messageTime: '7.50 a.m.',
     },
     {
-      id: 'wrwrw5',
+      id: 'wrwraw5',
       name: 'Joy Michael',
       lastMessage: 'Hey how are you doing',
       messageTime: '7.50 a.m.',
@@ -78,13 +79,13 @@ const UserListings = () => {
   ];
 
   return (
-    <React.Fragment>
-      <ul class='collection'>
+    <section className='users-collection'>
+      <ul className='collection scroll'>
         {USERS_ONLINE.map(user => {
           return <ListItem key={user.id} user={user} />;
         })}
       </ul>
-    </React.Fragment>
+    </section>
   );
 };
 

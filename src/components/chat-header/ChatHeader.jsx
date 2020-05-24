@@ -21,7 +21,7 @@ const ChatHeader = () => {
         </div>
       </div>
       <div className='chat-panel__header_right'>
-        <Icon icon='more_vert' />
+        <Icon color='#fff' icon='more_vert' />
       </div>
     </div>
   );

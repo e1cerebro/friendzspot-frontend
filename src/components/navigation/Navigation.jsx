@@ -1,27 +1,27 @@
 import React from 'react';
 import './navigation.css';
+import { NavLink, Link } from 'react-router-dom';
 import Icon from '../../shared/icon/Icon';
 
 const Navigation = () => {
   return (
     <nav className='friendzspot-navigation'>
-      <div class='nav-wrapper'>
-        <a href='#' class='brand-logo'>
+      <div className='nav-wrapper'>
+        <Link to='/' className='brand-logo'>
           FriendzSpot
-        </a>
-        <ul id='nav-mobile' class='right hide-on-med-and-down'>
+        </Link>
+        <ul id='nav-mobile' className='right hide-on-med-and-down'>
           <li>
-            <a href='sass.html'>Friends</a>
-          </li>{' '}
-          <li>
-            <a href='sass.html'>Log Out</a>
+            <NavLink to='/friends'>Friends</NavLink>
           </li>
+
           <li>
-            <a href='badges.html'>Login</a>
+            <NavLink to='/auth'>Auth</NavLink>
           </li>
+
           <li>
             <a href=''>
-              <Icon icon='account_circle' />
+              <Icon color='#fff' icon='account_circle' />
             </a>
           </li>
         </ul>

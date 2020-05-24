@@ -1,0 +1,10 @@
+.message-box i.send-button {
+    cursor: pointer;
+    color: #e50303;
+    font-size: 43px;
+    transition: all 0.75s;
+}
+
+.message-box i.send-button:hover {
+    color: #0a8d66;
+}

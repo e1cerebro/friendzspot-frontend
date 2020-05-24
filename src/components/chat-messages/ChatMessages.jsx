@@ -4,7 +4,7 @@ import Image from '../../shared/image/Image';
 import Message from '../message/Message';
 const ChatMessages = () => {
   return (
-    <section className='chat-messages'>
+    <section className='chat-messages scroll'>
       <Message sender='owner' />
       <Message sender='' />
       <Message sender='owner' />
