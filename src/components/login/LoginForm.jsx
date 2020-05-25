@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import FormInput from '../../shared/form-input/FormInput';
 import './login-form.style.css';
 import CustomButton from '../../shared/custom-button/CustomButton';
 import Icon from '../../shared/icon/Icon';
+import { loginAction } from '../../redux/actions/user.actions';
 
-const LoginForm = () => {
+const LoginForm = ({ loginAction }) => {
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -12,6 +14,7 @@ const LoginForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
+    loginAction(inputs);
     console.log(inputs);
   };
 
@@ -57,4 +60,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default connect(null, { loginAction })(LoginForm);

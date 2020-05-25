@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import FormInput from '../../shared/form-input/FormInput';
+import { connect } from 'react-redux';
 import CustomButton from '../../shared/custom-button/CustomButton';
 import Icon from '../../shared/icon/Icon';
+import { registerAction } from '../../redux/actions/user.actions';
 
-const RegisterForm = () => {
+const RegisterForm = ({ registerAction }) => {
   const [inputs, setInputs] = useState({
     firstname: '',
     lastname: '',
@@ -14,7 +15,7 @@ const RegisterForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(inputs);
+    registerAction(inputs);
   };
 
   const handleInputChange = event => {
@@ -90,4 +91,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default connect(null, { registerAction })(RegisterForm);

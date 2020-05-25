@@ -5,7 +5,7 @@ const Icon = ({ icon, color }) => {
   return (
     <i
       className='large material-icons friendzspot-icon'
-      style={{ color: colorValue }}>
+      style={{ color: colorValue, display: 'inline-block' }}>
       {icon}
     </i>
   );

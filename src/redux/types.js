@@ -1,0 +1,5 @@
+export const user_actions = {
+  SIGNUP_ACTION: 'SIGNUP_ACTION',
+  SIGNIN_ACTION: 'SIGNIN_ACTION',
+  SIGNOUT_ACTION: 'SIGNOUT_ACTION',
+};

@@ -13,7 +13,10 @@ const Message = ({ sender = '', message, time }) => {
         setData(data.body);
       });
     }
+
+    return () => {};
   }, [socket]);
+
   return (
     <div className={`chat-msg   ${sender}`}>
       <div className='chat-msg-content'>

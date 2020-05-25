@@ -12,7 +12,7 @@ const AuthPage = () => {
           <LoginForm />
         </div>
         <div className='col s6'>
-          <h3>Register Account</h3>
+          <h3>Register</h3>
           <hr />
           <RegisterForm />
         </div>
