@@ -7,15 +7,22 @@ const ENDPOINT = CHAT_API_URL;
 
 export const SocketProvider = props => {
   const [socketInstance, setSocketInstance] = useState(null);
+  const [socketID, setSocketID] = useState(null);
+
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
-    setSocketInstance(socket);
+    socket.on('connect', function () {
+      setSocketID(socket.id);
+      setSocketInstance(socket);
+      console.log(` APP CONNECTED TO SOCKET (${socket.id})`);
+    });
   }, []);
 
   return (
     <SocketContext.Provider
       value={{
         socket: socketInstance,
+        socketID: socketID,
       }}>
       {props.children}
     </SocketContext.Provider>

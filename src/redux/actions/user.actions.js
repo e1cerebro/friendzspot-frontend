@@ -1,5 +1,4 @@
 import { user_actions } from '../types';
-import { CHAT_API_URL } from '../../utils/api-settings';
 import apiConfig from '../../api-config/config';
 
 export const registerAction = user => {
@@ -8,7 +7,6 @@ export const registerAction = user => {
       let response = await apiConfig.post('/api/users', user);
 
       if (response.status === 201) {
-        console.log(response.data.token);
         loginTokenAction(response.data.token);
         dispatch({
           type: user_actions.SIGNUP_ACTION,
@@ -23,7 +21,6 @@ export const loginAction = user => {
     try {
       let response = await apiConfig.post('/api/users/login', user);
 
-      console.log('LOGIN: ', response);
       if (response.status === 200) {
         localStorage.setItem('user', response.data.token);
         dispatch({
@@ -39,11 +36,33 @@ export const loginTokenAction = token => {
     try {
       let response = await apiConfig.get(`/api/users/login/${token}`);
 
-      if (response.status === 200) {
+      const user =
+        Object.keys(response.data).length !== 0 ? response.data : null;
+
+      if (response.status === 200 && user) {
         localStorage.setItem('user', token);
         dispatch({
           type: user_actions.SIGNIN_ACTION,
-          payload: response.data,
+          payload: user,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const fetchPeopleAction = () => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get(`/api/users/people/all`);
+
+      const people =
+        Object.keys(response.data).length !== 0 ? response.data : null;
+
+      if (response.status === 200 && people) {
+        dispatch({
+          type: user_actions.FETCHED_PEOPLE,
+          payload: people,
         });
       }
     } catch (e) {
@@ -54,9 +73,77 @@ export const loginTokenAction = token => {
 export const logoutAction = token => {
   return async dispatch => {
     try {
+      localStorage.removeItem('user');
       dispatch({
         type: user_actions.SIGNOUT_ACTION,
       });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const sendRequestAction = data => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post('/api/notifications', data);
+
+      if (response.status === 201) {
+        dispatch({
+          type: user_actions.SEND_CONNECTION_REQUEST,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const getFriendRequestAction = () => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get(
+        '/api/notifications/my-notifications/'
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.FETCHED_FRIEND_REQUESTS,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const getMyFriendsAction = () => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get('/api/users/my/friends');
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.FETCHED_FRIENDS,
+          payload: response.data.friends,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const acceptFriendRequestAction = friendRequestID => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post('/api/users/accept-friend-request', {
+        friendRequestID: friendRequestID,
+      });
+
+      if (response.status === 200) {
+        getMyFriendsAction();
+      }
     } catch (e) {
       console.log(e);
     }

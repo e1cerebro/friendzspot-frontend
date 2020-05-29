@@ -1,32 +1,29 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './message.style.css';
-import SocketContext from '../../contexts/socket-context';
+import { connect } from 'react-redux';
 
-const Message = ({ sender = '', message, time }) => {
-  const [data, setData] = useState(null);
-  const { socket } = useContext(SocketContext);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('message', data => {
-        console.log('Data: ', data);
-        setData(data.body);
-      });
-    }
-
-    return () => {};
-  }, [socket]);
-
+const Message = ({ message, currentUser }) => {
   return (
-    <div className={`chat-msg   ${sender}`}>
+    <div
+      className={`chat-msg    ${
+        message.sender.id === currentUser.id ? 'owner' : ''
+      }`}>
       <div className='chat-msg-content'>
         <div className='chat-msg-text'>
-          {data ? data : 'Tincidunt arcu non sodales😂'}
-          <small className='chat-msg-date'>Message sent 2.50pm</small>
+          {message.message}
+          <small className='chat-msg-date'>
+            Message sent {message.created_at}
+          </small>
         </div>
       </div>
     </div>
   );
 };
 
-export default Message;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    currentUser: state.app.currentUser,
+  };
+};
+
+export default connect(mapStateToProps, null)(Message);

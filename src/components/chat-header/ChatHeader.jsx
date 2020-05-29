@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Image from '../../shared/image/Image';
 import './chat-header.style.css';
 import Icon from '../../shared/icon/Icon';
-const ChatHeader = () => {
+import { connect } from 'react-redux';
+const ChatHeader = ({ chattingWith }) => {
+  if (!chattingWith) {
+    return <Fragment></Fragment>;
+  }
   return (
     <div className='chat-panel__header'>
       <div className='chat-panel__header_left'>
@@ -14,7 +18,9 @@ const ChatHeader = () => {
         />
 
         <div className='user-info'>
-          <span className='user-info__username'>Nwachukwu Uchenna</span>
+          <span className='user-info__username'>
+            {chattingWith.firstname} {chattingWith.lastname}
+          </span>
           <span className='user-info__last-seend'>
             last seen today at 8:59 a.m.
           </span>
@@ -27,4 +33,9 @@ const ChatHeader = () => {
   );
 };
 
-export default ChatHeader;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    chattingWith: state.chat.chattingWith,
+  };
+};
+export default connect(mapStateToProps, null)(ChatHeader);

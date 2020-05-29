@@ -1,4 +1,5 @@
 section.chat-messages {
     overflow-y: scroll;
-    max-height: 650px;
+    max-height: 609px;
+    height: 609px;
 }

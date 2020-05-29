@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import './send-message-box.style.css';
 import { CHAT_API_URL } from '../../utils/api-settings';
-const SendMessageBox = () => {
+import { connect } from 'react-redux';
+import apiConfig from '../../api-config/config';
+
+const SendMessageBox = ({ chattingWith, currentUser }) => {
   const [message, setMessage] = useState('');
 
   const handleInputChange = event => {
@@ -9,16 +12,12 @@ const SendMessageBox = () => {
   };
 
   const sendMessage = async event => {
-    let response = await fetch(`${CHAT_API_URL}/api/messages/send`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message }),
+    console.log('Mmessage clicked');
+    let response = await apiConfig.post('/api/messages/send', {
+      message: message,
+      receiverID: chattingWith.id,
+      senderID: currentUser.id,
     });
-
-    let result = await response.json();
-    console.log(result.data);
   };
   return (
     <div
@@ -42,4 +41,11 @@ const SendMessageBox = () => {
   );
 };
 
-export default SendMessageBox;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    chattingWith: state.chat.chattingWith,
+    currentUser: state.app.currentUser,
+  };
+};
+
+export default connect(mapStateToProps, null)(SendMessageBox);

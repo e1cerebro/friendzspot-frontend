@@ -2,3 +2,8 @@ nav.friendzspot-navigation {
     padding: 0 15px;
     background-color: #e50303;
 }
+
+nav.friendzspot-navigation li.user-account {
+    background-color: #366aff;
+    margin: 0 10px;
+}
