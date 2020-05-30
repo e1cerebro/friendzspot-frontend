@@ -1,0 +1,25 @@
+.notify {
+
+    padding: 21px 40px 18px 14px;
+    display: inline-block;
+    border-radius: 9px;
+}
+
+.notify .message {
+    margin-right: 16px;
+    font-family: 'Tenali Ramakrishna', sans-serif;
+    font-size: 29px;
+    color: #fff;
+}
+
+.notify.primary {
+    background-color: #134b90;
+}
+
+.notify.success {
+    background-color: #05521e;
+}
+
+.notify.danger {
+    background-color: #e50303;
+}

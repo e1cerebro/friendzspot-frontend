@@ -149,3 +149,31 @@ export const acceptFriendRequestAction = friendRequestID => {
     }
   };
 };
+export const unfriendFriendAction = friend => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get(`/api/users/unfriend/${friend.id}`);
+
+      if (response.status === 200) {
+        dispatch({ type: user_actions.UNFRIEND_USER, payload: friend });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const undoUnfriendAction = friendRequestID => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post('/api/users/accept-friend-request', {
+        friendRequestID: friendRequestID,
+      });
+
+      if (response.status === 200) {
+        dispatch({ type: user_actions.UNDO_UNFRIENDES_USER });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};

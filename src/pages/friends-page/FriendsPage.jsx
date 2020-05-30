@@ -1,52 +1,51 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import './friends-page.style.css';
-import UserAvaterImage from '../../images/avater.png';
 import { connect } from 'react-redux';
 import Icon from '../../shared/icon/Icon';
+import FriendInfoBox from '../../components/friends/friend-info-box/FriendInfoBox';
+import {
+  getMyFriendsAction,
+  undoUnfriendAction,
+} from '../../redux/actions/user.actions';
+import Notify from '../../shared/notify/Notify';
 
-const FriendsPage = ({ currentUser }) => {
+const FriendsPage = ({
+  currentUser,
+  myfriends,
+  getMyFriendsAction,
+  previousFriendsList,
+  lastRemovedFriend,
+  undoUnfriendAction,
+}) => {
+  useEffect(() => {
+    getMyFriendsAction();
+  }, []);
+
+  const undoFriendUnfriending = () => {
+    undoUnfriendAction(lastRemovedFriend.id);
+  };
+
   return (
     <Fragment>
       {currentUser && (
         <h1 className='header'>
-          <i style={{ fontSize: '42px' }} class='material-icons left'>
-            people
-          </i>
+          <Icon color='#134b90' className='left' icon={` people`} size='42px' />
           <span>{currentUser.firstname}'s Friends</span>
         </h1>
       )}
+      {previousFriendsList && (
+        <Notify
+          type='primary'
+          icon='refresh'
+          action_title='Undo Now'
+          message='Do you want to undo this action?'
+          clickBubbleAction={undoFriendUnfriending}
+        />
+      )}
       <div className='my-friend-list'>
-        {currentUser &&
-          currentUser.friends.map(friend => {
-            return (
-              <div className='friend-item'>
-                <div className='friend-item__left'>
-                  <img src={UserAvaterImage} className='user-avater' alt='' />
-                </div>
-
-                <div className='friend-item__right'>
-                  <div>
-                    <h4 className='name'>
-                      {friend.firstname} {friend.lastname}
-                    </h4>
-                    <p style={{ fontSize: '20px' }} className='sub-text'>
-                      <i class='material-icons left'>date_range</i> Joined since{' '}
-                      {friend.created_at}
-                    </p>
-                    <p style={{ fontSize: '20px' }} className='sub-text'>
-                      <i class='material-icons left'>people</i>{' '}
-                      {friend.friends.length} friends
-                    </p>
-                  </div>
-                  <button
-                    class='btn waves-effect   blue darken-4'
-                    type='submit'
-                    name='action'>
-                    Unfriend <i class='material-icons right'>person_outline</i>
-                  </button>
-                </div>
-              </div>
-            );
+        {myfriends &&
+          myfriends.map(friend => {
+            return <FriendInfoBox key={friend.id} friend={friend} />;
           })}
       </div>
     </Fragment>
@@ -55,8 +54,14 @@ const FriendsPage = ({ currentUser }) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    myfriends: state.app.friends,
+    previousFriendsList: state.app.previousFriendsList,
+    lastRemovedFriend: state.app.lastRemovedFriend,
     currentUser: state.app.currentUser,
   };
 };
 
-export default connect(mapStateToProps)(FriendsPage);
+export default connect(mapStateToProps, {
+  getMyFriendsAction,
+  undoUnfriendAction,
+})(FriendsPage);

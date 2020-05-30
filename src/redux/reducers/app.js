@@ -6,6 +6,8 @@ const INITIAL_STATE = {
   last_connection_request: null,
   friend_requests: null,
   friends: null,
+  previousFriendsList: null,
+  lastRemovedFriend: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +24,22 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, friend_requests: action.payload };
     case user_actions.FETCHED_FRIENDS:
       return { ...state, friends: action.payload };
+    case user_actions.UNFRIEND_USER:
+      return {
+        ...state,
+        lastRemovedFriend: action.payload,
+        previousFriendsList: state.friends,
+        friends: state.friends.filter(friend => {
+          return friend.id != action.payload.id;
+        }),
+      };
+    case user_actions.UNDO_UNFRIENDES_USER:
+      return {
+        ...state,
+        friends: state.previousFriendsList,
+        previousFriendsList: null,
+        lastRemovedFriend: null,
+      };
     default:
       return state;
   }

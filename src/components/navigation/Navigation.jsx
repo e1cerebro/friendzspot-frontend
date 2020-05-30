@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './navigation.css';
 import { NavLink, Link } from 'react-router-dom';
 import Icon from '../../shared/icon/Icon';
 import { connect } from 'react-redux';
-import { logoutAction } from '../../redux/actions/user.actions';
+import {
+  logoutAction,
+  getMyFriendsAction,
+} from '../../redux/actions/user.actions';
 
-const Navigation = ({ currentUser, unreadMessages, logoutAction }) => {
+const Navigation = ({
+  currentUser,
+  unreadMessages,
+  logoutAction,
+  getMyFriendsAction,
+  friends,
+}) => {
+  useEffect(() => {
+    getMyFriendsAction();
+  }, []);
   const authLogout = () => {
     logoutAction();
   };
@@ -18,7 +30,7 @@ const Navigation = ({ currentUser, unreadMessages, logoutAction }) => {
         <ul id='nav-mobile' className='right hide-on-med-and-down'>
           <li style={{ backgroundColor: '#b30c0c' }}>
             <NavLink to='/messenger'>
-              <Icon color='#fff' className='left' icon='chat_bubble' />{' '}
+              <Icon color='#fff' className='left' icon='question_answer' />{' '}
               Messenger{' '}
               <span className='small badge circle-badge blue accent-4'>
                 {unreadMessages && unreadMessages.length}
@@ -29,7 +41,7 @@ const Navigation = ({ currentUser, unreadMessages, logoutAction }) => {
             <NavLink to='/friends'>
               <Icon color='#fff' className='left' icon='people' /> Friends
               <span className='small badge circle-badge amber  '>
-                {currentUser && currentUser.friends.length}
+                {friends && friends.length}
               </span>
             </NavLink>
           </li>{' '}
@@ -71,7 +83,10 @@ const mapStateToProps = state => {
   return {
     currentUser: state.app.currentUser,
     unreadMessages: state.chat.unreadMessages,
+    friends: state.app.friends,
   };
 };
 
-export default connect(mapStateToProps, { logoutAction })(Navigation);
+export default connect(mapStateToProps, { logoutAction, getMyFriendsAction })(
+  Navigation
+);
