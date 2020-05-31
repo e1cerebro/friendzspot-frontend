@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   chattingWith: null,
   messages: null,
   unreadMessages: [],
+  usersOnline: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,6 +30,17 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         unreadMessages: [...state.unreadMessages, action.payload],
       };
+    case chat_actions.CURRENT_USERS_ONLINE:
+      const userExists = state.usersOnline.includes(action.payload);
+      if (!userExists) {
+        return {
+          ...state,
+          usersOnline: [...state.usersOnline, action.payload],
+        };
+      } else {
+        return state;
+      }
+
     default:
       return state;
   }

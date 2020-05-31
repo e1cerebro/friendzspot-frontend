@@ -33,6 +33,14 @@
 
 }
 
+.circle-img.online {
+  border: 3px solid #009906;
+}
+
+.circle-img.offline {
+  border: 3px solid #f6cb4a;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

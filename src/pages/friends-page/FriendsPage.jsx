@@ -29,7 +29,7 @@ const FriendsPage = ({
     <Fragment>
       {currentUser && (
         <h1 className='header'>
-          <Icon color='#134b90' className='left' icon={` people`} size='42px' />
+          <Icon color='#134b90' className='left' icon={` people`} size='40px' />
           <span>{currentUser.firstname}'s Friends</span>
         </h1>
       )}

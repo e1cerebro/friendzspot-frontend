@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './send-message-box.style.css';
 import { CHAT_API_URL } from '../../utils/api-settings';
 import { connect } from 'react-redux';
@@ -7,8 +7,14 @@ import apiConfig from '../../api-config/config';
 const SendMessageBox = ({ chattingWith, currentUser }) => {
   const [message, setMessage] = useState('');
 
+  const messageBoxRef = useRef(null);
+
   const handleInputChange = event => {
-    setMessage(event.target.value);
+    if (event.keyCode === 13) {
+      setMessage('');
+    } else {
+      setMessage(event.target.value);
+    }
   };
 
   const sendMessage = async event => {
@@ -18,6 +24,16 @@ const SendMessageBox = ({ chattingWith, currentUser }) => {
       receiverID: chattingWith.id,
       senderID: currentUser.id,
     });
+
+    setMessage('');
+  };
+
+  const handleSubmitOnEnter = event => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      sendMessage(event);
+      messageBoxRef.current.blur();
+    }
   };
   return (
     <div
@@ -25,6 +41,8 @@ const SendMessageBox = ({ chattingWith, currentUser }) => {
       style={{ margin: '0', backgroundColor: ' #fff', zIndex: '1000' }}>
       <div className='input-field col s11 offset-s0'>
         <textarea
+          ref={messageBoxRef}
+          onKeyUp={handleSubmitOnEnter}
           onChange={handleInputChange}
           id='message-box'
           value={message}

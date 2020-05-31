@@ -11,6 +11,31 @@ li.chat-listing-single:hover {
     background-color: #e2e2e2;
 }
 
+.user-avater {
+    position: relative;
+}
+
+span.online-icon {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    background-color: #009906;
+    border-radius: 50%;
+    display: inline-block;
+    right: 2px;
+    top: 1px;
+}
+
+span.offline-icon {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    background-color: #b8b8b8;
+    border-radius: 50%;
+    display: inline-block;
+    right: 2px;
+    top: 1px;
+}
 
 .chat-info__single-item {
     display: flex;

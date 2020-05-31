@@ -70,3 +70,15 @@ export const readUnreadMessagesAction = data => {
     }
   };
 };
+export const updateUsersOnlineAction = userId => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: chat_actions.CURRENT_USERS_ONLINE,
+        payload: userId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
