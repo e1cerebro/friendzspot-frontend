@@ -89,6 +89,12 @@ export const fetchLastMessagesAction = () => {
 export const logoutAction = token => {
   return async dispatch => {
     try {
+      let response = await apiConfig.post('/api/users/logout');
+
+      if (response.status === 200) {
+        console.log(response.data);
+      }
+
       localStorage.removeItem('user');
       dispatch({
         type: user_actions.SIGNOUT_ACTION,

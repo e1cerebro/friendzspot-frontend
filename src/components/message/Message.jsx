@@ -1,23 +1,28 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, Fragment } from 'react';
 import './message.style.css';
 import { connect } from 'react-redux';
+import { GetTimeAgo } from '../../utils/format-time';
 
 const Message = ({ message, currentUser }) => {
-  return (
-    <div
-      className={`chat-msg    ${
-        message.sender.id === currentUser.id ? 'owner' : ''
-      }`}>
-      <div className='chat-msg-content'>
-        <div className='chat-msg-text'>
-          {message.message}
-          <small className='chat-msg-date'>
-            Message sent {message.created_at}
-          </small>
+  if (message) {
+    return (
+      <div
+        className={`chat-msg    ${
+          message.sender.id === currentUser.id ? 'owner' : ''
+        }`}>
+        <div className='chat-msg-content'>
+          <div className='chat-msg-text'>
+            <span className='message-content'>{message.message}</span>
+            <small className='chat-msg-date'>
+              {GetTimeAgo(message.created_at)}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return <Fragment />;
 };
 
 const mapStateToProps = (state, ownProps) => {

@@ -82,3 +82,15 @@ export const updateUsersOnlineAction = userId => {
     }
   };
 };
+export const removeUsersOnlineAction = userId => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: chat_actions.REMOVE_CURRENT_USER_ONLINE,
+        payload: userId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};

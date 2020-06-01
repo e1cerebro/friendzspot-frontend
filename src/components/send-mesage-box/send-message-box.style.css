@@ -3,8 +3,27 @@
     color: #e50303;
     font-size: 43px;
     transition: all 0.75s;
+    font-weight: bolder;
 }
 
-.message-box i.send-button:hover {
-    color: #0a8d66;
+
+
+i.material-icons.attach-files {
+    color: #9a9a9a;
+    font-size: 38px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.input-field .submit-btn.prefix {
+    position: absolute;
+    width: 8rem;
+    font-size: 20px;
+    -webkit-transition: color .2s;
+    transition: color .2s;
+    top: .5rem;
+}
+
+.submit-text-box {
+    z-index: 1000;
 }

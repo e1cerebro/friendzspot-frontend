@@ -40,6 +40,16 @@ export default (state = INITIAL_STATE, action) => {
       } else {
         return state;
       }
+    case chat_actions.REMOVE_CURRENT_USER_ONLINE:
+      const userExistOnline = state.usersOnline.includes(action.payload);
+      if (userExistOnline) {
+        return {
+          ...state,
+          usersOnline: state.usersOnline.filter(id => id !== action.payload),
+        };
+      } else {
+        return state;
+      }
 
     default:
       return state;

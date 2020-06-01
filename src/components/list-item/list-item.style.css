@@ -7,6 +7,11 @@ li.chat-listing-single {
     transition: all 1s;
 }
 
+.secondary-content.message-time {
+    color: #b7b7b7;
+    font-size: 13px;
+}
+
 li.chat-listing-single:hover {
     background-color: #e2e2e2;
 }

@@ -10,8 +10,8 @@
 }
 
 img.user-avater {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 130px;
     border: 1px solid whitesmoke;
 }
 
@@ -22,4 +22,27 @@ img.user-avater {
     justify-content: space-between;
     align-items: center;
     margin-left: 18px;
+}
+
+p.start-chatting span {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+p.start-chatting,
+p.start-chatting i {
+    transition: all 1s;
+}
+
+p.start-chatting:hover {
+    color: red;
+    cursor: pointer;
+}
+
+p.start-chatting:hover i {
+    color: red;
+}
+
+p.start-chatting:hover i {
+    color: #134b90 !important;
 }

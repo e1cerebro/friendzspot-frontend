@@ -16,6 +16,10 @@
     font-size: 43px;
 }
 
+.fixed-action-btn.chat-header-action {
+    position: static;
+}
+
 .chat-panel__header_left .user-info {
     margin-left: 20px;
 }

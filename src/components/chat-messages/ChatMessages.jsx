@@ -3,10 +3,7 @@ import './chat-messages.style.css';
 import Image from '../../shared/image/Image';
 import Message from '../message/Message';
 import SocketContext from '../../contexts/socket-context';
-import {
-  fetchMessagesAction,
-  readUnreadMessagesAction,
-} from '../../redux/actions/chat.actions';
+import { fetchMessagesAction } from '../../redux/actions/chat.actions';
 import { connect } from 'react-redux';
 
 const ChatMessages = ({
@@ -14,36 +11,27 @@ const ChatMessages = ({
   chatMessages,
   currentUser,
   fetchMessagesAction,
-  readUnreadMessagesAction,
 }) => {
-  const chatMessagesRef = useRef();
+  const chatMessagesRef = useRef(null);
+
+  const updateScroll = () => {
+    let element = chatMessagesRef.current;
+    element.scrollTop = element.scrollHeight;
+  };
 
   useEffect(() => {
     fetchMessagesAction(chattingWith.id, currentUser.id);
+    updateScroll();
   }, []);
 
-  const readUnreadMessages = () => {
-    if (
-      chatMessagesRef.current.scrollHeight -
-        chatMessagesRef.current.scrollTop ===
-      chatMessagesRef.current.clientHeight
-    ) {
-      readUnreadMessagesAction({
-        sender: chattingWith.id,
-        receiver: currentUser.id,
-      });
-    }
-  };
-
   return (
-    <section
-      ref={chatMessagesRef}
-      className='chat-messages scroll'
-      onScroll={readUnreadMessages}>
-      {chatMessages &&
-        chatMessages.map(message => {
-          return <Message key={message.id} message={message} />;
-        })}
+    <section ref={chatMessagesRef} className='chat-messages scroll'>
+      <div className='chat-messages'>
+        {chatMessages &&
+          chatMessages.map(message => {
+            return <Message key={message.id} message={message} />;
+          })}
+      </div>
     </section>
   );
 };
@@ -58,5 +46,4 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   fetchMessagesAction,
-  readUnreadMessagesAction,
 })(ChatMessages);

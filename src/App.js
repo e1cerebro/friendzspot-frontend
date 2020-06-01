@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useRef, useState } from 'react';
 import './App.css';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
-import ChatMessages from './pages/chat-messages/chatMessages';
+import ChatMessagesPage from './pages/chat-messages/ChatMessagesPage';
 import AuthPage from './pages/user-auth/AuthPage';
 import { connect } from 'react-redux';
 import {
@@ -16,6 +16,7 @@ import {
   fetchMessagesAction,
   updateUnreadMessagesAction,
   updateUsersOnlineAction,
+  removeUsersOnlineAction,
 } from './redux/actions/chat.actions';
 import FriendRequest from './components/friend-requests/FriendRequest';
 import FriendsPage from './pages/friends-page/FriendsPage';
@@ -30,6 +31,7 @@ const App = ({
   fetchMessagesAction,
   fetchLastMessagesAction,
   updateUsersOnlineAction,
+  removeUsersOnlineAction,
 }) => {
   const { socket, socketID } = useContext(SocketContext);
   const sourceRef = useRef(null);
@@ -48,6 +50,11 @@ const App = ({
       socket.on('user connected', userId => {
         console.log('user connected', userId);
         updateUsersOnlineAction(userId);
+      });
+
+      socket.on('user disconnected', userId => {
+        console.log('user disconnected', userId);
+        removeUsersOnlineAction(userId);
       });
     }
     return () => {};
@@ -77,9 +84,9 @@ const App = ({
       </audio>
       <Navigation />
       <Switch>
-        <Route exact path='/' component={ChatMessages} />
+        <Route exact path='/' component={ChatMessagesPage} />
         <Route exact path='/login' component={AuthPage} />
-        <Route exact path='/messenger' component={ChatMessages} />
+        <Route exact path='/messenger' component={ChatMessagesPage} />
         <Route exact path='/people' component={People} />
         <Route exact path='/friend-requests' component={FriendRequest} />
         <Route exact path='/friends' component={FriendsPage} />
@@ -102,4 +109,5 @@ export default connect(mapStateToProps, {
   updateUnreadMessagesAction,
   fetchLastMessagesAction,
   updateUsersOnlineAction,
+  removeUsersOnlineAction,
 })(App);

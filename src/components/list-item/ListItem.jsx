@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 import {
   userItemClicked,
   fetchMessagesAction,
+  readUnreadMessagesAction,
 } from '../../redux/actions/chat.actions';
+
+import { GetTimeAgo } from '../../utils/format-time';
 
 const ListItem = ({
   message,
@@ -15,12 +18,19 @@ const ListItem = ({
   usersOnline,
   userItemClicked,
   fetchMessagesAction,
+  readUnreadMessagesAction,
 }) => {
-  const user = message.sender;
+  const user =
+    message.sender.id === currentUser.id ? message.receiver : message.sender;
+
   const userClicked = () => {
     const data = { ...user, currentUser: currentUser.id };
     fetchMessagesAction(data.id, data.currentUser);
     userItemClicked(data);
+    readUnreadMessagesAction({
+      sender: message.sender.id,
+      receiver: currentUser.id,
+    });
   };
 
   return (
@@ -54,7 +64,7 @@ const ListItem = ({
                 {unreadMessages.length}
               </span>
             )}
-            5.00 p.m.
+            {GetTimeAgo(message.created_at)}
           </span>
         </div>
         <p className='last-message'>
@@ -82,4 +92,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   userItemClicked,
   fetchMessagesAction,
+  readUnreadMessagesAction,
 })(ListItem);

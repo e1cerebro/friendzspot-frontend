@@ -1,12 +1,34 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import Image from '../../shared/image/Image';
-import './chat-header.style.css';
-import Icon from '../../shared/icon/Icon';
+
 import { connect } from 'react-redux';
+import { GetTimeAgo } from '../../utils/format-time';
+
+import './chat-header.style.css';
+import FloatingButton from '../../shared/floating-button/FloatingButton';
+import FloatingButtonItem from '../../shared/floating-button-item/FloatingButtonItem';
+
 const ChatHeader = ({ chattingWith, usersOnline }) => {
   if (!chattingWith) {
     return <Fragment></Fragment>;
   }
+
+  const startAduioCall = () => {
+    console.log('Audio Call clicked');
+  };
+
+  const startVideoCall = () => {
+    console.log('Video Call clicked');
+  };
+
+  const viewProfile = () => {
+    console.log('View Profile clicked');
+  };
+
+  const blockUser = () => {
+    console.log('Block user clicked');
+  };
+
   return (
     <div className='chat-panel__header'>
       <div className='chat-panel__header_left'>
@@ -40,12 +62,45 @@ const ChatHeader = ({ chattingWith, usersOnline }) => {
             {usersOnline &&
               !usersOnline.includes(chattingWith.id) &&
               chattingWith.lastseen &&
-              `Last seen ${chattingWith.lastseen}`}
+              `Last seen ${GetTimeAgo(chattingWith.lastseen)}`}
           </span>
         </div>
       </div>
       <div className='chat-panel__header_right'>
-        <Icon color='#fff' icon='more_vert' />
+        <FloatingButton>
+          <FloatingButtonItem
+            onClick={startAduioCall}
+            title='Audio Call'
+            icon='call'
+            iconColor='#fff'
+            colorClass='yellow darken-4'
+            position='bottom'
+          />
+          <FloatingButtonItem
+            onClick={startVideoCall}
+            title='Video Call'
+            icon='videocam'
+            iconColor='#fff'
+            colorClass='green'
+            position='bottom'
+          />
+          <FloatingButtonItem
+            onClick={viewProfile}
+            title={`View ${chattingWith.firstname}'s Profile`}
+            icon='account_circle'
+            iconColor='#fff'
+            colorClass='blue darken-4'
+            position='bottom'
+          />{' '}
+          <FloatingButtonItem
+            onClick={blockUser}
+            title={`Block ${chattingWith.firstname}`}
+            icon='block'
+            iconColor='#fff'
+            colorClass='red darken-4'
+            position='bottom'
+          />
+        </FloatingButton>
       </div>
     </div>
   );
