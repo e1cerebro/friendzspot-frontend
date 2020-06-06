@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import CustomButton from '../../shared/custom-button/CustomButton';
 import Icon from '../../shared/icon/Icon';
-import { registerAction } from '../../redux/actions/user.actions';
+import { registerAction } from '../../redux/actions/auth.actions';
 
 const RegisterForm = ({ registerAction }) => {
   const [inputs, setInputs] = useState({

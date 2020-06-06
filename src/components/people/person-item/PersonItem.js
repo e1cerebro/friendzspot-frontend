@@ -100,7 +100,7 @@ const PersonItem = ({ person, currentUser, sendRequestAction }) => {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
     friends: state.app.friends,
   };
 };

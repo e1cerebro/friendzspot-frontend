@@ -1,7 +1,6 @@
 import { user_actions, api_loader_action } from '../types';
 
 const INITIAL_STATE = {
-  currentUser: null,
   people: null,
   last_connection_request: null,
   friend_requests: null,
@@ -13,10 +12,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case user_actions.SIGNIN_ACTION:
-      return { ...state, currentUser: action.payload };
-    case user_actions.SIGNOUT_ACTION:
-      return { ...state, currentUser: null };
     case user_actions.FETCHED_PEOPLE:
       return { ...state, people: action.payload };
     case user_actions.SEND_CONNECTION_REQUEST:

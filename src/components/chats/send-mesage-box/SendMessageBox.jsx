@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import './send-message-box.style.css';
 import { connect } from 'react-redux';
 import { sendChatMessageAction } from '../../../redux/actions/chat.actions';
+import { autoExpand } from '../../../utils/inputs';
+import Icon from '../../../shared/icon/Icon';
 
 const SendMessageBox = ({
   chattingWith,
@@ -18,8 +20,10 @@ const SendMessageBox = ({
   const inputFileRef = useRef(null);
 
   const handleInputChange = event => {
+    autoExpand(event.target);
     if (event.keyCode !== 13) {
       setInput({ ...input, [event.target.id]: event.target.value });
+      autoExpand(event.target);
     }
   };
 
@@ -55,15 +59,16 @@ const SendMessageBox = ({
     <div className='submit-text-box'>
       <form action='post' ref={messageFormRef} onSubmit={handleMessageSubmit}>
         <div
-          className='row message-box'
+          className=' message-box'
           style={{ margin: '0', backgroundColor: ' #fff', zIndex: '1000' }}>
-          <div className='input-field col s10'>
+          <div className='attach-file'>
             <i
               onClick={() => inputFileRef.current.click()}
               className='material-icons prefix  attach-files'>
               attach_file
             </i>
-
+          </div>
+          <div className='input-field'>
             <input
               style={{ display: 'none' }}
               type='file'
@@ -80,22 +85,13 @@ const SendMessageBox = ({
               onChange={handleInputChange}
               id='message'
               defaultValue={input.message}
-              className='materialize-textarea validate'></textarea>
+              className='message-textbox scroll'></textarea>
+          </div>
 
-            <button
-              className='btn submit-btn   red darken-4 prefix'
-              type='submit'
-              name='action'>
-              send <i className='material-icons right'>send</i>
-            </button>
-            {/* <i
-            onClick={sendMessage}
-            className='material-icons prefix send-button'>
-            send
-          </i> */}
-            {/* <label style={{ marginLeft: '50px' }} htmlFor='message-box'>
-          Start typing your message...
-        </label> */}
+          <div className='send-btn'>
+            <span className='submit-btn ' onClick={handleMessageSubmit}>
+              <Icon icon='send' color='danger' size='40px' />
+            </span>
           </div>
         </div>
       </form>
@@ -106,7 +102,7 @@ const SendMessageBox = ({
 const mapStateToProps = (state, ownProps) => {
   return {
     chattingWith: state.chat.chattingWith,
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
   };
 };
 

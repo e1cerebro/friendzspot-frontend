@@ -67,7 +67,7 @@ const UserProfilePage = ({
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
     friends: state.app.friends,
     friend_requests: state.app.friend_requests,
     unreadMessages: state.chat.unreadMessages,

@@ -5,10 +5,7 @@ import Navigation from './components/navigation/Navigation';
 import ChatMessagesPage from './pages/chat-messages/ChatMessagesPage';
 import AuthPage from './pages/user-auth/AuthPage';
 import { connect } from 'react-redux';
-import {
-  loginTokenAction,
-  fetchLastMessagesAction,
-} from './redux/actions/user.actions';
+import { fetchLastMessagesAction } from './redux/actions/user.actions';
 import People from './pages/people/People';
 import SocketContext from './contexts/socket-context';
 import {
@@ -23,6 +20,8 @@ import FriendsPage from './pages/friends-page/FriendsPage';
 import messageURL from './sounds/message_received2.mp3';
 import UserProfilePage from './pages/user-profile/UserProfilePage';
 import FriendRequest from './components/friends/friend-requests/FriendRequest';
+import { loginTokenAction } from './redux/actions/auth.actions';
+import { useHistory } from 'react-router-dom';
 
 const App = ({
   currentUser,
@@ -39,6 +38,8 @@ const App = ({
   const { socket, socketID } = useContext(SocketContext);
   const sourceRef = useRef(null);
   const audioRef = useRef(null);
+
+  let history = useHistory();
 
   useEffect(() => {
     if (socket) {
@@ -68,6 +69,8 @@ const App = ({
     const userToken = localStorage.getItem('user');
     if (userToken) {
       loginTokenAction(userToken);
+    } else {
+      history.push('/login');
     }
   }, []);
 
@@ -103,7 +106,7 @@ const App = ({
 const mapStateToProps = state => {
   return {
     chattingWith: state.chat.chattingWith,
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
   };
 };
 

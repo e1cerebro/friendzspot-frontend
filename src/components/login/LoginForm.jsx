@@ -4,23 +4,30 @@ import FormInput from '../../shared/form-input/FormInput';
 import './login-form.style.css';
 import CustomButton from '../../shared/custom-button/CustomButton';
 import Icon from '../../shared/icon/Icon';
-import { loginAction } from '../../redux/actions/user.actions';
+import { loginAction } from '../../redux/actions/auth.actions';
+import { useHistory } from 'react-router-dom';
 
-const LoginForm = ({ loginAction }) => {
+const LoginForm = ({ loginAction, currentUser }) => {
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
   });
 
+  let history = useHistory();
+
   const handleSubmit = event => {
     event.preventDefault();
     loginAction(inputs);
-    console.log(inputs);
+    history.push('/');
   };
 
   const handleInputChange = event => {
     setInputs({ ...inputs, [event.target.id]: event.target.value });
   };
+
+  if (currentUser) {
+    history.push('/');
+  }
 
   return (
     <div className='login-form'>
@@ -60,4 +67,10 @@ const LoginForm = ({ loginAction }) => {
   );
 };
 
-export default connect(null, { loginAction })(LoginForm);
+const mapStateToProps = state => {
+  return {
+    currentUser: state.auth.currentUser,
+  };
+};
+
+export default connect(mapStateToProps, { loginAction })(LoginForm);

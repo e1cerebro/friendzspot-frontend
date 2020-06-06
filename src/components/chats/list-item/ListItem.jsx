@@ -84,7 +84,7 @@ const ListItem = ({
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
     usersOnline: state.chat.usersOnline,
     unreadMessages: state.chat.unreadMessages,
   };

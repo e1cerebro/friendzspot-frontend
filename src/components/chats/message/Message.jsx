@@ -83,7 +83,7 @@ const Message = ({ message, currentUser }) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
   };
 };
 

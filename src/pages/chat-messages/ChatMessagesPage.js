@@ -67,7 +67,7 @@ const staticBgImage = {
 const mapStateToProps = (state, ownProps) => {
   return {
     chattingWith: state.chat.chattingWith,
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
   };
 };
 

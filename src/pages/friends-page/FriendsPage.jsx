@@ -65,7 +65,7 @@ const mapStateToProps = (state, ownProps) => {
     myfriends: state.app.friends,
     previousFriendsList: state.app.previousFriendsList,
     lastRemovedFriend: state.app.lastRemovedFriend,
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
   };
 };
 

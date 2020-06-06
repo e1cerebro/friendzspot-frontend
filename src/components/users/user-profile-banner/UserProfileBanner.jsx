@@ -183,7 +183,7 @@ const smallImageCircle = {
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
     profilePhotoUpdating: state.api.profilePhotoUpdating,
   };
 };

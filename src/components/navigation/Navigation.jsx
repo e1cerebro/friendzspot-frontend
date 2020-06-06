@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import './navigation.css';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useHistory } from 'react-router-dom';
 import Icon from '../../shared/icon/Icon';
 import { connect } from 'react-redux';
-import {
-  logoutAction,
-  getMyFriendsAction,
-} from '../../redux/actions/user.actions';
+import { getMyFriendsAction } from '../../redux/actions/user.actions';
 import M from 'materialize-css';
+import { logoutAction } from '../../redux/actions/auth.actions';
 
 const Navigation = ({
   currentUser,
@@ -22,7 +20,7 @@ const Navigation = ({
     var instances = M.Sidenav.init(elems, { edge: 'left' });
   }, []);
   const authLogout = () => {
-    logoutAction();
+    logoutAction(currentUser.id);
   };
   return (
     <nav className='friendzspot-navigation'>
@@ -157,7 +155,7 @@ const Navigation = ({
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
     unreadMessages: state.chat.unreadMessages,
     friends: state.app.friends,
   };

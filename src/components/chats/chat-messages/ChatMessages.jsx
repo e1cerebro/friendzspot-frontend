@@ -63,7 +63,7 @@ const mapStateToProps = state => {
   return {
     chattingWith: state.chat.chattingWith,
     chatMessages: state.chat.messages,
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
   };
 };
 

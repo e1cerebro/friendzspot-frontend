@@ -114,7 +114,7 @@ const UpdateForm = ({
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.app.currentUser,
+    currentUser: state.auth.currentUser,
     updatingUserInfo: state.api.updatingUserInfo,
   };
 };

@@ -1,29 +1,47 @@
-.message-box i.send-button {
-    cursor: pointer;
-    color: #e50303;
-    font-size: 43px;
-    transition: all 0.75s;
-    font-weight: bolder;
-}
+ i.material-icons.attach-files {
+     color: #9a9a9a;
+     font-size: 38px;
+     font-weight: 500;
+     cursor: pointer;
+     flex-basis: 10%;
+ }
 
+ .input-field .submit-btn.prefix {
+     position: absolute;
+     width: 8rem;
+     font-size: 20px;
+     -webkit-transition: color .2s;
+     transition: color .2s;
+     top: .5rem;
+ }
 
+ .submit-text-box {
+     z-index: 1000;
+ }
 
-i.material-icons.attach-files {
-    color: #9a9a9a;
-    font-size: 38px;
-    font-weight: 500;
-    cursor: pointer;
-}
+ .message-box {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+ }
 
-.input-field .submit-btn.prefix {
-    position: absolute;
-    width: 8rem;
-    font-size: 20px;
-    -webkit-transition: color .2s;
-    transition: color .2s;
-    top: .5rem;
-}
+ textarea#message {
 
-.submit-text-box {
-    z-index: 1000;
-}
+     box-sizing: padding-box;
+     border-radius: 6px;
+     box-shadow: 2px 2px 8px rgba(black, .3);
+     border: 1;
+     width: 756px;
+     margin-right: 14px;
+     resize: none;
+     flex-basis: 80%;
+ }
+
+ .send-btn {
+     flex-basis: 10%;
+     cursor: pointer;
+     color: #e50303;
+     font-size: 43px;
+     transition: all 0.75s;
+     font-weight: bolder;
+ }
