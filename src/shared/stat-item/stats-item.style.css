@@ -1,0 +1,13 @@
+.user-profile-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px;
+}
+
+.user-profile-stats:not(:last-child) {
+    border-bottom: 1px solid #eaeaea;
+}
+
+span.title {
+    font-size: 20px;
+}

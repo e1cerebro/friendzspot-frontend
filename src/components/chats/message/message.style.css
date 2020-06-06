@@ -1,0 +1,68 @@
+.owner .chat-msg-text {
+    background-color: #00713d;
+    color: #fff;
+    width: 376px;
+    border-radius: 20px 20px 0 20px;
+}
+
+.message-header {
+    padding-bottom: 12px;
+    margin-bottom: 23px;
+}
+
+.message-header i {
+    cursor: pointer;
+}
+
+.chat-msg.owner {
+    flex-direction: row-reverse;
+}
+
+span.sender-name {
+    opacity: 0.8;
+}
+
+.message-more-actions {
+    display: none;
+}
+
+
+.chat-msg-content:hover .message-more-actions {
+    display: block;
+}
+
+.chat-msg {
+    display: flex;
+    flex-direction: row;
+    padding: 13px 0;
+    margin: 0 10px;
+}
+
+small.chat-msg-date {
+    display: block;
+    border-top: 1px solid #fff;
+    padding-top: 7px;
+}
+
+
+small.message-time {
+    opacity: 0.5;
+}
+
+.chat-msg-text {
+    background-color: #212121;
+    color: #fff;
+    width: 376px;
+    padding: 15px 20px 30px 20px;
+    border-radius: 20px 20px 20px 0;
+    line-height: 1.5;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: inset 0px 0px 3px 1px #fff5d7;
+}
+
+.chat-msg-text span.message-content {
+    font-size: 23px;
+    font-family: 'Tenali Ramakrishna', sans-serif;
+    font-weight: 500;
+}

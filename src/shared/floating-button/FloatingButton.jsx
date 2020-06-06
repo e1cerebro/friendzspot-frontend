@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Icon from '../../shared/icon/Icon';
 import M from 'materialize-css';
 
-const FloatingButton = props => {
+const FloatingButton = ({ icon, ...props }) => {
   const buttonRef = useRef(null);
 
   useEffect(() => {
@@ -13,10 +13,14 @@ const FloatingButton = props => {
     });
   }, []);
 
+  const dropDownIcon = icon ? icon : 'more_vert';
+
   return (
     <div ref={buttonRef} className='fixed-action-btn chat-header-action'>
-      <a className='btn-floating btn-large red darken-4'>
-        <Icon color='#fff' icon='more_vert' size='30px' />
+      <a
+        className='btn-floating btn-large'
+        style={{ backgroundColor: '#2c3035' }}>
+        <Icon color='#fff' icon={dropDownIcon} size='30px' />
       </a>
 
       <ul>{props.children}</ul>

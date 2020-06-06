@@ -1,5 +1,5 @@
 import React from 'react';
-import PeopleListings from '../../components/people-listings/PeopleListings';
+import PeopleListings from '../../components/people/people-listings/PeopleListings';
 
 const People = () => {
   return <PeopleListings />;

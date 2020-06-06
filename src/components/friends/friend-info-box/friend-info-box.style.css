@@ -46,3 +46,32 @@ p.start-chatting:hover i {
 p.start-chatting:hover i {
     color: #134b90 !important;
 }
+
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (max-width: 600px) {
+    .friend-item {
+        background-color: white;
+        margin-top: 20px;
+        padding: 20px;
+        width: 100%;
+        border: 1px solid #e2e2e2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .friend-item__right {
+        width: 100%;
+        display: flex;
+        align-items: end;
+        margin-left: 0;
+        flex-direction: column;
+    }
+
+    .friend-item__left {
+        align-self: end;
+        display: flex;
+    }
+}

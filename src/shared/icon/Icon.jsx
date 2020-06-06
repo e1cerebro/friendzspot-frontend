@@ -1,14 +1,15 @@
 import React from 'react';
 import './icon.style.css';
-const Icon = ({ icon, color, className, size }) => {
-  const colorValue = color ? color : '#039be5';
+const Icon = ({ icon, color, className, style, size, iconClick }) => {
+  const colorValue = color ? color : 'primary';
   return (
     <i
-      className={` large material-icons friendzspot-icon  ${className}`}
+      onClick={iconClick}
+      className={` large material-icons friendzspot-icon  ${className} ${colorValue}`}
       style={{
-        color: colorValue,
         display: 'inline-block',
         fontSize: size ? size : '',
+        ...style,
       }}>
       {icon}
     </i>

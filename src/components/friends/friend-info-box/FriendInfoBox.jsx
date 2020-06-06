@@ -7,6 +7,7 @@ import Icon from '../../../shared/icon/Icon';
 import { Link, useHistory } from 'react-router-dom';
 import { userItemClicked } from '../../../redux/actions/chat.actions';
 import { GetTimeAgo } from '../../../utils/format-time';
+import { CHAT_API_URL } from '../../../utils/api-settings';
 
 const FriendInfoBox = ({ friend, userItemClicked, unfriendFriendAction }) => {
   let history = useHistory();
@@ -23,10 +24,29 @@ const FriendInfoBox = ({ friend, userItemClicked, unfriendFriendAction }) => {
     history.push('/messenger');
   };
 
+  const getImageURL = friend => {
+    if (friend.profilePhotoURL) {
+      return CHAT_API_URL + '/' + friend.profilePhotoURL;
+    } else {
+      return 'https://www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png';
+    }
+  };
+
   return (
-    <div className='friend-item friend-info-box'>
+    <div className='friend-item friend-info-box hoverable scale-transition scale-in'>
       <div className='friend-item__left'>
-        <img src={UserAvaterImage} className='user-avater' alt='' />
+        <div
+          className='circle'
+          style={{
+            height: '200px',
+            width: '200px',
+            border: '6px solid rgb(228, 225, 225)',
+            backgroundImage: `url(${getImageURL(friend)})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: ' no-repeat',
+          }}></div>
       </div>
 
       <div className='friend-item__right'>
@@ -36,7 +56,7 @@ const FriendInfoBox = ({ friend, userItemClicked, unfriendFriendAction }) => {
           </h4>
           <p style={{ fontSize: '20px' }} className='sub-text'>
             <i className='material-icons left'>date_range</i> Joined since{' '}
-            {GetTimeAgo(friend.created_at, 'short')}
+            {GetTimeAgo(friend.created_at)}
           </p>
           <p style={{ fontSize: '20px' }} className='sub-text'>
             <i className='material-icons left'>people</i>{' '}

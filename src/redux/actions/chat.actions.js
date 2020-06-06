@@ -58,12 +58,11 @@ export const updateUnreadMessagesAction = data => {
     }
   };
 };
-export const readUnreadMessagesAction = data => {
+export const readUnreadMessagesAction = () => {
   return async dispatch => {
     try {
       dispatch({
         type: chat_actions.READ_USER_UNREAD_MESSAGES,
-        payload: data,
       });
     } catch (e) {
       console.log(e);
@@ -88,6 +87,34 @@ export const removeUsersOnlineAction = userId => {
       dispatch({
         type: chat_actions.REMOVE_CURRENT_USER_ONLINE,
         payload: userId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const sendChatMessageAction = data => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post('/api/messages/send', data);
+
+      if (200 === response.status) {
+        dispatch({
+          type: chat_actions.SEND_PERSONAL_MESSAGE_SUCCESS,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const receivedNewMessageAction = data => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: chat_actions.SEND_PERSONAL_MESSAGE_SUCCESS,
+        payload: data,
       });
     } catch (e) {
       console.log(e);

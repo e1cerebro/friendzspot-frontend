@@ -1,14 +1,14 @@
 import React, { useContext, Fragment, useEffect } from 'react';
-import UserListings from '../../components/user-listings/UserListings';
 import SearchField from '../../shared/search-field/SearchField';
-import ChatHeader from '../../components/chat-header/ChatHeader';
-import ChatMessages from '../../components/chat-messages/ChatMessages';
-import SendMessageBox from '../../components/send-mesage-box/SendMessageBox';
 import BackgroundImage from '../../images/chat-bg.jpg';
 import StaticImage from '../../images/static-logo.png';
 import './chat-messages.style.css';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import ChatHeader from '../../components/chats/chat-header/ChatHeader';
+import ChatMessages from '../../components/chats/chat-messages/ChatMessages';
+import UserListings from '../../components/chats/user-listings/UserListings';
+import SendMessageBox from '../../components/chats/send-mesage-box/SendMessageBox';
 
 const ChatMessagesPage = ({ chattingWith, currentUser }) => {
   let history = useHistory();
@@ -22,12 +22,12 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
   {
     return currentUser ? (
       <div className='row chat-section'>
-        <div className='col s4' style={{ padding: 0 }}>
+        <div className='col s12 m4' style={{ padding: 0 }}>
           <SearchField />
           <UserListings />
         </div>
         <div
-          className='col s8 chat-panel'
+          className='col s12 m8 chat-panel'
           style={chattingWith ? defaultBgImage : staticBgImage}>
           {chattingWith && (
             <Fragment>

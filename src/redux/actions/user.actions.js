@@ -1,4 +1,4 @@
-import { user_actions } from '../types';
+import { user_actions, api_loader_action } from '../types';
 import apiConfig from '../../api-config/config';
 
 export const registerAction = user => {
@@ -195,6 +195,57 @@ export const undoUnfriendAction = friendRequestID => {
         dispatch({ type: user_actions.UNDO_UNFRIENDES_USER });
       }
     } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const confirmUnfriendingAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({ type: user_actions.CONFIRM_UNFRIENDING_ACTION });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const updateUserInfoAction = data => {
+  return async dispatch => {
+    try {
+      dispatch({ type: api_loader_action.USER_INFO_UPDATE_STARTED });
+
+      let response = await apiConfig.patch('/api/users/update/me', data);
+
+      if (200 === response.status) {
+        dispatch({
+          type: user_actions.UPDATE_USER_INFO,
+          payload: response.data,
+        });
+        dispatch({ type: api_loader_action.USER_INFO_UPDATE_ENDED });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const updateProfilePhotoAction = data => {
+  return async dispatch => {
+    try {
+      dispatch({ type: api_loader_action.USER_PROFILE_PHOTO_UPDATE_STARTED });
+
+      let response = await apiConfig.post(
+        '/api/users/update/profile-photo',
+        data
+      );
+
+      if (200 === response.status) {
+        console.log(response.data);
+        dispatch({
+          type: api_loader_action.USER_PROFILE_PHOTO_UPDATE_ENDED,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      dispatch({ type: api_loader_action.USER_PROFILE_PHOTO_UPDATE_ERROR });
       console.log(e);
     }
   };

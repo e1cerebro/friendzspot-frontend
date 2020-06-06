@@ -1,0 +1,19 @@
+section.chat-messages {
+    overflow-y: scroll;
+    max-height: 651px;
+    height: 651px;
+}
+
+span.message-date__text {
+    background-color: #49bcff;
+    padding: 6px 20px;
+    margin-top: 14px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 12px;
+    box-shadow: 1px 1px 0px 0px #757575;
+}
+
+.message-date {
+    text-align: center;
+}

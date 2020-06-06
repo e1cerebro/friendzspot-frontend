@@ -1,4 +1,4 @@
-import { user_actions } from '../types';
+import { user_actions, api_loader_action } from '../types';
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -42,6 +42,25 @@ export default (state = INITIAL_STATE, action) => {
         friends: state.previousFriendsList,
         previousFriendsList: null,
         lastRemovedFriend: null,
+      };
+    case user_actions.CONFIRM_UNFRIENDING_ACTION:
+      return {
+        ...state,
+        friends: state.previousFriendsList.filter(friend => {
+          return friend.id !== state.lastRemovedFriend.id;
+        }),
+        previousFriendsList: null,
+        lastRemovedFriend: null,
+      };
+    case user_actions.UPDATE_USER_INFO:
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
+    case api_loader_action.USER_PROFILE_PHOTO_UPDATE_ENDED:
+      return {
+        ...state,
+        currentUser: action.payload,
       };
     default:
       return state;

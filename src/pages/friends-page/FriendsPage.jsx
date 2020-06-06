@@ -6,6 +6,7 @@ import FriendInfoBox from '../../components/friends/friend-info-box/FriendInfoBo
 import {
   getMyFriendsAction,
   undoUnfriendAction,
+  confirmUnfriendingAction,
 } from '../../redux/actions/user.actions';
 import Notify from '../../shared/notify/Notify';
 
@@ -16,6 +17,7 @@ const FriendsPage = ({
   previousFriendsList,
   lastRemovedFriend,
   undoUnfriendAction,
+  confirmUnfriendingAction,
 }) => {
   useEffect(() => {
     getMyFriendsAction();
@@ -23,6 +25,9 @@ const FriendsPage = ({
 
   const undoFriendUnfriending = () => {
     undoUnfriendAction(lastRemovedFriend.id);
+  };
+  const confirmUnfriending = () => {
+    confirmUnfriendingAction();
   };
 
   return (
@@ -36,10 +41,13 @@ const FriendsPage = ({
       {previousFriendsList && (
         <Notify
           type='primary'
-          icon='refresh'
-          action_title='Undo Now'
+          accept_icon='check'
+          reject_icon='close'
+          accept_title='Yes please!'
+          reject_title='No, thanks'
           message='Do you want to undo this action?'
-          clickBubbleAction={undoFriendUnfriending}
+          acceptAction={undoFriendUnfriending}
+          rejectAction={confirmUnfriending}
         />
       )}
       <div className='my-friend-list'>
@@ -64,4 +72,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   getMyFriendsAction,
   undoUnfriendAction,
+  confirmUnfriendingAction,
 })(FriendsPage);

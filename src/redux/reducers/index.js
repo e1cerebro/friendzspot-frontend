@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux';
 import appReducer from './app';
 import chatReducer from './chat';
+import apiRequestReducer from './api-requests';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['chat', 'app'],
+  whitelist: ['chat'],
 };
 
 export const combinedReducers = persistReducer(
@@ -15,5 +16,6 @@ export const combinedReducers = persistReducer(
   combineReducers({
     app: appReducer,
     chat: chatReducer,
+    api: apiRequestReducer,
   })
 );

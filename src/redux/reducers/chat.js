@@ -2,7 +2,7 @@ import { chat_actions } from '../types';
 
 const INITIAL_STATE = {
   chattingWith: null,
-  messages: null,
+  messages: [],
   unreadMessages: [],
   usersOnline: [],
 };
@@ -18,12 +18,7 @@ export default (state = INITIAL_STATE, action) => {
     case chat_actions.READ_USER_UNREAD_MESSAGES:
       return {
         ...state,
-        unreadMessages: state.unreadMessages.filter(message => {
-          return (
-            message.sender !== action.payload.sender &&
-            message.receiver !== action.payload.receiver
-          );
-        }),
+        unreadMessages: [],
       };
     case chat_actions.UPDATE_UNREAD_MESSAGES:
       return {
@@ -50,6 +45,11 @@ export default (state = INITIAL_STATE, action) => {
       } else {
         return state;
       }
+    case chat_actions.SEND_PERSONAL_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
+      };
 
     default:
       return state;

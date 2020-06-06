@@ -17,10 +17,12 @@ import {
   updateUnreadMessagesAction,
   updateUsersOnlineAction,
   removeUsersOnlineAction,
+  receivedNewMessageAction,
 } from './redux/actions/chat.actions';
-import FriendRequest from './components/friend-requests/FriendRequest';
 import FriendsPage from './pages/friends-page/FriendsPage';
 import messageURL from './sounds/message_received2.mp3';
+import UserProfilePage from './pages/user-profile/UserProfilePage';
+import FriendRequest from './components/friends/friend-requests/FriendRequest';
 
 const App = ({
   currentUser,
@@ -32,6 +34,7 @@ const App = ({
   fetchLastMessagesAction,
   updateUsersOnlineAction,
   removeUsersOnlineAction,
+  receivedNewMessageAction,
 }) => {
   const { socket, socketID } = useContext(SocketContext);
   const sourceRef = useRef(null);
@@ -44,6 +47,7 @@ const App = ({
         console.log('From APP Data: ', data);
         fetchLastMessagesAction();
         updateUnreadMessagesAction(data);
+        receivedNewMessageAction(data);
         audioRef.current.play();
       });
 
@@ -88,6 +92,7 @@ const App = ({
         <Route exact path='/login' component={AuthPage} />
         <Route exact path='/messenger' component={ChatMessagesPage} />
         <Route exact path='/people' component={People} />
+        <Route exact path='/my-profile' component={UserProfilePage} />
         <Route exact path='/friend-requests' component={FriendRequest} />
         <Route exact path='/friends' component={FriendsPage} />
       </Switch>
@@ -110,4 +115,5 @@ export default connect(mapStateToProps, {
   fetchLastMessagesAction,
   updateUsersOnlineAction,
   removeUsersOnlineAction,
+  receivedNewMessageAction,
 })(App);
