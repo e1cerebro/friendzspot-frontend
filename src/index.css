@@ -1,26 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Montserrat:wght@700;800;900&family=Tenali+Ramakrishna&display=swap');
 
-.header {
-  font-family: 'Montserrat', sans-serif;
-  margin: 26px 0 11px 0;
-  font-size: 35px;
-  width: 100%;
-}
-
-.header span {
-  width: 30%;
-  display: inline-block;
-}
-
-.header::after {
-  content: "";
-  display: inline-block;
-  height: 4px;
-  width: 63%;
-  background-color: #b30c0c;
-  margin-left: 21px;
-  vertical-align: middle;
-}
 
 
 .friend-item .name {

@@ -1,16 +1,22 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 import Image from '../../../shared/image/Image';
-
 import { connect } from 'react-redux';
 import { GetTimeAgo } from '../../../utils/format-time';
-
 import './chat-header.style.css';
 import FloatingButton from '../../../shared/floating-button/FloatingButton';
 import FloatingButtonItem from '../../../shared/floating-button-item/FloatingButtonItem';
 import { CHAT_API_URL } from '../../../utils/api-settings';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
+import Modal from '../../../shared/modal/Modal';
+import M from 'materialize-css';
 
 const ChatHeader = ({ chattingWith, usersOnline }) => {
+  let modal;
+  useEffect(() => {
+    var elems = document.getElementById('modal');
+    modal = M.Modal.init(elems);
+  }, []);
+
   if (!chattingWith) {
     return <RequestLoading type='bar' show={true} />;
   }
@@ -25,6 +31,7 @@ const ChatHeader = ({ chattingWith, usersOnline }) => {
 
   const viewProfile = () => {
     console.log('View Profile clicked');
+    modal.open();
   };
 
   const blockUser = () => {
@@ -42,6 +49,7 @@ const ChatHeader = ({ chattingWith, usersOnline }) => {
   return (
     <div className='chat-panel__header' style={{ position: 'relative' }}>
       <div className='chat-panel__header_left'>
+        <Modal></Modal>
         <div className='user-avater'>
           <Image
             src={getImageURL(chattingWith)}

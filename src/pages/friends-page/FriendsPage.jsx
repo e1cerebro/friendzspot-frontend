@@ -9,6 +9,7 @@ import {
   confirmUnfriendingAction,
 } from '../../redux/actions/user.actions';
 import Notify from '../../shared/notify/Notify';
+import M from 'materialize-css';
 
 const FriendsPage = ({
   currentUser,
@@ -21,6 +22,10 @@ const FriendsPage = ({
 }) => {
   useEffect(() => {
     getMyFriendsAction();
+    const el = document.getElementById('tabs');
+    var instance = M.Tabs.init(el, {
+      swipeable: false,
+    });
   }, []);
 
   const undoFriendUnfriending = () => {
@@ -32,12 +37,6 @@ const FriendsPage = ({
 
   return (
     <Fragment>
-      {currentUser && (
-        <h1 className='header'>
-          <Icon color='#134b90' className='left' icon={` people`} size='40px' />
-          <span>{currentUser.firstname}'s Friends</span>
-        </h1>
-      )}
       {previousFriendsList && (
         <Notify
           type='primary'
@@ -50,11 +49,36 @@ const FriendsPage = ({
           rejectAction={confirmUnfriending}
         />
       )}
-      <div className='my-friend-list'>
-        {myfriends &&
-          myfriends.map(friend => {
-            return <FriendInfoBox key={friend.id} friend={friend} />;
-          })}
+      <ul class='tabs tabs-fixed-width' id='tabs'>
+        <li class='tab col s3'>
+          <a href='#friends'>Friends</a>
+        </li>
+        <li class='tab col s3'>
+          <a href='#blockedfriends'>Blocked Friends</a>
+        </li>
+        <li class='tab col s3'>
+          <a href='#pendingFriendRequest'>Pending Friends Request</a>
+        </li>{' '}
+        <li class='tab col s3'>
+          <a href='#sentFriendRequest'>Sent Friends Request</a>
+        </li>
+      </ul>
+      <div id='friends' class='col s12'>
+        <div className='my-friend-list'>
+          {myfriends &&
+            myfriends.map(friend => {
+              return <FriendInfoBox key={friend.id} friend={friend} />;
+            })}
+        </div>
+      </div>
+      <div id='blockedfriends' class='col s12'>
+        Blocked friends
+      </div>
+      <div id='pendingFriendRequest' class='col s12'>
+        Pending friends Requests
+      </div>{' '}
+      <div id='sentFriendRequest' class='col s12'>
+        Sent friends Requests
       </div>
     </Fragment>
   );
