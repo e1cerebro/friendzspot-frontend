@@ -40,7 +40,7 @@ const ChatHeader = ({ chattingWith, usersOnline }) => {
   };
 
   return (
-    <div className='chat-panel__header'>
+    <div className='chat-panel__header' style={{ position: 'relative' }}>
       <div className='chat-panel__header_left'>
         <div className='user-avater'>
           <Image

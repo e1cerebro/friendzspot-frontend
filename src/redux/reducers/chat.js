@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   messages: [],
   unreadMessages: [],
   usersOnline: [],
+  last_messages: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,15 +16,21 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, messages: action.payload };
     case chat_actions.FETCHED_MESSAGES_STARTED:
       return { ...state, messages: null };
+    case chat_actions.GET_LAST_MESSAGES:
+      return { ...state, last_messages: action.payload };
     case chat_actions.READ_USER_UNREAD_MESSAGES:
+      const updatedMessages = state.unreadMessages.filter(message => {
+        return message.sender.id !== action.payload.id;
+      });
       return {
         ...state,
-        unreadMessages: [],
+        unreadMessages: updatedMessages,
       };
     case chat_actions.UPDATE_UNREAD_MESSAGES:
+      state.unreadMessages.push(action.payload);
       return {
         ...state,
-        unreadMessages: [...state.unreadMessages, action.payload],
+        // unreadMessages: [...state.unreadMessages, action.payload],
       };
     case chat_actions.CURRENT_USERS_ONLINE:
       const userExists = state.usersOnline.includes(action.payload);

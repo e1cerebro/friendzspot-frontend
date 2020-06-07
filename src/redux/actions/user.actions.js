@@ -20,22 +20,6 @@ export const fetchPeopleAction = () => {
     }
   };
 };
-export const fetchLastMessagesAction = () => {
-  return async dispatch => {
-    try {
-      let response = await apiConfig.post(`/api/messages/lastmessages`);
-
-      if (response.status === 200) {
-        dispatch({
-          type: user_actions.GET_LAST_MESSAGES,
-          payload: response.data,
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-};
 
 export const sendRequestAction = data => {
   return async dispatch => {

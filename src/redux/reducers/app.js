@@ -7,7 +7,6 @@ const INITIAL_STATE = {
   friends: null,
   previousFriendsList: null,
   lastRemovedFriend: null,
-  last_messages: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -20,8 +19,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, friend_requests: action.payload };
     case user_actions.FETCHED_FRIENDS:
       return { ...state, friends: action.payload };
-    case user_actions.GET_LAST_MESSAGES:
-      return { ...state, last_messages: action.payload };
     case user_actions.UNFRIEND_USER:
       return {
         ...state,

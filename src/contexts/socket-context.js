@@ -14,7 +14,6 @@ export const SocketProvider = props => {
     socket.on('connect', function () {
       setSocketID(socket.id);
       setSocketInstance(socket);
-      console.log(` APP CONNECTED TO SOCKET (${socket.id})`);
     });
   }, []);
 

@@ -2,6 +2,7 @@ section.chat-messages {
     overflow-y: scroll;
     max-height: 651px;
     height: 651px;
+    background-color: #0000007a;
 }
 
 span.message-date__text {

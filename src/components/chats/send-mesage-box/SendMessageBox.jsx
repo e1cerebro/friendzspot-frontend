@@ -1,13 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './send-message-box.style.css';
 import { connect } from 'react-redux';
-import { sendChatMessageAction } from '../../../redux/actions/chat.actions';
+import {
+  sendChatMessageAction,
+  fetchLastMessagesAction,
+} from '../../../redux/actions/chat.actions';
 import { autoExpand } from '../../../utils/inputs';
 import Icon from '../../../shared/icon/Icon';
 
 const SendMessageBox = ({
   chattingWith,
   sendChatMessageAction,
+  fetchLastMessagesAction,
   currentUser,
 }) => {
   const [input, setInput] = useState({
@@ -35,7 +39,7 @@ const SendMessageBox = ({
         senderID: currentUser.id,
         attachments: input.attachments,
       });
-      console.log('Message sent');
+      //fetchLastMessagesAction();
     } else {
       alert('enter a message');
     }
@@ -106,6 +110,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { sendChatMessageAction })(
-  SendMessageBox
-);
+export default connect(mapStateToProps, {
+  fetchLastMessagesAction,
+  sendChatMessageAction,
+})(SendMessageBox);

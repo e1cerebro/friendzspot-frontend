@@ -1,13 +1,30 @@
 .owner .chat-msg-text {
-    background-color: #00713d;
+    background-color: #1554a0;
     color: #fff;
     width: 376px;
     border-radius: 20px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-msg-text {
+    background-color: #212121;
+    color: #fff;
+    width: 376px;
+    padding: 15px 20px 18px 20px;
+    border-radius: 20px 20px 20px 0;
+    line-height: 1.5;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: inset 0px 0px 3px 1px #fff5d7;
+    display: flex;
+    flex-direction: column;
 }
 
 .message-header {
-    padding-bottom: 12px;
-    margin-bottom: 23px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .message-header i {
@@ -49,17 +66,7 @@ small.message-time {
     opacity: 0.5;
 }
 
-.chat-msg-text {
-    background-color: #212121;
-    color: #fff;
-    width: 376px;
-    padding: 15px 20px 30px 20px;
-    border-radius: 20px 20px 20px 0;
-    line-height: 1.5;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: inset 0px 0px 3px 1px #fff5d7;
-}
+
 
 .chat-msg-text span.message-content {
     font-size: 23px;

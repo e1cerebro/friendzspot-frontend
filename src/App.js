@@ -5,16 +5,16 @@ import Navigation from './components/navigation/Navigation';
 import ChatMessagesPage from './pages/chat-messages/ChatMessagesPage';
 import AuthPage from './pages/user-auth/AuthPage';
 import { connect } from 'react-redux';
-import { fetchLastMessagesAction } from './redux/actions/user.actions';
 import People from './pages/people/People';
 import SocketContext from './contexts/socket-context';
 import {
   initialConnectionEstablishedAction,
-  fetchMessagesAction,
   updateUnreadMessagesAction,
   updateUsersOnlineAction,
   removeUsersOnlineAction,
   receivedNewMessageAction,
+  fetchMessagesAction,
+  fetchLastMessagesAction,
 } from './redux/actions/chat.actions';
 import FriendsPage from './pages/friends-page/FriendsPage';
 import messageURL from './sounds/message_received2.mp3';
@@ -22,7 +22,6 @@ import UserProfilePage from './pages/user-profile/UserProfilePage';
 import FriendRequest from './components/friends/friend-requests/FriendRequest';
 import { loginTokenAction } from './redux/actions/auth.actions';
 import { useHistory } from 'react-router-dom';
-
 const App = ({
   currentUser,
   chattingWith,
@@ -45,7 +44,6 @@ const App = ({
     if (socket) {
       initialConnectionEstablishedAction(socketID);
       socket.on('new message', data => {
-        console.log('From APP Data: ', data);
         fetchLastMessagesAction();
         updateUnreadMessagesAction(data);
         receivedNewMessageAction(data);
@@ -53,12 +51,10 @@ const App = ({
       });
 
       socket.on('user connected', userId => {
-        console.log('user connected', userId);
         updateUsersOnlineAction(userId);
       });
 
       socket.on('user disconnected', userId => {
-        console.log('user disconnected', userId);
         removeUsersOnlineAction(userId);
       });
     }

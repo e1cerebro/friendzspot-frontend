@@ -26,7 +26,7 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
           <SearchField />
           <UserListings />
         </div>
-        <div
+        {/* <div
           className='col s12 m8 chat-panel'
           style={chattingWith ? defaultBgImage : staticBgImage}>
           {chattingWith && (
@@ -36,6 +36,17 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
                 <ChatHeader />
                 <ChatMessages />
               </div>
+              <SendMessageBox />
+            </Fragment>
+          )}
+        </div> */}
+        <div
+          className='col s12 m8'
+          style={chattingWith ? defaultBgImage : staticBgImage}>
+          {chattingWith && (
+            <Fragment>
+              <ChatHeader />
+              <ChatMessages />
               <SendMessageBox />
             </Fragment>
           )}

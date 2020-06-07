@@ -35,6 +35,9 @@
      margin-right: 14px;
      resize: none;
      flex-basis: 80%;
+     font-size: 18px;
+     font-family: 'Montserrat', sans-serif;
+     height: 43px;
  }
 
  .send-btn {

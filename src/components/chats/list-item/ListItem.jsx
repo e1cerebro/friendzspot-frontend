@@ -28,7 +28,7 @@ const ListItem = ({
     const data = { ...user, currentUser: currentUser.id };
     fetchMessagesAction(data.id, data.currentUser);
     userItemClicked(data);
-    readUnreadMessagesAction();
+    readUnreadMessagesAction(data);
   };
 
   //get the right user profile photo
@@ -82,11 +82,14 @@ const ListItem = ({
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
+  const unreadMessageLists = state.chat.unreadMessages.filter(messageObj => {
+    return ownProps.message.sender.id === messageObj.sender.id;
+  });
   return {
     currentUser: state.auth.currentUser,
     usersOnline: state.chat.usersOnline,
-    unreadMessages: state.chat.unreadMessages,
+    unreadMessages: unreadMessageLists,
   };
 };
 
