@@ -56,14 +56,6 @@ const Navigation = ({
               <Icon color='#fff' className='left' icon='public' /> People
             </NavLink>
           </li>{' '}
-          <li>
-            <NavLink to='/friend-requests'>
-              <Icon color='#fff' className='left' icon='person_add' /> Requests{' '}
-              <span className='small badge circle-badge amber  '>
-                {friends && friends.length}
-              </span>
-            </NavLink>
-          </li>
           {currentUser && (
             <li className='user-account'>
               <Link to='/my-profile'>

@@ -1,12 +1,20 @@
 .friend-item {
     background-color: white;
     margin-top: 20px;
-    padding: 20px;
+    padding: 17px 5px;
     width: 49%;
     border: 1px solid #e2e2e2;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.friend-item__right__action-buttons {
+    flex-basis: 40%;
+}
+
+.friend-item__right__user-info {
+    flex-basis: 55%;
 }
 
 img.user-avater {

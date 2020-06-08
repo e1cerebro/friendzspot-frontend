@@ -116,7 +116,6 @@ export const sendChatMessageAction = data => {
   return async dispatch => {
     try {
       let response = await apiConfig.post('/api/messages/send', data);
-      console.log(response);
       if (200 === response.status) {
         dispatch({
           type: chat_actions.SEND_PERSONAL_MESSAGE_SUCCESS,
@@ -124,7 +123,7 @@ export const sendChatMessageAction = data => {
         });
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 };
@@ -134,6 +133,29 @@ export const receivedNewMessageAction = data => {
       dispatch({
         type: chat_actions.SEND_PERSONAL_MESSAGE_SUCCESS,
         payload: data,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const notifyTypingStartedAction = friendId => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post('/api/messages/typing-started', {
+        uuid: friendId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const notifyTypingStoppedAction = friendId => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post('/api/messages/typing-stopped', {
+        uuid: friendId,
       });
     } catch (e) {
       console.log(e);

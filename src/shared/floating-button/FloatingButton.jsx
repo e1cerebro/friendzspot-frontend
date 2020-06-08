@@ -7,7 +7,7 @@ const FloatingButton = ({ icon, ...props }) => {
 
   useEffect(() => {
     const elems = buttonRef.current;
-    const instances = M.FloatingActionButton.init(elems, {
+    M.FloatingActionButton.init(elems, {
       direction: 'left',
       hoverEnabled: false,
     });
@@ -17,11 +17,11 @@ const FloatingButton = ({ icon, ...props }) => {
 
   return (
     <div ref={buttonRef} className='fixed-action-btn chat-header-action'>
-      <a
+      <button
         className='btn-floating btn-large'
         style={{ backgroundColor: '#2c3035' }}>
         <Icon color='#fff' icon={dropDownIcon} size='30px' />
-      </a>
+      </button>
 
       <ul>{props.children}</ul>
     </div>

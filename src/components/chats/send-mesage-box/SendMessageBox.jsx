@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import {
   sendChatMessageAction,
   fetchLastMessagesAction,
+  notifyTypingStartedAction,
+  notifyTypingStoppedAction,
 } from '../../../redux/actions/chat.actions';
 import { autoExpand } from '../../../utils/inputs';
 import Icon from '../../../shared/icon/Icon';
@@ -12,6 +14,8 @@ const SendMessageBox = ({
   chattingWith,
   sendChatMessageAction,
   fetchLastMessagesAction,
+  notifyTypingStartedAction,
+  notifyTypingStoppedAction,
   currentUser,
 }) => {
   const [input, setInput] = useState({
@@ -39,7 +43,6 @@ const SendMessageBox = ({
         senderID: currentUser.id,
         attachments: input.attachments,
       });
-      //fetchLastMessagesAction();
     } else {
       alert('enter a message');
     }
@@ -59,46 +62,53 @@ const SendMessageBox = ({
     sendMessage();
   };
 
+  const notifyTypingStarted = () => {
+    notifyTypingStartedAction(chattingWith.id);
+  };
+  const notifyTypingStopped = () => {
+    notifyTypingStoppedAction(chattingWith.id);
+  };
+
   return (
     <div className='submit-text-box'>
-      <form action='post' ref={messageFormRef} onSubmit={handleMessageSubmit}>
-        <div
-          className=' message-box'
-          style={{ margin: '0', backgroundColor: ' #fff', zIndex: '1000' }}>
-          <div className='attach-file'>
-            <i
-              onClick={() => inputFileRef.current.click()}
-              className='material-icons prefix  attach-files'>
-              attach_file
-            </i>
-          </div>
-          <div className='input-field'>
-            <input
-              style={{ display: 'none' }}
-              type='file'
-              ref={inputFileRef}
-              className='form-control-file'
-              name='attachments'
-              id='attachments'
-              onChange={handleInputChange}
-            />
-
-            <textarea
-              ref={messageBoxRef}
-              onKeyUp={handleSubmitOnEnter}
-              onChange={handleInputChange}
-              id='message'
-              defaultValue={input.message}
-              className='message-textbox scroll'></textarea>
-          </div>
-
-          <div className='send-btn'>
-            <span className='submit-btn ' onClick={handleMessageSubmit}>
-              <Icon icon='send' color='danger' size='40px' />
-            </span>
-          </div>
+      <div
+        className=' message-box'
+        style={{ margin: '0', backgroundColor: ' #fff', zIndex: '1000' }}>
+        <div className='attach-file'>
+          <i
+            onClick={() => inputFileRef.current.click()}
+            className='material-icons prefix  attach-files'>
+            attach_file
+          </i>
         </div>
-      </form>
+        <div className='input-field'>
+          <input
+            style={{ display: 'none' }}
+            type='file'
+            ref={inputFileRef}
+            className='form-control-file'
+            name='attachments'
+            id='attachments'
+            onChange={handleInputChange}
+          />
+
+          <textarea
+            onFocus={notifyTypingStarted}
+            onBlur={notifyTypingStopped}
+            ref={messageBoxRef}
+            onKeyUp={handleSubmitOnEnter}
+            onChange={handleInputChange}
+            id='message'
+            defaultValue={input.message}
+            className='message-textbox scroll'></textarea>
+        </div>
+
+        <div className='send-btn'>
+          <span className='submit-btn ' onClick={handleMessageSubmit}>
+            <Icon icon='send' color='danger' size='40px' />
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
@@ -113,4 +123,6 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, {
   fetchLastMessagesAction,
   sendChatMessageAction,
+  notifyTypingStartedAction,
+  notifyTypingStoppedAction,
 })(SendMessageBox);

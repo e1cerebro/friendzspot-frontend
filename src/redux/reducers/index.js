@@ -3,6 +3,7 @@ import appReducer from './app';
 import chatReducer from './chat';
 import apiRequestReducer from './api-requests';
 import authReducer from './auth';
+import reactionReducer from './reaction';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -19,5 +20,6 @@ export const combinedReducers = persistReducer(
     chat: chatReducer,
     api: apiRequestReducer,
     auth: authReducer,
+    reaction: reactionReducer,
   })
 );

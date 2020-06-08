@@ -10,7 +10,7 @@ import RequestLoading from '../../../shared/request-loading/RequestLoading';
 import Modal from '../../../shared/modal/Modal';
 import M from 'materialize-css';
 
-const ChatHeader = ({ chattingWith, usersOnline }) => {
+const ChatHeader = ({ chattingWith, reaction, usersOnline }) => {
   let modal;
   useEffect(() => {
     var elems = document.getElementById('modal');
@@ -82,6 +82,12 @@ const ChatHeader = ({ chattingWith, usersOnline }) => {
               chattingWith.lastseen &&
               `Last seen ${GetTimeAgo(chattingWith.lastseen)}`}
           </span>
+
+          {reaction && reaction.includes(chattingWith.id) && (
+            <span className='user-typing'>
+              {chattingWith.firstname} is typing...
+            </span>
+          )}
         </div>
       </div>
       <div className='chat-panel__header_right'>
@@ -128,6 +134,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     chattingWith: state.chat.chattingWith,
     usersOnline: state.chat.usersOnline,
+    reaction: state.reaction.userTyping,
   };
 };
 export default connect(mapStateToProps, null)(ChatHeader);

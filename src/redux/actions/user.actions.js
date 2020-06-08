@@ -80,8 +80,31 @@ export const acceptFriendRequestAction = friendRequestID => {
       });
 
       if (response.status === 200) {
-        getMyFriendsAction();
+        dispatch({
+          type: user_actions.ACCEPT_FRIEND_REQUEST,
+          payload: response.data,
+        });
       }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const declineFriendRequestAction = friendRequestID => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.delete(
+        `/api/notifications/delete/${friendRequestID}`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.DECLINE_FRIEND_REQUEST,
+          payload: response.data,
+        });
+      }
+
+      console.log(friendRequestID);
     } catch (e) {
       console.log(e);
     }
@@ -115,6 +138,117 @@ export const undoUnfriendAction = friendRequestID => {
     }
   };
 };
+export const getBlockedFriendsAction = () => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get('/api/users/block-friends');
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.FETCHED_BLOCKED_FRIENDS,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const unblockFriendAction = friendId => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post(
+        `/api/users/unblock-friend/${friendId}`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.UNBLOCKED_FRIEND,
+          payload: response.data,
+        });
+      }
+
+      console.log(friendId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const blockFriendAction = friendId => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post(
+        `/api/users/block-friend/${friendId}`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.BLOCKED_FRIEND,
+          payload: response.data,
+        });
+      }
+
+      console.log(friendId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const getPendingFriendRequestsAction = () => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get(
+        `/api/notifications/sent-friend-requests`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.FETCHED_SENT_FRIEND_REQUESTS,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const receivedFriendRequestAction = () => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.get(
+        `/api/notifications/received-pending-friend-requests`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.FETCHED_UNACCEPTED_FRIEND_REQUESTS,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+export const removePendingFriendRequestAction = requestId => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.delete(
+        `/api/notifications/remove-my-friend-request/${requestId}`
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: user_actions.REMOVE_SENT_FRIEND_REQUEST,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
 export const confirmUnfriendingAction = () => {
   return async dispatch => {
     try {
@@ -154,7 +288,6 @@ export const updateProfilePhotoAction = data => {
       );
 
       if (200 === response.status) {
-        console.log(response.data);
         dispatch({
           type: api_loader_action.USER_PROFILE_PHOTO_UPDATE_ENDED,
           payload: response.data,

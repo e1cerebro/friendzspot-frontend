@@ -7,23 +7,34 @@ import {
   getMyFriendsAction,
   undoUnfriendAction,
   confirmUnfriendingAction,
+  getBlockedFriendsAction,
+  getPendingFriendRequestsAction,
+  receivedFriendRequestAction,
 } from '../../redux/actions/user.actions';
 import Notify from '../../shared/notify/Notify';
 import M from 'materialize-css';
+import RequestLoading from '../../shared/request-loading/RequestLoading';
+import NotFound from '../../shared/404-page/NotFound';
 
 const FriendsPage = ({
   currentUser,
   myfriends,
+  blockedFriends,
+  sentFriendRequests,
+  unacceptedFriendRequests,
   getMyFriendsAction,
   previousFriendsList,
   lastRemovedFriend,
   undoUnfriendAction,
   confirmUnfriendingAction,
+  getBlockedFriendsAction,
+  getPendingFriendRequestsAction,
+  receivedFriendRequestAction,
 }) => {
   useEffect(() => {
     getMyFriendsAction();
     const el = document.getElementById('tabs');
-    var instance = M.Tabs.init(el, {
+    M.Tabs.init(el, {
       swipeable: false,
     });
   }, []);
@@ -33,6 +44,18 @@ const FriendsPage = ({
   };
   const confirmUnfriending = () => {
     confirmUnfriendingAction();
+  };
+
+  const getBlockedFriends = () => {
+    getBlockedFriendsAction();
+  };
+
+  const getSentPendingFriendRequests = () => {
+    getPendingFriendRequestsAction();
+  };
+
+  const receivedFriendRequest = () => {
+    receivedFriendRequestAction();
   };
 
   return (
@@ -49,36 +72,89 @@ const FriendsPage = ({
           rejectAction={confirmUnfriending}
         />
       )}
-      <ul class='tabs tabs-fixed-width' id='tabs'>
-        <li class='tab col s3'>
+      <ul className='tabs tabs-fixed-width' id='tabs'>
+        <li onClick={getMyFriendsAction} className='tab col s3'>
           <a href='#friends'>Friends</a>
         </li>
-        <li class='tab col s3'>
+        <li onClick={getBlockedFriends} className='tab col s3'>
           <a href='#blockedfriends'>Blocked Friends</a>
         </li>
-        <li class='tab col s3'>
-          <a href='#pendingFriendRequest'>Pending Friends Request</a>
+        <li onClick={receivedFriendRequest} className='tab col s3'>
+          <a href='#pendingFriendRequest'>Received Request</a>
         </li>{' '}
-        <li class='tab col s3'>
+        <li onClick={getSentPendingFriendRequests} className='tab col s3'>
           <a href='#sentFriendRequest'>Sent Friends Request</a>
         </li>
       </ul>
-      <div id='friends' class='col s12'>
+      <div id='friends' className='col s12'>
         <div className='my-friend-list'>
-          {myfriends &&
+          {myfriends ? (
             myfriends.map(friend => {
-              return <FriendInfoBox key={friend.id} friend={friend} />;
-            })}
+              return (
+                <FriendInfoBox
+                  type='unblocked-friends'
+                  key={friend.id}
+                  friend={friend}
+                />
+              );
+            })
+          ) : (
+            <RequestLoading type='bar' show='true' />
+          )}
         </div>
       </div>
-      <div id='blockedfriends' class='col s12'>
-        Blocked friends
+      <div id='blockedfriends' className='col s12'>
+        <div className='my-friend-list'>
+          {blockedFriends ? (
+            blockedFriends.map(friend => {
+              return (
+                <FriendInfoBox
+                  type='blocked-friends'
+                  key={friend.id}
+                  friend={friend}
+                />
+              );
+            })
+          ) : (
+            <RequestLoading type='bar' show='true' />
+          )}
+        </div>
       </div>
-      <div id='pendingFriendRequest' class='col s12'>
-        Pending friends Requests
+      <div id='pendingFriendRequest' className='col s12'>
+        <div className='my-friend-list'>
+          {unacceptedFriendRequests ? (
+            unacceptedFriendRequests.map(request => {
+              return (
+                <FriendInfoBox
+                  type='unaccepted-friend-requests'
+                  key={request.sender.id}
+                  friend={request.sender}
+                  id={request._id}
+                />
+              );
+            })
+          ) : (
+            <RequestLoading type='bar' show='true' />
+          )}
+        </div>
       </div>{' '}
-      <div id='sentFriendRequest' class='col s12'>
-        Sent friends Requests
+      <div id='sentFriendRequest' className='col s12'>
+        <div className='my-friend-list'>
+          {sentFriendRequests ? (
+            sentFriendRequests.map(request => {
+              return (
+                <FriendInfoBox
+                  type='sent-friend-requests'
+                  key={request.receiver.id}
+                  friend={request.receiver}
+                  id={request._id}
+                />
+              );
+            })
+          ) : (
+            <RequestLoading type='bar' show='true' />
+          )}
+        </div>
       </div>
     </Fragment>
   );
@@ -87,6 +163,9 @@ const FriendsPage = ({
 const mapStateToProps = (state, ownProps) => {
   return {
     myfriends: state.app.friends,
+    blockedFriends: state.app.blockedFriends,
+    sentFriendRequests: state.app.sentFriendRequests,
+    unacceptedFriendRequests: state.app.unacceptedFriendRequests,
     previousFriendsList: state.app.previousFriendsList,
     lastRemovedFriend: state.app.lastRemovedFriend,
     currentUser: state.auth.currentUser,
@@ -97,4 +176,7 @@ export default connect(mapStateToProps, {
   getMyFriendsAction,
   undoUnfriendAction,
   confirmUnfriendingAction,
+  getBlockedFriendsAction,
+  getPendingFriendRequestsAction,
+  receivedFriendRequestAction,
 })(FriendsPage);

@@ -2,7 +2,7 @@ import { chat_actions } from '../types';
 
 const INITIAL_STATE = {
   chattingWith: null,
-  messages: [],
+  sentMessages: [],
   unreadMessages: [],
   usersOnline: [],
   last_messages: [],
@@ -53,9 +53,14 @@ export default (state = INITIAL_STATE, action) => {
         return state;
       }
     case chat_actions.SEND_PERSONAL_MESSAGE_SUCCESS:
+      const newUserMessaged = [action.payload];
       return {
         ...state,
-        messages: [...state.messages, action.payload],
+        sentMessages: state.sentMessages !== null && [
+          ...state.sentMessages,
+          action.payload,
+        ],
+        last_messages: [...newUserMessaged, ...state.last_messages],
       };
 
     default:

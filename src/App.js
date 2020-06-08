@@ -19,9 +19,13 @@ import {
 import FriendsPage from './pages/friends-page/FriendsPage';
 import messageURL from './sounds/message_received2.mp3';
 import UserProfilePage from './pages/user-profile/UserProfilePage';
-import FriendRequest from './components/friends/friend-requests/FriendRequest';
 import { loginTokenAction } from './redux/actions/auth.actions';
 import { useHistory } from 'react-router-dom';
+import {
+  updateTypingStartedAction,
+  updateTypingStoppedAction,
+} from './redux/actions/reaction.actions';
+
 const App = ({
   currentUser,
   chattingWith,
@@ -33,6 +37,8 @@ const App = ({
   updateUsersOnlineAction,
   removeUsersOnlineAction,
   receivedNewMessageAction,
+  updateTypingStartedAction,
+  updateTypingStoppedAction,
 }) => {
   const { socket, socketID } = useContext(SocketContext);
   const sourceRef = useRef(null);
@@ -48,6 +54,14 @@ const App = ({
         updateUnreadMessagesAction(data);
         receivedNewMessageAction(data);
         audioRef.current.play();
+      });
+
+      socket.on('started typing', userId => {
+        updateTypingStartedAction(userId);
+      });
+
+      socket.on('stopped typing', userId => {
+        updateTypingStoppedAction(userId);
       });
 
       socket.on('user connected', userId => {
@@ -92,7 +106,6 @@ const App = ({
         <Route exact path='/messenger' component={ChatMessagesPage} />
         <Route exact path='/people' component={People} />
         <Route exact path='/my-profile' component={UserProfilePage} />
-        <Route exact path='/friend-requests' component={FriendRequest} />
         <Route exact path='/friends' component={FriendsPage} />
       </Switch>
     </div>
@@ -115,4 +128,6 @@ export default connect(mapStateToProps, {
   updateUsersOnlineAction,
   removeUsersOnlineAction,
   receivedNewMessageAction,
+  updateTypingStartedAction,
+  updateTypingStoppedAction,
 })(App);
