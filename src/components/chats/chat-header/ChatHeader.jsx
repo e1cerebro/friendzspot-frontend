@@ -9,11 +9,12 @@ import { CHAT_API_URL } from '../../../utils/api-settings';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
 import Modal from '../../../shared/modal/Modal';
 import M from 'materialize-css';
+import RoundImage from '../../../shared/round-image/RoundImage';
 
-const ChatHeader = ({ chattingWith, reaction, usersOnline }) => {
+const ChatHeader = ({ chattingWith, userTyping, usersOnline }) => {
   let modal;
   useEffect(() => {
-    var elems = document.getElementById('modal');
+    var elems = document.getElementById('video-id');
     modal = M.Modal.init(elems);
   }, []);
 
@@ -49,18 +50,9 @@ const ChatHeader = ({ chattingWith, reaction, usersOnline }) => {
   return (
     <div className='chat-panel__header' style={{ position: 'relative' }}>
       <div className='chat-panel__header_left'>
-        <Modal></Modal>
+        <Modal id='video-id'></Modal>
         <div className='user-avater'>
-          <Image
-            src={getImageURL(chattingWith)}
-            style={{ height: '50px', width: '50px' }}
-            alt={`John Doe`}
-            imageClass={`circle circle-img ${
-              usersOnline && usersOnline.includes(chattingWith.id)
-                ? 'online'
-                : 'offline'
-            }`}
-          />
+          <RoundImage size='50px' url={chattingWith.profilePhotoURL} />
           {usersOnline && usersOnline.includes(chattingWith.id) ? (
             <span className='online-icon'> </span>
           ) : (
@@ -83,7 +75,7 @@ const ChatHeader = ({ chattingWith, reaction, usersOnline }) => {
               `Last seen ${GetTimeAgo(chattingWith.lastseen)}`}
           </span>
 
-          {reaction && reaction.includes(chattingWith.id) && (
+          {userTyping && userTyping.includes(chattingWith.id) && (
             <span className='user-typing'>
               {chattingWith.firstname} is typing...
             </span>
@@ -134,7 +126,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     chattingWith: state.chat.chattingWith,
     usersOnline: state.chat.usersOnline,
-    reaction: state.reaction.userTyping,
+    userTyping: state.reaction.userTyping,
   };
 };
 export default connect(mapStateToProps, null)(ChatHeader);

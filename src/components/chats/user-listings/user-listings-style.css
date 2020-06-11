@@ -1,7 +1,7 @@
 .users-collection ul.collection {
     max-height: 82vh;
     height: 82vh;
-    background-color: #fff5d7;
+    background-color: #cacaca;
     padding: 0;
     overflow-y: scroll;
     scroll-behavior: smooth;

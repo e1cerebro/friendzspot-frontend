@@ -142,16 +142,16 @@ const UserProfileBanner = ({
       <div className='edit-cover-photo'>
         <Button
           type='submit'
-          size='large'
+          size='medium'
           name='update_cover_photo'
           color='btn-primary'
           buttonCallback={actionCallback}>
-          Edit Cover Photo
+          Cover Photo
           <Icon
             className='left'
             icon='photo_camera'
             color='neutral'
-            size='35px'
+            size='25px'
           />
         </Button>
       </div>

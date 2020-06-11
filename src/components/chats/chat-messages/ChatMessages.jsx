@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, Fragment } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 import './chat-messages.style.css';
 import Message from '../message/Message';
 import { connect } from 'react-redux';
 import { GetTimeAgo } from '../../../utils/format-time';
 import { fetchMessagesAction } from '../../../redux/actions/chat.actions';
+import RequestLoading from '../../../shared/request-loading/RequestLoading';
 
 const ChatMessages = ({
   chattingWith,
@@ -11,6 +12,7 @@ const ChatMessages = ({
   currentUser,
   fetchMessagesAction,
 }) => {
+  const [fetchingMessages, setFetchingMessages] = useState(true);
   const chatMessagesRef = useRef(null);
 
   const updateScroll = () => {
@@ -19,9 +21,15 @@ const ChatMessages = ({
   };
 
   useEffect(() => {
-    fetchMessagesAction(chattingWith.id, currentUser.id);
-    updateScroll();
-  }, []);
+    setFetchingMessages(true);
+    if (chattingWith) {
+      fetchMessagesAction(chattingWith.id, currentUser.id);
+      updateScroll();
+      setTimeout(() => {
+        setFetchingMessages(false);
+      }, 500);
+    }
+  }, [chattingWith]);
 
   const messageDate = [];
 
@@ -38,25 +46,39 @@ const ChatMessages = ({
     }
   };
 
-  return (
-    <section
-      ref={chatMessagesRef}
-      id='messageBody'
-      className='chat-messages scroll'>
-      <div className='chat-messages'>
-        {chatMessages &&
-          chatMessages.map(message => {
-            return (
-              <Fragment key={message.created_at + message.updated_at}>
-                {displayMessageDate(message)}
+  if (fetchingMessages) {
+    return (
+      <section
+        ref={chatMessagesRef}
+        id='messageBody'
+        className='chat-messages scroll'>
+        <div className='loading-message'>
+          <RequestLoading type='circle' show='true' />
+          <p className='message-loading-text'>Loading messages...</p>
+        </div>
+      </section>
+    );
+  } else if (!fetchingMessages) {
+    return (
+      <section
+        ref={chatMessagesRef}
+        id='messageBody'
+        className='chat-messages scroll'>
+        <div className='chat-messages'>
+          {chatMessages &&
+            chatMessages.map(message => {
+              return (
+                <Fragment key={message.created_at + message.updated_at}>
+                  {displayMessageDate(message)}
 
-                <Message key={message.id} message={message} />
-              </Fragment>
-            );
-          })}
-      </div>
-    </section>
-  );
+                  <Message key={message.id} message={message} />
+                </Fragment>
+              );
+            })}
+        </div>
+      </section>
+    );
+  }
 };
 
 const mapStateToProps = state => {

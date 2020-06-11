@@ -1,6 +1,5 @@
 import React, { useState, Fragment } from 'react';
 import './friend-info-box.style.css';
-import UserAvaterImage from '../../../images/avater.png';
 import { connect } from 'react-redux';
 import {
   acceptFriendRequestAction,
@@ -11,7 +10,7 @@ import {
   declineFriendRequestAction,
 } from '../../../redux/actions/user.actions';
 import Icon from '../../../shared/icon/Icon';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { userItemClicked } from '../../../redux/actions/chat.actions';
 import { GetTimeAgo } from '../../../utils/format-time';
 import { CHAT_API_URL } from '../../../utils/api-settings';
@@ -270,7 +269,6 @@ const FriendInfoBox = ({
             backgroundImage: `url(${getImageURL(friend)})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
             backgroundRepeat: ' no-repeat',
           }}></div>
       </div>

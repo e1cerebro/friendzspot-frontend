@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import UserProfileBanner from '../../components/users/user-profile-banner/UserProfileBanner';
 import UserProfileHeader from '../../components/users/user-profile-header/UserProfileHeader';
 import './user-profile-page.style.css';
@@ -7,13 +7,19 @@ import Divider from '../../shared/divider/Divider';
 import UpdateForm from '../../components/users/update-form/UpdateForm';
 import { connect } from 'react-redux';
 import Loading from '../../shared/loading/loading';
-
+import M from 'materialize-css';
+import SoundSettings from '../../components/user-settings/sound/SoundSettings';
 const UserProfilePage = ({
   currentUser,
   friends,
   friend_requests,
   unreadMessages,
 }) => {
+  useEffect(() => {
+    const el = document.getElementById('settings-tab');
+    M.Tabs.init(el);
+  }, []);
+
   if (currentUser) {
     return (
       <Fragment>
@@ -49,12 +55,37 @@ const UserProfilePage = ({
             </div>
           </div>
           <div className='col s12 m8 mb-2'>
-            <div className='user-update-form'>
-              <h3 className='sub-heading'>Update User Info</h3>
-              <Divider color='danger' size='large' />
-              <div className='row'>
-                <UpdateForm />
+            <ul className='tabs' id='settings-tab'>
+              <li className='tab col s3'>
+                <a href='#account'>Account</a>
+              </li>{' '}
+              <li className='tab col s3'>
+                <a href='#soundsettings'>Sound</a>
+              </li>
+              <li className='tab col s3'>
+                <a href='#chatsettings'>Chat</a>
+              </li>{' '}
+              <li className='tab col s3'>
+                <a href='#privacy'>Privacy</a>
+              </li>
+            </ul>
+            <div id='account'>
+              <div className='user-update-form'>
+                <h3 className='sub-heading'>Update User Info</h3>
+                <Divider color='danger' size='large' />
+                <div className='row'>
+                  <UpdateForm />
+                </div>
               </div>
+            </div>
+            <div id='soundsettings'>
+              <SoundSettings />
+            </div>{' '}
+            <div id='chatsettings' className='col s12'>
+              Chat Settings
+            </div>
+            <div id='privacy' className='col s12'>
+              Privacy Settings
             </div>
           </div>
         </div>

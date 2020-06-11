@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 const RequestLoading = ({ type, show, style, className }) => {
   if ('bar' === type && show) {
@@ -7,7 +7,7 @@ const RequestLoading = ({ type, show, style, className }) => {
         <div className='indeterminate'></div>
       </div>
     );
-  } else {
+  } else if ('circle' === type && show) {
     return (
       <div
         className={`preloader-wrapper small ${
@@ -27,6 +27,8 @@ const RequestLoading = ({ type, show, style, className }) => {
         </div>
       </div>
     );
+  } else {
+    return <Fragment></Fragment>;
   }
 };
 

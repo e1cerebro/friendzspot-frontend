@@ -7,3 +7,47 @@ nav.friendzspot-navigation li.user-account {
     background-color: #134b90;
     margin: 0 10px;
 }
+
+
+
+ul.mobile-side-nav .user-view {
+    padding: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+ul.mobile-side-nav .user-profile-photo {
+    width: 150px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    top: 38px;
+    z-index: 1002;
+}
+
+ul.mobile-side-nav .background:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.74);
+}
+
+.sidenav.mobile-side-nav li a.active {
+    background-color: #003554;
+
+    color: #fff;
+}
+
+@media only screen and (max-width: 600px) {
+    nav .brand-logo {
+        left: 28%;
+
+    }
+}

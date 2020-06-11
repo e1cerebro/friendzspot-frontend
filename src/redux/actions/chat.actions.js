@@ -4,7 +4,7 @@ import apiConfig from '../../api-config/config';
 export const initialConnectionEstablishedAction = socketId => {
   return async dispatch => {
     try {
-      let response = await apiConfig.post('/api/users/update-my-socketid', {
+      await apiConfig.post('/api/users/update-my-socketid', {
         socketID: socketId,
       });
     } catch (e) {
@@ -30,16 +30,10 @@ export const fetchMessagesAction = (sender, receiver) => {
       });
 
       if (response.status === 200) {
-        if (response.data.length <= 0) {
-          dispatch({
-            type: chat_actions.FETCHED_MESSAGES_STARTED,
-          });
-        } else {
-          dispatch({
-            type: chat_actions.FETCHED_MESSAGES,
-            payload: response.data,
-          });
-        }
+        dispatch({
+          type: chat_actions.FETCHED_MESSAGES,
+          payload: response.data,
+        });
       }
     } catch (e) {
       console.log(e);
@@ -142,7 +136,7 @@ export const receivedNewMessageAction = data => {
 export const notifyTypingStartedAction = friendId => {
   return async dispatch => {
     try {
-      let response = await apiConfig.post('/api/messages/typing-started', {
+      await apiConfig.post('/api/messages/typing-started', {
         uuid: friendId,
       });
     } catch (e) {
@@ -154,7 +148,7 @@ export const notifyTypingStartedAction = friendId => {
 export const notifyTypingStoppedAction = friendId => {
   return async dispatch => {
     try {
-      let response = await apiConfig.post('/api/messages/typing-stopped', {
+      await apiConfig.post('/api/messages/typing-stopped', {
         uuid: friendId,
       });
     } catch (e) {

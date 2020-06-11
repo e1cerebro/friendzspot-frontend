@@ -1,5 +1,5 @@
 .owner .chat-msg-text {
-    background-color: #1554a0;
+    background-color: #695829;
     color: #fff;
     width: 376px;
     border-radius: 20px 20px 0 20px;
@@ -7,16 +7,17 @@
     flex-direction: column;
 }
 
+
 .chat-msg-text {
-    background-color: #212121;
+    background-color: #033a37;
     color: #fff;
     width: 376px;
-    padding: 15px 20px 18px 20px;
+    padding: 15px 8px 8px 10px;
     border-radius: 20px 20px 20px 0;
     line-height: 1.5;
     font-size: 14px;
     font-weight: 500;
-    box-shadow: inset 0px 0px 3px 1px #fff5d7;
+    width: 340px;
     display: flex;
     flex-direction: column;
 }
@@ -25,6 +26,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-bottom: 8px;
+}
+
+.message-meta.friend {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 8px 0 8px 0;
 }
 
 .message-header i {
@@ -33,6 +42,17 @@
 
 .chat-msg.owner {
     flex-direction: row-reverse;
+}
+
+
+/* Mobile styling */
+
+
+div#chat-messages .owner .chat-msg-text,
+div#chat-messages .chat-msg-text {
+
+    width: 252px;
+
 }
 
 span.sender-name {
@@ -69,7 +89,17 @@ small.message-time {
 
 
 .chat-msg-text span.message-content {
-    font-size: 23px;
-    font-family: 'Tenali Ramakrishna', sans-serif;
-    font-weight: 500;
+    font-size: 15px;
+    font-family: 'Baloo Paaji 2', cursive;
+    font-weight: 400;
+}
+
+@media only screen and (max-width: 325px) {
+
+    div#chat-messages .owner .chat-msg-text,
+    div#chat-messages .chat-msg-text {
+
+        width: 300px;
+
+    }
 }

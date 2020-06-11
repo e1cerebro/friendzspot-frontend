@@ -70,16 +70,24 @@ p.start-chatting:hover i {
         align-items: center;
     }
 
+    .friend-item .name {
+        text-align: center;
+    }
+
     .friend-item__right {
         width: 100%;
         display: flex;
-        align-items: end;
+        align-items: center;
         margin-left: 0;
         flex-direction: column;
     }
 
     .friend-item__left {
-        align-self: end;
+        align-self: center;
         display: flex;
+    }
+
+    .friend-item__right__action-buttons {
+        text-align: center;
     }
 }

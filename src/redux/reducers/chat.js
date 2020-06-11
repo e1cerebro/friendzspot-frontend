@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action) => {
     case chat_actions.USER_ITEM_SELECTED:
       return { ...state, chattingWith: action.payload };
     case chat_actions.FETCHED_MESSAGES:
-      return { ...state, messages: action.payload };
+      return { ...state, sentMessages: action.payload };
     case chat_actions.FETCHED_MESSAGES_STARTED:
       return { ...state, messages: null };
     case chat_actions.GET_LAST_MESSAGES:

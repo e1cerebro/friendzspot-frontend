@@ -76,7 +76,6 @@ const PersonItem = ({ person, currentUser, sendRequestAction }) => {
               backgroundImage: `url(${getImageURL(person.profilePhotoURL)})`,
               backgroundPosition: 'center',
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
               backgroundRepeat: ' no-repeat',
             }}></div>
         </div>

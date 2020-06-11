@@ -56,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
         lastRemovedFriend: action.payload,
         previousFriendsList: state.friends,
         friends: state.friends.filter(friend => {
-          return friend.id != action.payload.id;
+          return friend.id !== action.payload.id;
         }),
       };
     case user_actions.UNDO_UNFRIENDES_USER:

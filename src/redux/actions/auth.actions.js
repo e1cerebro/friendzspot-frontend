@@ -58,10 +58,9 @@ export const logoutAction = id => {
   return async dispatch => {
     try {
       let response = await apiConfig.post(`/api/users/logout/${id}`);
-
+      localStorage.removeItem('user');
       if (response.status === 200) {
         console.log(response.data);
-        localStorage.removeItem('user');
       }
 
       dispatch({

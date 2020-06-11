@@ -61,3 +61,36 @@ span.add-photo.success i {
     bottom: 27px;
     right: 45px;
 }
+
+.edit-cover-photo button.btn.btn-primary {
+    background-color: #00000085;
+}
+
+.user-header-banner:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.51);
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+}
+
+
+@media only screen and (max-width: 600px) {
+
+    .edit-cover-photo {
+        position: absolute;
+        top: 94px;
+        right: 45px;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        width: 170px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}

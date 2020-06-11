@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import './friends-page.style.css';
 import { connect } from 'react-redux';
-import Icon from '../../shared/icon/Icon';
 import FriendInfoBox from '../../components/friends/friend-info-box/FriendInfoBox';
 import {
   getMyFriendsAction,
@@ -14,7 +13,6 @@ import {
 import Notify from '../../shared/notify/Notify';
 import M from 'materialize-css';
 import RequestLoading from '../../shared/request-loading/RequestLoading';
-import NotFound from '../../shared/404-page/NotFound';
 
 const FriendsPage = ({
   currentUser,

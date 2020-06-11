@@ -61,15 +61,17 @@ const Message = ({ message, currentUser }) => {
             </div>
             <div className='message-footer'>
               <small className='chat-msg-date'></small>
-              <div className='left'>
-                <small className='message-time'>
-                  {GetTimeAgo(message.created_at, 'long')}
-                </small>
-              </div>
-              <div className='right' style={{ opacity: '0.5' }}>
-                <small style={{ display: 'flex' }}>
-                  {messageReceiver()} {messageSender()}
-                </small>
+              <div className={`message-meta ${sender}`}>
+                <div className='left'>
+                  <small className='message-time'>
+                    {GetTimeAgo(message.created_at, 'long')}
+                  </small>
+                </div>
+                <div className='right' style={{ opacity: '0.5' }}>
+                  <small style={{ display: 'flex' }}>
+                    {messageReceiver()} {messageSender()}
+                  </small>
+                </div>
               </div>
             </div>
           </div>

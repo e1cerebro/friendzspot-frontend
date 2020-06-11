@@ -28,10 +28,10 @@ const SendMessageBox = ({
   const inputFileRef = useRef(null);
 
   const handleInputChange = event => {
-    autoExpand(event.target);
+    //autoExpand(event.target);
     if (event.keyCode !== 13) {
       setInput({ ...input, [event.target.id]: event.target.value });
-      autoExpand(event.target);
+      //autoExpand(event.target);
     }
   };
 
@@ -48,13 +48,6 @@ const SendMessageBox = ({
     }
     setInput({ message: '', attachments: null });
     messageBoxRef.current.value = '';
-  };
-
-  const handleSubmitOnEnter = event => {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      sendMessage();
-    }
   };
 
   const handleMessageSubmit = event => {
@@ -81,7 +74,7 @@ const SendMessageBox = ({
             attach_file
           </i>
         </div>
-        <div className='input-field'>
+        <div className='input-field' style={{ marginTop: '9px' }}>
           <input
             style={{ display: 'none' }}
             type='file'
@@ -96,7 +89,6 @@ const SendMessageBox = ({
             onFocus={notifyTypingStarted}
             onBlur={notifyTypingStopped}
             ref={messageBoxRef}
-            onKeyUp={handleSubmitOnEnter}
             onChange={handleInputChange}
             id='message'
             defaultValue={input.message}

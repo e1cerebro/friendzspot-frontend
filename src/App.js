@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useRef, useState } from 'react';
 import './App.css';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import ChatMessagesPage from './pages/chat-messages/ChatMessagesPage';
 import AuthPage from './pages/user-auth/AuthPage';
@@ -17,7 +17,6 @@ import {
   fetchLastMessagesAction,
 } from './redux/actions/chat.actions';
 import FriendsPage from './pages/friends-page/FriendsPage';
-import messageURL from './sounds/message_received2.mp3';
 import UserProfilePage from './pages/user-profile/UserProfilePage';
 import { loginTokenAction } from './redux/actions/auth.actions';
 import { useHistory } from 'react-router-dom';
@@ -25,6 +24,10 @@ import {
   updateTypingStartedAction,
   updateTypingStoppedAction,
 } from './redux/actions/reaction.actions';
+
+//Sounds
+import messageURL from './sounds/message_received2.mp3';
+import userTypingSound from './sounds/user_typing.mp3';
 
 const App = ({
   currentUser,
@@ -53,11 +56,16 @@ const App = ({
         fetchLastMessagesAction();
         updateUnreadMessagesAction(data);
         receivedNewMessageAction(data);
+        audioRef.current.src = messageURL;
         audioRef.current.play();
       });
 
       socket.on('started typing', userId => {
         updateTypingStartedAction(userId);
+        //userTypingSound
+        audioRef.current.src = userTypingSound;
+        audioRef.current.volume = 0.1;
+        audioRef.current.play();
       });
 
       socket.on('stopped typing', userId => {

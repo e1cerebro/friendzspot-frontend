@@ -16,3 +16,7 @@
      text-transform: uppercase;
      font-weight: 600;
  }
+
+ ul#tabs {
+     border-bottom: 5px solid #e6e6e6;
+ }

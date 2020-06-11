@@ -19,6 +19,23 @@ span.user-typing {
     align-items: center;
 }
 
+
+/* Styling the header when it is displayed on mobile */
+div#chat-messages .modal-header .chat-panel__header_left {
+    text-align: justify;
+}
+
+div#chat-messages .chat-panel__header {
+    clear: both;
+    border-top: 2px solid #a6a6a6;
+}
+
+div#chat-messages .chat-panel__header {
+    clear: both;
+    border-top: 2px solid #a6a6a6;
+    background-color: #033a37;
+}
+
 .chat-panel__header_right i.friendzspot-icon {
     font-size: 43px;
 }

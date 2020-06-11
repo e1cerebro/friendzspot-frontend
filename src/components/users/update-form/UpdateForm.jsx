@@ -49,7 +49,6 @@ const UpdateForm = ({
           <Input
             type='text'
             id='firstname'
-            placeholder='Enter first name'
             label='First Name'
             value={input.firstname}
             inputCallback={handleInputChange}
@@ -59,7 +58,6 @@ const UpdateForm = ({
           <Input
             type='text'
             id='lastname'
-            placeholder='Enter last name'
             label='Last Name'
             value={input.lastname}
             inputCallback={handleInputChange}
@@ -71,7 +69,6 @@ const UpdateForm = ({
           <Input
             type='email'
             id='email'
-            placeholder='Enter email address'
             label='Email'
             value={input.email}
             inputCallback={handleInputChange}
@@ -81,7 +78,6 @@ const UpdateForm = ({
           <Input
             type='tel'
             id='phone'
-            placeholder='Enter phone number'
             label='Phone Number'
             inputCallback={handleInputChange}
             value={input.phone}
@@ -93,7 +89,6 @@ const UpdateForm = ({
           type='textarea'
           id='userbio'
           className=''
-          placeholder='Enter your bio'
           label='User Bio'
           value={input.userbio}
           inputCallback={handleInputChange}

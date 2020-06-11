@@ -1,6 +1,6 @@
 import React, { useContext, Fragment, useEffect } from 'react';
 import SearchField from '../../shared/search-field/SearchField';
-import BackgroundImage from '../../images/chat-bg.jpg';
+import BackgroundImage from '../../images/chat-wallpaper.jpg';
 import StaticImage from '../../images/static-logo.png';
 import './chat-messages.style.css';
 import { connect } from 'react-redux';
@@ -9,6 +9,7 @@ import ChatHeader from '../../components/chats/chat-header/ChatHeader';
 import ChatMessages from '../../components/chats/chat-messages/ChatMessages';
 import UserListings from '../../components/chats/user-listings/UserListings';
 import SendMessageBox from '../../components/chats/send-mesage-box/SendMessageBox';
+import Modal from '../../shared/modal/Modal';
 
 const ChatMessagesPage = ({ chattingWith, currentUser }) => {
   let history = useHistory();
@@ -26,22 +27,9 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
           <SearchField />
           <UserListings />
         </div>
-        {/* <div
-          className='col s12 m8 chat-panel'
-          style={chattingWith ? defaultBgImage : staticBgImage}>
-          {chattingWith && (
-            <Fragment>
-              <div className='layer'></div>
-              <div className='' style={{ zIndex: '1000' }}>
-                <ChatHeader />
-                <ChatMessages />
-              </div>
-              <SendMessageBox />
-            </Fragment>
-          )}
-        </div> */}
+
         <div
-          className='col s12 m8'
+          className='col s12 m8  hide-on-small-only	'
           style={chattingWith ? defaultBgImage : staticBgImage}>
           {chattingWith && (
             <Fragment>
@@ -51,6 +39,29 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
             </Fragment>
           )}
         </div>
+        <Modal
+          bgImage={chattingWith ? defaultBgImage : staticBgImage}
+          id='chat-messages'
+          className='modal-fixed-footer  bottom-sheet chat-modal'
+          messagebox={<SendMessageBox />}
+          header={<ChatHeader />}>
+          <Fragment>
+            <ChatMessages />
+          </Fragment>
+        </Modal>
+
+        {/* <Modal id='chat-messages'>
+          <div
+            className='col s12 m8  hide-on-small-only	'
+            style={chattingWith ? defaultBgImage : staticBgImage}>
+            {' '}
+            <Fragment>
+              <ChatHeader />
+              <ChatMessages />
+              <SendMessageBox />
+            </Fragment>
+          </div>
+        </Modal> */}
       </div>
     ) : (
       <p></p>
@@ -64,6 +75,7 @@ const defaultBgImage = {
   backgroundPosition: 'center',
   padding: '0',
   minHeight: '14vh',
+  backgroundSize: 'cover',
 };
 
 const staticBgImage = {
