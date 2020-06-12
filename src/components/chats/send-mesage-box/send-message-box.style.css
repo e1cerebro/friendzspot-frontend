@@ -30,7 +30,6 @@
      box-sizing: padding-box;
      border-radius: 6px;
      box-shadow: 2px 2px 8px rgba(black, .3);
-     border: 1;
      width: 756px;
      margin-right: 14px;
      resize: none;
@@ -39,6 +38,13 @@
      font-family: 'Montserrat', sans-serif;
      height: 60px;
      overflow-x: hidden;
+     padding: 15px;
+ }
+
+ textarea#message::placeholder {
+     font-size: 20px;
+     vertical-align: middle;
+
  }
 
 

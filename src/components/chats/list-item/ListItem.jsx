@@ -57,6 +57,14 @@ const ListItem = ({
     }
   };
 
+  const friendOnline = message => {
+    let userId =
+      message.sender.id === currentUser.id
+        ? message.receiver.id
+        : message.sender.id;
+    return usersOnline && usersOnline.includes(userId);
+  };
+
   return (
     <Fragment>
       <li
@@ -64,7 +72,7 @@ const ListItem = ({
         id={user.id}
         className='chat-listing-single hide-on-small-only'>
         <div className='user-avater'>
-          {usersOnline && usersOnline.includes(message.sender.id) ? (
+          {friendOnline(message) ? (
             <span className='online-icon'> </span>
           ) : (
             <span className='offline-icon'> </span>

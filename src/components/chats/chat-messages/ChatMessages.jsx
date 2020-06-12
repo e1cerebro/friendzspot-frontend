@@ -10,6 +10,7 @@ const ChatMessages = ({
   chattingWith,
   chatMessages,
   currentUser,
+  clearingChatHistory,
   fetchMessagesAction,
 }) => {
   const [fetchingMessages, setFetchingMessages] = useState(true);
@@ -64,11 +65,18 @@ const ChatMessages = ({
         ref={chatMessagesRef}
         id='messageBody'
         className='chat-messages scroll'>
+        {clearingChatHistory && (
+          <div className='loading-message'>
+            <RequestLoading type='circle' show='true' />
+            <p className='message-loading-text'>Clearing chat history...</p>
+          </div>
+        )}
         <div className='chat-messages'>
           {chatMessages &&
             chatMessages.map(message => {
               return (
-                <Fragment key={message.created_at + message.updated_at}>
+                <Fragment
+                  key={message.created_at + message._id + message.updated_at}>
                   {displayMessageDate(message)}
 
                   <Message key={message.id} message={message} />
@@ -85,6 +93,7 @@ const mapStateToProps = state => {
   return {
     chattingWith: state.chat.chattingWith,
     chatMessages: state.chat.sentMessages,
+    clearingChatHistory: state.chat.clearingChatHistory,
     currentUser: state.auth.currentUser,
   };
 };

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   unreadMessages: [],
   usersOnline: [],
   last_messages: [],
+  clearingChatHistory: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -61,6 +62,25 @@ export default (state = INITIAL_STATE, action) => {
           action.payload,
         ],
         last_messages: [...newUserMessaged, ...state.last_messages],
+      };
+    case chat_actions.END_CLEAR_CHAT_HISTORY:
+      const filteredLastMessages = state.last_messages.filter(
+        message =>
+          message.receiver.id !== action.payload &&
+          message.sender.id !== action.payload
+      );
+
+      return {
+        ...state,
+        sentMessages: [],
+        last_messages: filteredLastMessages,
+        clearingChatHistory: false,
+      };
+
+    case chat_actions.START_CLEAR_CHAT_HISTORY:
+      return {
+        ...state,
+        clearingChatHistory: true,
       };
 
     default:

@@ -156,3 +156,25 @@ export const notifyTypingStoppedAction = friendId => {
     }
   };
 };
+export const clearChatHistoryAction = friendId => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: chat_actions.START_CLEAR_CHAT_HISTORY,
+      });
+
+      const response = await apiConfig.delete(
+        `/api/messages/clear-chat-history/${friendId}`
+      );
+
+      console.log(response.data.deletedCount);
+
+      dispatch({
+        type: chat_actions.END_CLEAR_CHAT_HISTORY,
+        payload: friendId,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};

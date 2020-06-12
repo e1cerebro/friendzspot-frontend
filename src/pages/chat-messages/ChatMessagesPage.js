@@ -49,19 +49,6 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
             <ChatMessages />
           </Fragment>
         </Modal>
-
-        {/* <Modal id='chat-messages'>
-          <div
-            className='col s12 m8  hide-on-small-only	'
-            style={chattingWith ? defaultBgImage : staticBgImage}>
-            {' '}
-            <Fragment>
-              <ChatHeader />
-              <ChatMessages />
-              <SendMessageBox />
-            </Fragment>
-          </div>
-        </Modal> */}
       </div>
     ) : (
       <p></p>

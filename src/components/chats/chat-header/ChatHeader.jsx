@@ -10,8 +10,14 @@ import RequestLoading from '../../../shared/request-loading/RequestLoading';
 import Modal from '../../../shared/modal/Modal';
 import M from 'materialize-css';
 import RoundImage from '../../../shared/round-image/RoundImage';
+import { clearChatHistoryAction } from '../../../redux/actions/chat.actions';
 
-const ChatHeader = ({ chattingWith, userTyping, usersOnline }) => {
+const ChatHeader = ({
+  chattingWith,
+  userTyping,
+  usersOnline,
+  clearChatHistoryAction,
+}) => {
   let modal;
   useEffect(() => {
     var elems = document.getElementById('video-id');
@@ -35,8 +41,9 @@ const ChatHeader = ({ chattingWith, userTyping, usersOnline }) => {
     modal.open();
   };
 
-  const blockUser = () => {
-    console.log('Block user clicked');
+  const clearChatHistory = () => {
+    clearChatHistoryAction(chattingWith.id);
+    console.log('clear Chat History clicked: ' + chattingWith.id);
   };
 
   const getImageURL = user => {
@@ -109,9 +116,9 @@ const ChatHeader = ({ chattingWith, userTyping, usersOnline }) => {
             position='bottom'
           />{' '}
           <FloatingButtonItem
-            onClick={blockUser}
-            title={`Block ${chattingWith.firstname}`}
-            icon='block'
+            onClick={clearChatHistory}
+            title={`Clear History`}
+            icon='hourglass_empty'
             iconColor='#fff'
             colorClass='red darken-4'
             position='bottom'
@@ -129,4 +136,4 @@ const mapStateToProps = (state, ownProps) => {
     userTyping: state.reaction.userTyping,
   };
 };
-export default connect(mapStateToProps, null)(ChatHeader);
+export default connect(mapStateToProps, { clearChatHistoryAction })(ChatHeader);

@@ -92,6 +92,7 @@ const SendMessageBox = ({
             onChange={handleInputChange}
             id='message'
             defaultValue={input.message}
+            placeholder='Enter your message...'
             className='message-textbox scroll'></textarea>
         </div>
 
