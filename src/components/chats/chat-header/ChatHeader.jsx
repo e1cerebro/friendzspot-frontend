@@ -1,4 +1,10 @@
-import React, { Fragment, useEffect, useRef } from 'react';
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+} from 'react';
 import Image from '../../../shared/image/Image';
 import { connect } from 'react-redux';
 import { GetTimeAgo } from '../../../utils/format-time';
@@ -11,25 +17,83 @@ import Modal from '../../../shared/modal/Modal';
 import M from 'materialize-css';
 import RoundImage from '../../../shared/round-image/RoundImage';
 import { clearChatHistoryAction } from '../../../redux/actions/chat.actions';
+import SocketContext from '../../../contexts/socket-context';
+import Peer from 'simple-peer';
+import {
+  audioCallInitiated,
+  updateCallStreamAction,
+} from '../../../redux/actions/call.action';
 
 const ChatHeader = ({
+  currentUser,
   chattingWith,
+  callStream,
   userTyping,
   usersOnline,
   clearChatHistoryAction,
+  audioCallInitiated,
+  updateCallStreamAction,
 }) => {
+  const [startCall, setStartCall] = useState(false);
+  const { socket, socketID } = useContext(SocketContext);
+
+  const sourceRef = useRef(null);
+  const audioRef = useRef(null);
+
   let modal;
   useEffect(() => {
     var elems = document.getElementById('video-id');
     modal = M.Modal.init(elems);
   }, []);
 
+  // useEffect(() => {
+  //   console.log(callStream);
+  // }, [callStream]);
+
   if (!chattingWith) {
     return <RequestLoading type='bar' show={true} />;
   }
 
-  const startAduioCall = () => {
+  const startAduioCall = async () => {
+    let requestStream;
+    try {
+      requestStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      updateCallStreamAction(requestStream);
+    } catch (error) {
+      console.log(error);
+    }
+
     console.log('Audio Call clicked');
+    setStartCall(true);
+
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: callStream,
+    });
+
+    peer.on('signal', data => {
+      const callInfo = {
+        userToCall: chattingWith.id,
+        signalData: data,
+        from: currentUser.id,
+      };
+      //dispatch calling action
+      audioCallInitiated(callInfo);
+    });
+
+    peer.on('stream', stream => {
+      if (audioRef.current) {
+        audioRef.current.srcObject = callStream;
+      }
+    });
+
+    socket.on('callAccepted', signal => {
+      console.log(signal);
+      peer.signal(signal);
+    });
   };
 
   const startVideoCall = () => {
@@ -56,6 +120,15 @@ const ChatHeader = ({
 
   return (
     <div className='chat-panel__header' style={{ position: 'relative' }}>
+      <audio
+        id='musicaudio'
+        preload='none'
+        style={{ display: 'none' }}
+        className='raw-player'
+        controls
+        ref={audioRef}>
+        <source ref={sourceRef} src='' type='audio/mpeg' />
+      </audio>
       <div className='chat-panel__header_left'>
         <Modal id='video-id'></Modal>
         <div className='user-avater'>
@@ -131,9 +204,15 @@ const ChatHeader = ({
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    currentUser: state.auth.currentUser,
     chattingWith: state.chat.chattingWith,
     usersOnline: state.chat.usersOnline,
     userTyping: state.reaction.userTyping,
+    callStream: state.call.stream,
   };
 };
-export default connect(mapStateToProps, { clearChatHistoryAction })(ChatHeader);
+export default connect(mapStateToProps, {
+  clearChatHistoryAction,
+  audioCallInitiated,
+  updateCallStreamAction,
+})(ChatHeader);
