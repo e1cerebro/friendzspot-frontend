@@ -1,0 +1,34 @@
+section.video-convo-container {
+    background-color: red;
+    height: 404px;
+    position: relative;
+}
+
+
+div#video-id.call-modal {
+    width: 485px;
+    height: 510px;
+}
+
+div#video-id.call-modal .modal.modal-fixed-footer {
+    padding: 0;
+    height: 537px;
+}
+
+div#video-id.call-modal .modal-content {
+    padding: 0;
+}
+
+div#video-id.call-modal .modal-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #333333;
+}
+
+div#video-id.call-modal .modal-close-container {
+
+    flex-basis: 10%;
+}

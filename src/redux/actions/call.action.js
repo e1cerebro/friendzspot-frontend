@@ -44,3 +44,129 @@ export const updateCallStreamAction = stream => {
     } catch (e) {}
   };
 };
+
+export const updateAudioStreamAction = stream => {
+  return async dispatch => {
+    try {
+      if (stream) {
+        dispatch({
+          type: audio_call_actions.AUDIO_STREAM,
+          payload: stream,
+        });
+      }
+    } catch (e) {}
+  };
+};
+export const addCallerStreamAction = stream => {
+  return async dispatch => {
+    try {
+      if (stream) {
+        dispatch({
+          type: audio_call_actions.ADD_CALLER_STREAM,
+          payload: stream,
+        });
+      }
+    } catch (e) {}
+  };
+};
+export const removeCallerStreamAction = stream => {
+  return async dispatch => {
+    try {
+      if (stream) {
+        dispatch({
+          type: audio_call_actions.REMOVE_CALLER_STREAM,
+          payload: stream,
+        });
+      }
+    } catch (e) {}
+  };
+};
+export const addReceiverStreamAction = stream => {
+  return async dispatch => {
+    try {
+      if (stream) {
+        dispatch({
+          type: audio_call_actions.ADD_RECEIVER_STREAM,
+          payload: stream,
+        });
+      }
+    } catch (e) {}
+  };
+};
+export const removeReceiverStreamAction = stream => {
+  return async dispatch => {
+    try {
+      if (stream) {
+        dispatch({
+          type: audio_call_actions.REMOVE_RECEIVER_STREAM,
+          payload: stream,
+        });
+      }
+    } catch (e) {}
+  };
+};
+export const showCallModalAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.SHOW_CALL_MODAL,
+      });
+    } catch (e) {}
+  };
+};
+export const startOutgoingCallAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.START_OUTGOING_CALL,
+      });
+    } catch (e) {}
+  };
+};
+export const startIncomingCallAction = incomingCallData => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.START_INCOMING_CALL,
+        payload: incomingCallData,
+      });
+    } catch (e) {}
+  };
+};
+export const IncomingCallAcceptedAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.INCOMING_CALL_ACCEPTED,
+      });
+    } catch (e) {}
+  };
+};
+export const IncomingCallRejectedAction = incomingCallData => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.INCOMING_CALL_REJECTED,
+        payload: incomingCallData,
+      });
+    } catch (e) {}
+  };
+};
+export const endOutgoingCallAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.END_OUTGOING_CALL,
+      });
+    } catch (e) {}
+  };
+};
+export const endIncomingCallAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.END_INCOMING_CALL,
+      });
+    } catch (e) {}
+  };
+};

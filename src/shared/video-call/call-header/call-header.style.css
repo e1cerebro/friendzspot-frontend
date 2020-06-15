@@ -1,0 +1,14 @@
+section.call-header {
+    align-items: center;
+    display: flex;
+    background-color: #063673;
+    color: #fff;
+    padding: 7px 6px;
+    flex-basis: 100%;
+}
+
+span.caller-name {
+    font-size: 21px;
+    text-transform: uppercase;
+    padding-left: 14px;
+}

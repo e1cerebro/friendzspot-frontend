@@ -43,7 +43,7 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
           bgImage={chattingWith ? defaultBgImage : staticBgImage}
           id='chat-messages'
           className='modal-fixed-footer  bottom-sheet chat-modal'
-          messagebox={<SendMessageBox />}
+          footer={<SendMessageBox />}
           header={<ChatHeader />}>
           <Fragment>
             <ChatMessages />

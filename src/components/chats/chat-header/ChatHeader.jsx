@@ -11,7 +11,10 @@ import { GetTimeAgo } from '../../../utils/format-time';
 import './chat-header.style.css';
 import FloatingButton from '../../../shared/floating-button/FloatingButton';
 import FloatingButtonItem from '../../../shared/floating-button-item/FloatingButtonItem';
-import { CHAT_API_URL } from '../../../utils/api-settings';
+import {
+  CHAT_API_URL,
+  get_audio_permission,
+} from '../../../utils/api-settings';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
 import Modal from '../../../shared/modal/Modal';
 import M from 'materialize-css';
@@ -22,87 +25,40 @@ import Peer from 'simple-peer';
 import {
   audioCallInitiated,
   updateCallStreamAction,
+  updateAudioStreamAction,
+  addCallerStreamAction,
+  addReceiverStreamAction,
+  showCallModalAction,
+  startOutgoingCallAction,
 } from '../../../redux/actions/call.action';
 
 const ChatHeader = ({
   currentUser,
   chattingWith,
-  callStream,
+  audioStream,
   userTyping,
   usersOnline,
   clearChatHistoryAction,
   audioCallInitiated,
   updateCallStreamAction,
+  addCallerStreamAction,
+  addReceiverStreamAction,
+  showCallModalAction,
+  startOutgoingCallAction,
 }) => {
-  const [startCall, setStartCall] = useState(false);
-  const { socket, socketID } = useContext(SocketContext);
-
-  const sourceRef = useRef(null);
-  const audioRef = useRef(null);
-
-  let modal;
-  useEffect(() => {
-    var elems = document.getElementById('video-id');
-    modal = M.Modal.init(elems);
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(callStream);
-  // }, [callStream]);
-
   if (!chattingWith) {
     return <RequestLoading type='bar' show={true} />;
   }
 
-  const startAduioCall = async () => {
-    let requestStream;
-    try {
-      requestStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
-      updateCallStreamAction(requestStream);
-    } catch (error) {
-      console.log(error);
-    }
+  const startAduioCall = async () => {};
 
-    console.log('Audio Call clicked');
-    setStartCall(true);
-
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream: callStream,
-    });
-
-    peer.on('signal', data => {
-      const callInfo = {
-        userToCall: chattingWith.id,
-        signalData: data,
-        from: currentUser.id,
-      };
-      //dispatch calling action
-      audioCallInitiated(callInfo);
-    });
-
-    peer.on('stream', stream => {
-      if (audioRef.current) {
-        audioRef.current.srcObject = callStream;
-      }
-    });
-
-    socket.on('callAccepted', signal => {
-      console.log(signal);
-      peer.signal(signal);
-    });
-  };
-
-  const startVideoCall = () => {
-    console.log('Video Call clicked');
+  const startVideoCall = async () => {
+    showCallModalAction();
+    startOutgoingCallAction();
   };
 
   const viewProfile = () => {
     console.log('View Profile clicked');
-    modal.open();
   };
 
   const clearChatHistory = () => {
@@ -120,17 +76,7 @@ const ChatHeader = ({
 
   return (
     <div className='chat-panel__header' style={{ position: 'relative' }}>
-      <audio
-        id='musicaudio'
-        preload='none'
-        style={{ display: 'none' }}
-        className='raw-player'
-        controls
-        ref={audioRef}>
-        <source ref={sourceRef} src='' type='audio/mpeg' />
-      </audio>
       <div className='chat-panel__header_left'>
-        <Modal id='video-id'></Modal>
         <div className='user-avater'>
           <RoundImage size='50px' url={chattingWith.profilePhotoURL} />
           {usersOnline && usersOnline.includes(chattingWith.id) ? (
@@ -202,17 +148,22 @@ const ChatHeader = ({
   );
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     currentUser: state.auth.currentUser,
     chattingWith: state.chat.chattingWith,
     usersOnline: state.chat.usersOnline,
     userTyping: state.reaction.userTyping,
-    callStream: state.call.stream,
+    audioStream: state.call.stream,
   };
 };
 export default connect(mapStateToProps, {
   clearChatHistoryAction,
   audioCallInitiated,
   updateCallStreamAction,
+  updateAudioStreamAction,
+  addCallerStreamAction,
+  addReceiverStreamAction,
+  showCallModalAction,
+  startOutgoingCallAction,
 })(ChatHeader);

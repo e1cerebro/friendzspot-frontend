@@ -13,7 +13,6 @@ import {
   updateUsersOnlineAction,
   removeUsersOnlineAction,
   receivedNewMessageAction,
-  fetchMessagesAction,
   fetchLastMessagesAction,
 } from './redux/actions/chat.actions';
 import FriendsPage from './pages/friends-page/FriendsPage';
@@ -27,20 +26,22 @@ import {
 import Peer from 'simple-peer';
 import {
   audioCallAccepted,
-  updateCallStreamAction,
+  updateAudioStreamAction,
+  startIncomingCallAction,
 } from './redux/actions/call.action';
 //Sounds
 import messageURL from './sounds/message_received2.mp3';
 import userTypingSound from './sounds/user_typing.mp3';
-
+import { get_audio_permission } from './utils/api-settings';
+import VideoContainer from './shared/video-call/container/VideoContainer';
+import IncomingCall from './shared/video-call/incoming-call/IncomingCall';
 const App = ({
   currentUser,
   chattingWith,
-  callStream,
+  audioStream,
   loginTokenAction,
   initialConnectionEstablishedAction,
   updateUnreadMessagesAction,
-  fetchMessagesAction,
   fetchLastMessagesAction,
   updateUsersOnlineAction,
   removeUsersOnlineAction,
@@ -48,10 +49,9 @@ const App = ({
   updateTypingStartedAction,
   updateTypingStoppedAction,
   audioCallAccepted,
-  updateCallStreamAction,
+  updateAudioStreamAction,
+  startIncomingCallAction,
 }) => {
-  const [stream, setStream] = useState(false);
-
   const { socket, socketID } = useContext(SocketContext);
   const sourceRef = useRef(null);
   const audioRef = useRef(null);
@@ -59,12 +59,27 @@ const App = ({
   let history = useHistory();
 
   useEffect(() => {
-    const userToken = localStorage.getItem('user');
-    if (userToken) {
-      loginTokenAction(userToken);
-    } else {
-      history.push('/login');
-    }
+    (async () => {
+      const userToken = localStorage.getItem('user');
+      if (userToken) {
+        loginTokenAction(userToken);
+        if (
+          audioStream &&
+          Object.keys(audioStream).length === 0 &&
+          audioStream.constructor === Object
+        ) {
+          const stream = await get_audio_permission();
+          updateAudioStreamAction(stream);
+        }
+
+        if (!audioStream) {
+          const stream = await get_audio_permission();
+          updateAudioStreamAction(stream);
+        }
+      } else {
+        history.push('/login');
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -82,7 +97,7 @@ const App = ({
         updateTypingStartedAction(userId);
         //userTypingSound
         audioRef.current.src = userTypingSound;
-        audioRef.current.volume = 0.1;
+        audioRef.current.volume = 0.5;
         audioRef.current.play();
       });
 
@@ -90,55 +105,9 @@ const App = ({
         updateTypingStoppedAction(userId);
       });
 
-      socket.on('incomingCall', callInfo => {
-        console.log('Incoming Call...');
-        console.log(callInfo);
-
-        navigator.mediaDevices
-          .getUserMedia({
-            audio: true,
-          })
-          .then(stream => {
-            updateCallStreamAction(stream);
-            console.log('Request Audio', stream);
-            console.log(callStream);
-            const peer = new Peer({
-              initiator: false,
-              trickle: false,
-              stream: stream,
-            });
-
-            peer.on('signal', data => {
-              const acceptInfo = { signal: data, to: callInfo.from };
-              audioCallAccepted(acceptInfo);
-            });
-
-            peer.on('stream', stream => {
-              audioRef.current.srcObject = stream;
-            });
-
-            peer.signal(callInfo.signalData);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
-        // const peer = new Peer({
-        //   initiator: false,
-        //   trickle: false,
-        //   stream: stream,
-        // });
-
-        // peer.on('signal', data => {
-        //   const acceptInfo = { signal: data, to: callInfo.from };
-        //   audioCallAccepted(acceptInfo);
-        // });
-
-        // peer.on('stream', stream => {
-        //   audioRef.current.srcObject = stream;
-        // });
-
-        // peer.signal(callInfo.signalData);
+      socket.on('incomingCall', async incomingCallData => {
+        const audioStream = await get_audio_permission();
+        startIncomingCallAction(incomingCallData);
       });
 
       socket.on('user connected', userId => {
@@ -150,7 +119,7 @@ const App = ({
       });
     }
     return () => {};
-  }, [socket, callStream]);
+  }, [socket]);
 
   return (
     <div className='container'>
@@ -167,6 +136,7 @@ const App = ({
           type='audio/mpeg'
         />
       </audio>
+
       <Navigation />
       <Switch>
         <Route exact path='/' component={ChatMessagesPage} />
@@ -176,6 +146,8 @@ const App = ({
         <Route exact path='/my-profile' component={UserProfilePage} />
         <Route exact path='/friends' component={FriendsPage} />
       </Switch>
+      <IncomingCall />
+      <VideoContainer />
     </div>
   );
 };
@@ -184,14 +156,13 @@ const mapStateToProps = state => {
   return {
     chattingWith: state.chat.chattingWith,
     currentUser: state.auth.currentUser,
-    callStream: state.call.stream,
+    audioStream: state.call.stream,
   };
 };
 
 export default connect(mapStateToProps, {
   loginTokenAction,
   initialConnectionEstablishedAction,
-  fetchMessagesAction,
   updateUnreadMessagesAction,
   fetchLastMessagesAction,
   updateUsersOnlineAction,
@@ -200,5 +171,6 @@ export default connect(mapStateToProps, {
   updateTypingStartedAction,
   updateTypingStoppedAction,
   audioCallAccepted,
-  updateCallStreamAction,
+  updateAudioStreamAction,
+  startIncomingCallAction,
 })(App);
