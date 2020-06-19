@@ -8,6 +8,7 @@ const Button = ({
   type,
   visibility,
   style,
+  className,
   ...props
 }) => {
   let btn_size = '';
@@ -27,7 +28,7 @@ const Button = ({
   if (!visibility) {
     return (
       <button
-        className={`btn ${btn_size} ${btn_color}`}
+        className={`btn ${btn_size} ${btn_color} ${className}`}
         style={{ ...style }}
         type={type}
         onClick={buttonCallback}

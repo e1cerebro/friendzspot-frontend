@@ -1,48 +1,23 @@
-import React, {
-  Fragment,
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-} from 'react';
-import Image from '../../../shared/image/Image';
+import React from 'react';
 import { connect } from 'react-redux';
 import { GetTimeAgo } from '../../../utils/format-time';
 import './chat-header.style.css';
 import FloatingButton from '../../../shared/floating-button/FloatingButton';
 import FloatingButtonItem from '../../../shared/floating-button-item/FloatingButtonItem';
-import {
-  CHAT_API_URL,
-  get_audio_permission,
-} from '../../../utils/api-settings';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
-import Modal from '../../../shared/modal/Modal';
-import M from 'materialize-css';
 import RoundImage from '../../../shared/round-image/RoundImage';
 import { clearChatHistoryAction } from '../../../redux/actions/chat.actions';
-import SocketContext from '../../../contexts/socket-context';
-import Peer from 'simple-peer';
 import {
-  audioCallInitiated,
-  updateCallStreamAction,
   updateAudioStreamAction,
-  addCallerStreamAction,
-  addReceiverStreamAction,
   showCallModalAction,
   startOutgoingCallAction,
 } from '../../../redux/actions/call.action';
 
 const ChatHeader = ({
-  currentUser,
   chattingWith,
-  audioStream,
   userTyping,
   usersOnline,
   clearChatHistoryAction,
-  audioCallInitiated,
-  updateCallStreamAction,
-  addCallerStreamAction,
-  addReceiverStreamAction,
   showCallModalAction,
   startOutgoingCallAction,
 }) => {
@@ -64,14 +39,6 @@ const ChatHeader = ({
   const clearChatHistory = () => {
     clearChatHistoryAction(chattingWith.id);
     console.log('clear Chat History clicked: ' + chattingWith.id);
-  };
-
-  const getImageURL = user => {
-    if (user.profilePhotoURL) {
-      return CHAT_API_URL + '/' + user.profilePhotoURL;
-    } else {
-      return 'https://www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png';
-    }
   };
 
   return (
@@ -150,20 +117,14 @@ const ChatHeader = ({
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.auth.currentUser,
     chattingWith: state.chat.chattingWith,
     usersOnline: state.chat.usersOnline,
     userTyping: state.reaction.userTyping,
-    audioStream: state.call.stream,
   };
 };
 export default connect(mapStateToProps, {
   clearChatHistoryAction,
-  audioCallInitiated,
-  updateCallStreamAction,
   updateAudioStreamAction,
-  addCallerStreamAction,
-  addReceiverStreamAction,
   showCallModalAction,
   startOutgoingCallAction,
 })(ChatHeader);

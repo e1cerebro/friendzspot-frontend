@@ -3,7 +3,7 @@ import './video-receiver.style.css';
 import { connect } from 'react-redux';
 import RequestLoading from '../../request-loading/RequestLoading';
 
-const VideoReceiver = ({ receiverStream, callee_info, partnerConnected }) => {
+const VideoReceiver = ({ receiverStream, requestMessage, receiver_info }) => {
   const receiverVideoRef = useRef();
 
   useEffect(() => {
@@ -38,7 +38,10 @@ const VideoReceiver = ({ receiverStream, callee_info, partnerConnected }) => {
       ) : (
         <div className='waiting-for-connection'>
           <RequestLoading show='true' type='circle' />
-          <p className='connecting-text'>Waiting for connection</p>
+          <p className='connecting-text'>
+            {' '}
+            {requestMessage ? requestMessage : 'Waiting for connection'}
+          </p>
         </div>
       )}
     </div>
@@ -48,7 +51,6 @@ const VideoReceiver = ({ receiverStream, callee_info, partnerConnected }) => {
 const mapStateToProps = state => {
   return {
     receiverStream: state.call.receiverStream,
-    partnerConnected: state.call.partnerConnected,
   };
 };
 

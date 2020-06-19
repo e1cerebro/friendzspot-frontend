@@ -23,7 +23,6 @@ import {
   updateTypingStartedAction,
   updateTypingStoppedAction,
 } from './redux/actions/reaction.actions';
-import Peer from 'simple-peer';
 import {
   audioCallAccepted,
   updateAudioStreamAction,
@@ -35,6 +34,7 @@ import userTypingSound from './sounds/user_typing.mp3';
 import { get_audio_permission } from './utils/api-settings';
 import VideoContainer from './shared/video-call/container/VideoContainer';
 import IncomingCall from './shared/video-call/incoming-call/IncomingCall';
+import FloatingCallButton from './shared/video-call/floating-call-button/FloatingCallButton';
 const App = ({
   currentUser,
   chattingWith,
@@ -148,6 +148,7 @@ const App = ({
       </Switch>
       <IncomingCall />
       <VideoContainer />
+      <FloatingCallButton />
     </div>
   );
 };

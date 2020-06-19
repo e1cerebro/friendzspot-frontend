@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import VideoReceiver from '../receiver/VideoReceiver';
 import VideoCaller from '../caller/VideoCaller';
@@ -11,6 +11,9 @@ import {
   addReceiverStreamAction,
   audioCallInitiated,
   audioCallAccepted,
+  endIncomingCallAction,
+  endOutgoingCallAction,
+  hideCallModalAction,
 } from '../../../redux/actions/call.action';
 import SocketContext from '../../../contexts/socket-context';
 import CallHeader from '../call-header/CallHeader';
@@ -29,11 +32,17 @@ const VideoContainer = ({
   audioCallAccepted,
   audioCallInitiated,
   incomingStream,
+  endOutgoingCallAction,
+  endIncomingCallAction,
+  hideCallModalAction,
 }) => {
-  const { socket } = useContext(SocketContext);
+  const [outgoingPeerStatus, setOutgoingPeerStatus] = useState(null);
+  const [incomingPeerStatus, setIncomingPeerStatus] = useState(null);
+  const [requestMessage, setRequestMessage] = useState(null);
+  const { socket, socketID } = useContext(SocketContext);
 
   let modal;
-  let peer;
+
   useEffect(() => {
     if (showModal) {
       toggleModalDisplay('show');
@@ -70,13 +79,14 @@ const VideoContainer = ({
           alert('Please set video and audio permission to true');
         } else if (audioStream) {
           toggleModalDisplay('show');
-          receiverPeer(audioStream);
+          receiverPeerActivities(audioStream);
         }
       })();
     } else {
       toggleModalDisplay('hide');
     }
   }, [incomingCallAccepted]);
+
   const toggleModalDisplay = (state = 'hide') => {
     var elems = document.getElementById('video-id');
     modal = M.Modal.init(elems, { dismissible: false });
@@ -88,15 +98,24 @@ const VideoContainer = ({
     }
   };
 
+  const modalClose = () => {
+    hideCallModalAction();
+    toggleModalDisplay('hide');
+  };
+
   const handlePeerActivities = stream => {
     //Create our peer connection
     try {
-      peer = new Peer({
+      const peer = new Peer({
         initiator: true,
         trickle: false,
         stream: stream,
       });
 
+      console.log('Caller Peer created:');
+      console.log(peer);
+
+      setOutgoingPeerStatus(peer);
       addCallerStreamAction(stream);
 
       peer.on('signal', signal => {
@@ -107,8 +126,9 @@ const VideoContainer = ({
           callerId: currentUser.id,
           receiverInfo: chattingWith,
           callerName: currentUser.firstname,
+          socketID: socketID,
         };
-
+        setRequestMessage(null);
         //dispatch calling action
         audioCallInitiated(callInfo);
       });
@@ -117,22 +137,64 @@ const VideoContainer = ({
         addReceiverStreamAction(stream);
       });
 
-      socket.on('callAccepted', signal => {
-        if (!signal.renegotiate) {
-          peer && peer.signal(signal);
+      peer.on('close', data => {
+        if (peer) {
+          destroyPeer(peer);
         }
+        setTimeout(() => {
+          endOutgoingCallAction();
+          console.log('Receiver ended their call');
+        }, 2000);
+      });
+
+      peer.on('connect', () => {
+        console.log('CONNECTED!');
+        setRequestMessage(null);
+      });
+
+      socket.on('callAccepted', signal => {
+        console.log('SIGNAL FROM USER!');
+        console.log(peer);
+        if (!signal.renegotiate && peer.readable) {
+          peer.signal(signal);
+        }
+      });
+
+      // socket.on('receiverNotAvailable', message => {
+      //   setRequestMessage(message);
+      //   if (peer) {
+      //     destroyPeer(peer);
+      //   }
+      //   setTimeout(() => {
+      //     endOutgoingCallAction();
+      //   }, 2000);
+      // });
+
+      socket.on('callEnded', data => {
+        console.log('Receiver ended call for ' + data);
+
+        if (peer) {
+          destroyPeer(peer);
+        }
+        setOutgoingPeerStatus('closed');
+        setTimeout(() => {
+          setOutgoingPeerStatus(null);
+          endOutgoingCallAction();
+        }, 3000);
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const receiverPeer = audioStream => {
+  const receiverPeerActivities = audioStream => {
     const receiverPeer = new Peer({
       initiator: false,
       trickle: false,
       stream: audioStream,
     });
+
+    setIncomingPeerStatus(receiverPeer);
 
     addCallerStreamAction(audioStream);
 
@@ -143,9 +205,18 @@ const VideoContainer = ({
         receiverId: incomingStream.callerId,
       };
 
+      audioCallAccepted(acceptInfo);
+    });
+
+    receiverPeer.on('close', () => {
+      if (receiverPeer) {
+        destroyPeer(receiverPeer);
+      }
+      setIncomingPeerStatus('closed');
       setTimeout(() => {
-        audioCallAccepted(acceptInfo);
-      }, 5000);
+        setIncomingPeerStatus(null);
+        endIncomingCallAction();
+      }, 3000);
     });
 
     receiverPeer.on('stream', stream => {
@@ -153,22 +224,50 @@ const VideoContainer = ({
     });
 
     receiverPeer.signal(incomingStream.signalData);
+
+    socket.on('callEnded', data => {
+      console.log('Caller ended call for ' + data);
+
+      if (receiverPeer) {
+        destroyPeer(receiverPeer);
+      }
+      console.log('Receiver: ', receiverPeer);
+      setIncomingPeerStatus('closed');
+      setTimeout(() => {
+        setIncomingPeerStatus(null);
+        endIncomingCallAction();
+      }, 3000);
+    });
+  };
+
+  const destroyPeer = peer => {
+    if (peer) {
+      peer.destroy();
+      peer = null;
+    }
   };
 
   return (
     <Modal
+      modalClose={modalClose}
       id='video-id'
       footer={<ActionButtons />}
       header={
         <CallHeader
-          name={chattingWith.firstname}
-          photoURL={chattingWith.profilePhotoURL}
+          name={chattingWith ? chattingWith.firstname : ''}
+          photoURL={chattingWith ? chattingWith.profilePhotoURL : ''}
         />
       }
       className='modal-fixed-footer call-modal'>
       <section className='video-convo-container'>
         <VideoCaller />
-        <VideoReceiver />
+        <VideoReceiver requestMessage={requestMessage} />
+        {incomingPeerStatus === 'closed' && (
+          <div className='call-ended'>Call Ended</div>
+        )}{' '}
+        {outgoingPeerStatus === 'closed' && (
+          <div claclassNamess='call-ended'>Call Ended</div>
+        )}
       </section>
     </Modal>
   );
@@ -192,4 +291,7 @@ export default connect(mapStateToProps, {
   addReceiverStreamAction,
   audioCallInitiated,
   audioCallAccepted,
+  endOutgoingCallAction,
+  endIncomingCallAction,
+  hideCallModalAction,
 })(VideoContainer);

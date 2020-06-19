@@ -3,6 +3,7 @@ import SearchField from '../../shared/search-field/SearchField';
 import BackgroundImage from '../../images/chat-wallpaper.jpg';
 import StaticImage from '../../images/static-logo.png';
 import './chat-messages.style.css';
+
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ChatHeader from '../../components/chats/chat-header/ChatHeader';
@@ -10,6 +11,7 @@ import ChatMessages from '../../components/chats/chat-messages/ChatMessages';
 import UserListings from '../../components/chats/user-listings/UserListings';
 import SendMessageBox from '../../components/chats/send-mesage-box/SendMessageBox';
 import Modal from '../../shared/modal/Modal';
+import M from 'materialize-css';
 
 const ChatMessagesPage = ({ chattingWith, currentUser }) => {
   let history = useHistory();
@@ -19,6 +21,12 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
       history.push('/login');
     }
   }, [currentUser]);
+
+  const modalClose = () => {
+    var elems = document.getElementById('chat-messages');
+    let modal = M.Modal.init(elems);
+    modal.close();
+  };
 
   {
     return currentUser ? (
@@ -40,6 +48,7 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
           )}
         </div>
         <Modal
+          modalClose={modalClose}
           bgImage={chattingWith ? defaultBgImage : staticBgImage}
           id='chat-messages'
           className='modal-fixed-footer  bottom-sheet chat-modal'

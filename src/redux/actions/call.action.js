@@ -114,6 +114,15 @@ export const showCallModalAction = () => {
     } catch (e) {}
   };
 };
+export const hideCallModalAction = () => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.HIDE_CALL_MODAL,
+      });
+    } catch (e) {}
+  };
+};
 export const startOutgoingCallAction = () => {
   return async dispatch => {
     try {
@@ -152,21 +161,45 @@ export const IncomingCallRejectedAction = incomingCallData => {
     } catch (e) {}
   };
 };
-export const endOutgoingCallAction = () => {
+export const endOutgoingCallAction = receiverID => {
   return async dispatch => {
     try {
-      dispatch({
-        type: audio_call_actions.END_OUTGOING_CALL,
-      });
+      if (receiverID) {
+        const response = await apiConfig.post(
+          `/api/calls/call-ended/${receiverID}`
+        );
+
+        if (200 === response.status) {
+          dispatch({
+            type: audio_call_actions.END_OUTGOING_CALL,
+          });
+        }
+      } else {
+        dispatch({
+          type: audio_call_actions.END_OUTGOING_CALL,
+        });
+      }
     } catch (e) {}
   };
 };
-export const endIncomingCallAction = () => {
+export const endIncomingCallAction = callerID => {
   return async dispatch => {
     try {
-      dispatch({
-        type: audio_call_actions.END_INCOMING_CALL,
-      });
+      if (callerID) {
+        const response = await apiConfig.post(
+          `/api/calls/call-ended/${callerID}`
+        );
+
+        if (200 === response.status) {
+          dispatch({
+            type: audio_call_actions.END_INCOMING_CALL,
+          });
+        }
+      } else {
+        dispatch({
+          type: audio_call_actions.END_INCOMING_CALL,
+        });
+      }
     } catch (e) {}
   };
 };

@@ -19,7 +19,7 @@ const VideoCaller = ({ callerStream }) => {
   return (
     <div className='caller-video'>
       <div className='caller-video-container'>
-        <video muted ref={callerVideoRef} autoPlay playsInline>
+        <video id='callVideo' muted ref={callerVideoRef} autoPlay playsInline>
           <source src='' type='video/mp4' />
           Your browser does not support the video tag.
         </video>

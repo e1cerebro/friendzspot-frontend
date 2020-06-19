@@ -8,13 +8,13 @@ const CallHeader = ({
   incomingStream,
   outGoingCall,
   incomingCallAccepted,
-  callee_info,
+  receiver_info,
   photoURL,
 }) => {
   let message;
 
   if (incomingCallAccepted && incomingStream) {
-    message = `Call from ${incomingStream.callerName}`;
+    message = `on call with ${incomingStream.callerName}`;
   } else if (outGoingCall && receiverStream) {
     message =
       receiverStream !== null ? `on call with ${name}` : `calling ${name}...`;
@@ -36,7 +36,7 @@ const mapStateToProps = state => {
   return {
     receiverStream: state.call.receiverStream,
     incomingStream: state.call.incomingStream,
-    callee_info: state.call.callee_info,
+    receiver_info: state.call.receiver_info,
     outGoingCall: state.call.outGoingCall,
     incomingCallAccepted: state.call.incomingCallAccepted,
   };

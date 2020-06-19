@@ -2,7 +2,7 @@ import { audio_call_actions } from '../types';
 
 const INITIAL_STATE = {
   audio_call_initiated: false,
-  callee_info: null,
+  receiver_info: null,
   stream: false,
   callerStream: null,
   receiverStream: null,
@@ -11,7 +11,6 @@ const INITIAL_STATE = {
   incomingCallAccepted: false,
   incomingStream: null,
   showModal: false,
-  partnerConnected: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -20,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         audio_call_initiated: true,
-        callee_info: action.payload,
+        receiver_info: action.payload,
       };
     case audio_call_actions.AUDIO_STREAM:
       return {
@@ -58,6 +57,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         incomingCallAccepted: true,
         incomingCall: false,
+        showModal: true,
       };
     case audio_call_actions.END_INCOMING_CALL:
       return {
@@ -66,7 +66,7 @@ export default (state = INITIAL_STATE, action) => {
         incomingCallAccepted: false,
         showModal: false,
         audio_call_initiated: false,
-        callee_info: null,
+        receiver_info: null,
         callerStream: null,
         receiverStream: null,
         incomingStream: null,
@@ -82,7 +82,7 @@ export default (state = INITIAL_STATE, action) => {
         outGoingCall: false,
         showModal: false,
         audio_call_initiated: false,
-        callee_info: null,
+        receiver_info: null,
         callerStream: null,
         receiverStream: null,
       };
@@ -90,6 +90,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         showModal: true,
+      };
+    case audio_call_actions.HIDE_CALL_MODAL:
+      return {
+        ...state,
+        showModal: false,
       };
     case audio_call_actions.HIDE_CALL_MODAL:
       return {
