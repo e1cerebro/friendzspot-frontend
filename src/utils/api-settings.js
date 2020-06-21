@@ -56,3 +56,10 @@ export const stopAudioOnly = stream => {
     }
   });
 };
+
+export const destroyPeer = peer => {
+  if (peer) {
+    peer.destroy();
+    peer = null;
+  }
+};

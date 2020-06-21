@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, Fragment } from 'react';
+import React, { useEffect, useRef, Fragment, useContext } from 'react';
 import Modal from '../../modal/Modal';
 import { connect } from 'react-redux';
 import M from 'materialize-css';
@@ -6,22 +6,34 @@ import './icoming-call.styles.css';
 import Button from '../../form-inputs/button/Button';
 import Icon from '../../icon/Icon';
 import RoundImage from '../../round-image/RoundImage';
-import { IncomingCallAcceptedAction } from '../../../redux/actions/call.action';
+import {
+  IncomingCallAcceptedAction,
+  endIncomingCallAction,
+} from '../../../redux/actions/call.action';
 import incomingCallURL from '../../../sounds/incoming_call.mp3';
-
+import SocketContext from '../../../contexts/socket-context';
 const IncomingCall = ({
+  currentUser,
   incomingCall,
   incomingStream,
   incomingCallAccepted,
   IncomingCallAcceptedAction,
+  endIncomingCallAction,
 }) => {
   const callAudioRef = useRef(null);
   const callSourceRef = useRef(null);
+  const { socket } = useContext(SocketContext);
+
   let modal;
   useEffect(() => {
     var elem = document.getElementById('incoming-call-alert');
     modal = M.Modal.init(elem, { dismissible: false });
-    if (incomingCall && incomingStream) {
+
+    if (
+      incomingCall &&
+      incomingStream &&
+      incomingStream.callerId !== currentUser.id
+    ) {
       callAudioRef.current.play();
       modal.open();
     }
@@ -35,14 +47,32 @@ const IncomingCall = ({
     }
   }, [incomingCallAccepted]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on('callEnded', () => {
+        declineCall();
+      });
+    }
+    return () => {};
+  }, [socket, incomingStream]);
+
   const acceptCall = () => {
     IncomingCallAcceptedAction();
     callAudioRef.current.pause();
   };
 
   const declineCall = () => {
-    console.log('Accept call');
-    callAudioRef.current.pause();
+    try {
+      if (incomingStream) {
+        endIncomingCallAction(incomingStream.callerId);
+        var elem = document.getElementById('incoming-call-alert');
+        modal = M.Modal.init(elem, { dismissible: false });
+        modal.close();
+        callAudioRef.current.pause();
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   if (incomingStream !== null) {
@@ -105,11 +135,14 @@ const IncomingCall = ({
 const mapStateToProps = state => {
   return {
     incomingCall: state.call.incomingCall,
+    currentUser: state.auth.currentUser,
     incomingStream: state.call.incomingStream,
+    audioStream: state.call.stream,
     incomingCallAccepted: state.call.incomingCallAccepted,
   };
 };
 
-export default connect(mapStateToProps, { IncomingCallAcceptedAction })(
-  IncomingCall
-);
+export default connect(mapStateToProps, {
+  IncomingCallAcceptedAction,
+  endIncomingCallAction,
+})(IncomingCall);

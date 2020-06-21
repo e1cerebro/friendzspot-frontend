@@ -1,11 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { connect } from 'react-redux';
+import Peer from 'simple-peer';
+import SocketContext from '../../../contexts/socket-context';
+import M from 'materialize-css';
+
+/*--------------------- components ---------------------*/
+import Modal from '../../modal/Modal';
 import VideoReceiver from '../receiver/VideoReceiver';
 import VideoCaller from '../caller/VideoCaller';
 import ActionButtons from '../call-actions/ActionButtons';
-import Modal from '../../modal/Modal';
-import M from 'materialize-css';
-import Peer from 'simple-peer';
+import CallHeader from '../call-header/CallHeader';
+
+/*--------------------- Actions ---------------------*/
 import {
   addCallerStreamAction,
   addReceiverStreamAction,
@@ -15,15 +21,16 @@ import {
   endOutgoingCallAction,
   hideCallModalAction,
 } from '../../../redux/actions/call.action';
-import SocketContext from '../../../contexts/socket-context';
-import CallHeader from '../call-header/CallHeader';
+
+/*--------------------- Styling ---------------------*/
 import './video-container.style.css';
+import { streamIsValid, toggleModal } from '../../../utils/general';
+import { destroyPeer } from '../../../utils/api-settings';
 
 const VideoContainer = ({
   currentUser,
   chattingWith,
   outGoingCall,
-  incomingCall,
   incomingCallAccepted,
   audioStream,
   showModal,
@@ -45,24 +52,23 @@ const VideoContainer = ({
 
   useEffect(() => {
     if (showModal) {
-      toggleModalDisplay('show');
+      toggleModal('video-id', 'show');
     } else {
-      toggleModalDisplay('hide');
+      toggleModal('video-id', 'hide');
     }
   }, [showModal]);
 
   useEffect(() => {
     if (outGoingCall) {
       (async () => {
-        if (
-          audioStream &&
-          Object.keys(audioStream).length === 0 &&
-          audioStream.constructor === Object
-        ) {
-          alert('Please set video and audio permission to true');
+        if (!streamIsValid(audioStream)) {
+          endOutgoingCallAction();
+          alert(
+            'CALL COULD NOT BE COMPLETED!\nPlease allow app to access your audio and video stream before making a call!'
+          );
         } else if (audioStream) {
-          toggleModalDisplay('show');
-          handlePeerActivities(audioStream);
+          toggleModal('video-id', 'show');
+          createInitiatorPeerConnection(audioStream);
         }
       })();
     }
@@ -71,39 +77,38 @@ const VideoContainer = ({
   useEffect(() => {
     if (incomingCallAccepted) {
       (async () => {
-        if (
-          audioStream &&
-          Object.keys(audioStream).length === 0 &&
-          audioStream.constructor === Object
-        ) {
-          alert('Please set video and audio permission to true');
+        if (!streamIsValid(audioStream)) {
+          alert(
+            'CALL COULD NOT BE COMPLETED!\nPlease allow app to access your audio and video stream before making a call!'
+          );
+          endIncomingCallAction();
         } else if (audioStream) {
-          toggleModalDisplay('show');
+          toggleModal('video-id', 'show');
           receiverPeerActivities(audioStream);
         }
       })();
     } else {
-      toggleModalDisplay('hide');
+      toggleModal('video-id', 'hide');
     }
   }, [incomingCallAccepted]);
 
-  const toggleModalDisplay = (state = 'hide') => {
-    var elems = document.getElementById('video-id');
-    modal = M.Modal.init(elems, { dismissible: false });
+  // const toggleModalDisplay = (state = 'hide') => {
+  //   var elems = document.getElementById('video-id');
+  //   modal = M.Modal.init(elems, { dismissible: false });
 
-    if ('show' === state) {
-      modal.open();
-    } else if ('hide' === state) {
-      modal.close();
-    }
-  };
+  //   if ('show' === state) {
+  //     modal.open();
+  //   } else if ('hide' === state) {
+  //     modal.close();
+  //   }
+  // };
 
   const modalClose = () => {
     hideCallModalAction();
-    toggleModalDisplay('hide');
+    toggleModal('video-id', 'hide');
   };
 
-  const handlePeerActivities = stream => {
+  const createInitiatorPeerConnection = stream => {
     //Create our peer connection
     try {
       const peer = new Peer({
@@ -111,9 +116,6 @@ const VideoContainer = ({
         trickle: false,
         stream: stream,
       });
-
-      console.log('Caller Peer created:');
-      console.log(peer);
 
       setOutgoingPeerStatus(peer);
       addCallerStreamAction(stream);
@@ -128,9 +130,15 @@ const VideoContainer = ({
           callerName: currentUser.firstname,
           socketID: socketID,
         };
+
         setRequestMessage(null);
-        //dispatch calling action
         audioCallInitiated(callInfo);
+
+        //End the call if the user doesnt pick the call after 2 mins
+        setTimeout(() => {
+          endInitiatorCall(peer);
+          endOutgoingCallAction(chattingWith.id);
+        }, 20000);
       });
 
       peer.on('stream', stream => {
@@ -138,13 +146,7 @@ const VideoContainer = ({
       });
 
       peer.on('close', data => {
-        if (peer) {
-          destroyPeer(peer);
-        }
-        setTimeout(() => {
-          endOutgoingCallAction();
-          console.log('Receiver ended their call');
-        }, 2000);
+        endInitiatorCall(peer);
       });
 
       peer.on('connect', () => {
@@ -153,37 +155,21 @@ const VideoContainer = ({
       });
 
       socket.on('callAccepted', signal => {
-        console.log('SIGNAL FROM USER!');
-        console.log(peer);
         if (!signal.renegotiate && peer.readable) {
           peer.signal(signal);
         }
       });
 
-      // socket.on('receiverNotAvailable', message => {
-      //   setRequestMessage(message);
-      //   if (peer) {
-      //     destroyPeer(peer);
-      //   }
-      //   setTimeout(() => {
-      //     endOutgoingCallAction();
-      //   }, 2000);
-      // });
+      socket.on('receiverNotAvailable', message => {
+        setRequestMessage(message);
+        endInitiatorCall(peer);
+      });
 
       socket.on('callEnded', data => {
-        console.log('Receiver ended call for ' + data);
-
-        if (peer) {
-          destroyPeer(peer);
-        }
-        setOutgoingPeerStatus('closed');
-        setTimeout(() => {
-          setOutgoingPeerStatus(null);
-          endOutgoingCallAction();
-        }, 3000);
+        endInitiatorCall(peer);
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -199,13 +185,13 @@ const VideoContainer = ({
     addCallerStreamAction(audioStream);
 
     receiverPeer.on('signal', signal => {
-      //
       const acceptInfo = {
         signal: signal,
         receiverId: incomingStream.callerId,
       };
-
-      audioCallAccepted(acceptInfo);
+      if (!signal.renegotiate) {
+        audioCallAccepted(acceptInfo);
+      }
     });
 
     receiverPeer.on('close', () => {
@@ -226,12 +212,9 @@ const VideoContainer = ({
     receiverPeer.signal(incomingStream.signalData);
 
     socket.on('callEnded', data => {
-      console.log('Caller ended call for ' + data);
-
       if (receiverPeer) {
         destroyPeer(receiverPeer);
       }
-      console.log('Receiver: ', receiverPeer);
       setIncomingPeerStatus('closed');
       setTimeout(() => {
         setIncomingPeerStatus(null);
@@ -240,11 +223,15 @@ const VideoContainer = ({
     });
   };
 
-  const destroyPeer = peer => {
+  const endInitiatorCall = (peer, message) => {
     if (peer) {
-      peer.destroy();
-      peer = null;
+      destroyPeer(peer);
     }
+    setOutgoingPeerStatus('closed');
+    setTimeout(() => {
+      setOutgoingPeerStatus(null);
+      endOutgoingCallAction();
+    }, 3000);
   };
 
   return (
@@ -266,7 +253,7 @@ const VideoContainer = ({
           <div className='call-ended'>Call Ended</div>
         )}{' '}
         {outgoingPeerStatus === 'closed' && (
-          <div claclassNamess='call-ended'>Call Ended</div>
+          <div className='call-ended'>Call Ended</div>
         )}
       </section>
     </Modal>

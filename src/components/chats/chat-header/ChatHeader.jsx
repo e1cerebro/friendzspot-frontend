@@ -16,6 +16,8 @@ import {
 const ChatHeader = ({
   chattingWith,
   userTyping,
+  outGoingCall,
+  audio_call_initiated,
   usersOnline,
   clearChatHistoryAction,
   showCallModalAction,
@@ -24,8 +26,6 @@ const ChatHeader = ({
   if (!chattingWith) {
     return <RequestLoading type='bar' show={true} />;
   }
-
-  const startAduioCall = async () => {};
 
   const startVideoCall = async () => {
     showCallModalAction();
@@ -77,22 +77,24 @@ const ChatHeader = ({
       </div>
       <div className='chat-panel__header_right'>
         <FloatingButton>
-          <FloatingButtonItem
-            onClick={startAduioCall}
-            title='Audio Call'
-            icon='call'
-            iconColor='#fff'
-            colorClass='yellow darken-4'
-            position='bottom'
-          />
-          <FloatingButtonItem
-            onClick={startVideoCall}
-            title='Video Call'
-            icon='videocam'
-            iconColor='#fff'
-            colorClass='green'
-            position='bottom'
-          />
+          {outGoingCall || audio_call_initiated ? (
+            <FloatingButtonItem
+              title='On a call'
+              icon='videocam'
+              iconColor='#fff'
+              colorClass={`disabled`}
+              position='bottom'
+            />
+          ) : (
+            <FloatingButtonItem
+              onClick={startVideoCall}
+              title='Video Call'
+              icon='videocam'
+              iconColor='#fff'
+              colorClass={`green`}
+              position='bottom'
+            />
+          )}
           <FloatingButtonItem
             onClick={viewProfile}
             title={`View ${chattingWith.firstname}'s Profile`}
@@ -120,6 +122,8 @@ const mapStateToProps = state => {
     chattingWith: state.chat.chattingWith,
     usersOnline: state.chat.usersOnline,
     userTyping: state.reaction.userTyping,
+    outGoingCall: state.call.outGoingCall,
+    audio_call_initiated: state.call.audio_call_initiated,
   };
 };
 export default connect(mapStateToProps, {
