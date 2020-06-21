@@ -299,3 +299,22 @@ export const updateProfilePhotoAction = data => {
     }
   };
 };
+export const updateCoverPhotoAction = data => {
+  return async dispatch => {
+    try {
+      let response = await apiConfig.post(
+        '/api/users/update/cover-photo',
+        data
+      );
+
+      if (200 === response.status) {
+        dispatch({
+          type: user_actions.USER_COVER_PHOTO_UPDATED,
+          payload: response.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};

@@ -1,7 +1,7 @@
 import { audio_call_actions } from '../types';
 
 const INITIAL_STATE = {
-  audio_call_initiated: false,
+  video_call_initiated: false,
   receiver_info: null,
   stream: false,
   callerStream: null,
@@ -18,7 +18,7 @@ export default (state = INITIAL_STATE, action) => {
     case audio_call_actions.USER_CALL_INITIATED:
       return {
         ...state,
-        audio_call_initiated: true,
+        video_call_initiated: true,
         receiver_info: action.payload,
       };
     case audio_call_actions.AUDIO_STREAM:
@@ -65,7 +65,7 @@ export default (state = INITIAL_STATE, action) => {
         incomingCall: false,
         incomingCallAccepted: false,
         showModal: false,
-        audio_call_initiated: false,
+        video_call_initiated: false,
         receiver_info: null,
         callerStream: null,
         receiverStream: null,
@@ -81,7 +81,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         outGoingCall: false,
         showModal: false,
-        audio_call_initiated: false,
+        video_call_initiated: false,
         receiver_info: null,
         callerStream: null,
         receiverStream: null,

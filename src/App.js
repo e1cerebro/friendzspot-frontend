@@ -38,7 +38,7 @@ import FloatingCallButton from './shared/video-call/floating-call-button/Floatin
 const App = ({
   currentUser,
   chattingWith,
-  audioStream,
+  browerMediaStream,
   loginTokenAction,
   initialConnectionEstablishedAction,
   updateUnreadMessagesAction,
@@ -64,15 +64,15 @@ const App = ({
       if (userToken) {
         loginTokenAction(userToken);
         if (
-          audioStream &&
-          Object.keys(audioStream).length === 0 &&
-          audioStream.constructor === Object
+          browerMediaStream &&
+          Object.keys(browerMediaStream).length === 0 &&
+          browerMediaStream.constructor === Object
         ) {
           const stream = await get_audio_permission();
           updateAudioStreamAction(stream);
         }
 
-        if (!audioStream) {
+        if (!browerMediaStream) {
           const stream = await get_audio_permission();
           updateAudioStreamAction(stream);
         }
@@ -106,7 +106,7 @@ const App = ({
       });
 
       socket.on('incomingCall', async incomingCallData => {
-        const audioStream = await get_audio_permission();
+        const browerMediaStream = await get_audio_permission();
         startIncomingCallAction(incomingCallData);
       });
 
@@ -157,7 +157,7 @@ const mapStateToProps = state => {
   return {
     chattingWith: state.chat.chattingWith,
     currentUser: state.auth.currentUser,
-    audioStream: state.call.stream,
+    browerMediaStream: state.call.stream,
   };
 };
 

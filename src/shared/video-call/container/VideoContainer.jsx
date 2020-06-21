@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import Peer from 'simple-peer';
 import SocketContext from '../../../contexts/socket-context';
-import M from 'materialize-css';
 
 /*--------------------- components ---------------------*/
 import Modal from '../../modal/Modal';
@@ -31,8 +30,9 @@ const VideoContainer = ({
   currentUser,
   chattingWith,
   outGoingCall,
+  receiverStream,
   incomingCallAccepted,
-  audioStream,
+  browerMediaStream,
   showModal,
   addCallerStreamAction,
   addReceiverStreamAction,
@@ -48,8 +48,6 @@ const VideoContainer = ({
   const [requestMessage, setRequestMessage] = useState(null);
   const { socket, socketID } = useContext(SocketContext);
 
-  let modal;
-
   useEffect(() => {
     if (showModal) {
       toggleModal('video-id', 'show');
@@ -61,14 +59,14 @@ const VideoContainer = ({
   useEffect(() => {
     if (outGoingCall) {
       (async () => {
-        if (!streamIsValid(audioStream)) {
+        if (!streamIsValid(browerMediaStream)) {
           endOutgoingCallAction();
           alert(
             'CALL COULD NOT BE COMPLETED!\nPlease allow app to access your audio and video stream before making a call!'
           );
-        } else if (audioStream) {
+        } else if (browerMediaStream) {
           toggleModal('video-id', 'show');
-          createInitiatorPeerConnection(audioStream);
+          createInitiatorPeerConnection(browerMediaStream);
         }
       })();
     }
@@ -77,31 +75,20 @@ const VideoContainer = ({
   useEffect(() => {
     if (incomingCallAccepted) {
       (async () => {
-        if (!streamIsValid(audioStream)) {
+        if (!streamIsValid(browerMediaStream)) {
           alert(
             'CALL COULD NOT BE COMPLETED!\nPlease allow app to access your audio and video stream before making a call!'
           );
           endIncomingCallAction();
-        } else if (audioStream) {
+        } else if (browerMediaStream) {
           toggleModal('video-id', 'show');
-          receiverPeerActivities(audioStream);
+          receiverPeerActivities(browerMediaStream);
         }
       })();
     } else {
       toggleModal('video-id', 'hide');
     }
   }, [incomingCallAccepted]);
-
-  // const toggleModalDisplay = (state = 'hide') => {
-  //   var elems = document.getElementById('video-id');
-  //   modal = M.Modal.init(elems, { dismissible: false });
-
-  //   if ('show' === state) {
-  //     modal.open();
-  //   } else if ('hide' === state) {
-  //     modal.close();
-  //   }
-  // };
 
   const modalClose = () => {
     hideCallModalAction();
@@ -136,8 +123,11 @@ const VideoContainer = ({
 
         //End the call if the user doesnt pick the call after 2 mins
         setTimeout(() => {
-          endInitiatorCall(peer);
-          endOutgoingCallAction(chattingWith.id);
+          if (!receiverStream) {
+            console.log(receiverStream);
+            endInitiatorCall(peer);
+            endOutgoingCallAction(chattingWith.id);
+          }
         }, 20000);
       });
 
@@ -173,16 +163,16 @@ const VideoContainer = ({
     }
   };
 
-  const receiverPeerActivities = audioStream => {
+  const receiverPeerActivities = browerMediaStream => {
     const receiverPeer = new Peer({
       initiator: false,
       trickle: false,
-      stream: audioStream,
+      stream: browerMediaStream,
     });
 
     setIncomingPeerStatus(receiverPeer);
 
-    addCallerStreamAction(audioStream);
+    addCallerStreamAction(browerMediaStream);
 
     receiverPeer.on('signal', signal => {
       const acceptInfo = {
@@ -264,9 +254,10 @@ const mapStateToProps = state => {
   return {
     currentUser: state.auth.currentUser,
     chattingWith: state.chat.chattingWith,
-    audioStream: state.call.stream,
+    browerMediaStream: state.call.stream,
     outGoingCall: state.call.outGoingCall,
     incomingCall: state.call.incomingCall,
+    receiverStream: state.call.receiverStream,
     incomingCallAccepted: state.call.incomingCallAccepted,
     incomingStream: state.call.incomingStream,
     showModal: state.call.showModal,

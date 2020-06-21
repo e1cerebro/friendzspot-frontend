@@ -94,11 +94,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         currentUser: action.payload,
       };
-    case api_loader_action.USER_PROFILE_PHOTO_UPDATE_ENDED:
-      return {
-        ...state,
-        currentUser: action.payload,
-      };
     default:
       return state;
   }

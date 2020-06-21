@@ -1,15 +1,13 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import {
   userItemClicked,
   fetchMessagesAction,
   readUnreadMessagesAction,
 } from '../../../redux/actions/chat.actions';
-import Image from '../../../shared/image/Image';
 import { GetTimeAgo } from '../../../utils/format-time';
 import './list-item.style.css';
 import { CHAT_API_URL } from '../../../utils/api-settings';
-import Icon from '../../../shared/icon/Icon';
 import M from 'materialize-css';
 import { shortenString } from '../../../utils/text-utils';
 import RoundImage from '../../../shared/round-image/RoundImage';

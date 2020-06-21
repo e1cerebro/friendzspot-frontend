@@ -56,10 +56,19 @@ span.add-photo.success i {
     transition: all 2s;
 }
 
+
+
 .edit-cover-photo {
     position: absolute;
     bottom: 27px;
     right: 45px;
+    display: none;
+}
+
+
+
+section.user-header-banner:hover .edit-cover-photo {
+    display: block;
 }
 
 .edit-cover-photo button.btn.btn-primary {
@@ -89,8 +98,31 @@ span.add-photo.success i {
         right: 0;
         margin-left: auto;
         margin-right: auto;
-        width: 170px;
+        width: 270px;
         top: 50%;
         transform: translateY(-50%);
+        text-align: center;
     }
+
+    .cover-photo-loading {
+        width: 300px !important;
+        top: 12% !important;
+    }
+}
+
+.cover-photo-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    top: 30%;
+    text-align: center;
+    transform: translateY(-50%);
+}
+
+.cover-photo-loading p {
+    margin-top: 69px;
+    color: #fff;
 }

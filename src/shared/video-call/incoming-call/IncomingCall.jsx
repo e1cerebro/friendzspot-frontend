@@ -12,6 +12,7 @@ import {
 } from '../../../redux/actions/call.action';
 import incomingCallURL from '../../../sounds/incoming_call.mp3';
 import SocketContext from '../../../contexts/socket-context';
+import { toggleModal } from '../../../utils/general';
 const IncomingCall = ({
   currentUser,
   incomingCall,
@@ -24,26 +25,20 @@ const IncomingCall = ({
   const callSourceRef = useRef(null);
   const { socket } = useContext(SocketContext);
 
-  let modal;
   useEffect(() => {
-    var elem = document.getElementById('incoming-call-alert');
-    modal = M.Modal.init(elem, { dismissible: false });
-
     if (
       incomingCall &&
       incomingStream &&
       incomingStream.callerId !== currentUser.id
     ) {
       callAudioRef.current.play();
-      modal.open();
+      toggleModal('incoming-call-alert', 'show');
     }
   }, [incomingCall, incomingStream]);
 
   useEffect(() => {
-    var elem = document.getElementById('incoming-call-alert');
-    modal = M.Modal.init(elem, { dismissible: false });
     if (incomingCallAccepted) {
-      modal.close();
+      toggleModal('incoming-call-alert', 'hide');
     }
   }, [incomingCallAccepted]);
 
@@ -65,9 +60,7 @@ const IncomingCall = ({
     try {
       if (incomingStream) {
         endIncomingCallAction(incomingStream.callerId);
-        var elem = document.getElementById('incoming-call-alert');
-        modal = M.Modal.init(elem, { dismissible: false });
-        modal.close();
+        toggleModal('incoming-call-alert', 'hide');
         callAudioRef.current.pause();
       }
     } catch (error) {

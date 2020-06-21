@@ -17,7 +17,7 @@ const ChatHeader = ({
   chattingWith,
   userTyping,
   outGoingCall,
-  audio_call_initiated,
+  video_call_initiated,
   usersOnline,
   clearChatHistoryAction,
   showCallModalAction,
@@ -77,7 +77,7 @@ const ChatHeader = ({
       </div>
       <div className='chat-panel__header_right'>
         <FloatingButton>
-          {outGoingCall || audio_call_initiated ? (
+          {outGoingCall || video_call_initiated ? (
             <FloatingButtonItem
               title='On a call'
               icon='videocam'
@@ -123,7 +123,7 @@ const mapStateToProps = state => {
     usersOnline: state.chat.usersOnline,
     userTyping: state.reaction.userTyping,
     outGoingCall: state.call.outGoingCall,
-    audio_call_initiated: state.call.audio_call_initiated,
+    video_call_initiated: state.call.video_call_initiated,
   };
 };
 export default connect(mapStateToProps, {
