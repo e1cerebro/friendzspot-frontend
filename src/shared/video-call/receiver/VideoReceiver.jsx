@@ -3,7 +3,12 @@ import './video-receiver.style.css';
 import { connect } from 'react-redux';
 import RequestLoading from '../../request-loading/RequestLoading';
 
-const VideoReceiver = ({ receiverStream, requestMessage, receiver_info }) => {
+const VideoReceiver = ({
+  receiverStream,
+  requestMessage,
+  incomingStream,
+  receiver_info,
+}) => {
   const receiverVideoRef = useRef();
 
   useEffect(() => {
@@ -22,16 +27,14 @@ const VideoReceiver = ({ receiverStream, requestMessage, receiver_info }) => {
       {receiverStream !== null ? (
         <div className='receiver-video-container'>
           <video
+            id='receiverVideo'
             style={{
               display: `${receiverStream === null ? 'hidden' : 'block'}`,
             }}
             ref={receiverVideoRef}
             autoPlay
             playsInline>
-            <source
-              src='https://archive.org/embed/SampleVideo1280x7205mb/SampleVideo_1280x720_5mb.mp4'
-              type='video/mp4'
-            />
+            <source src=' ' type='video/mp4' />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -51,6 +54,7 @@ const VideoReceiver = ({ receiverStream, requestMessage, receiver_info }) => {
 const mapStateToProps = state => {
   return {
     receiverStream: state.call.receiverStream,
+    incomingStream: state.call.incomingStream,
   };
 };
 

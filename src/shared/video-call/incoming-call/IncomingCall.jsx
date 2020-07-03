@@ -13,14 +13,16 @@ import {
 import incomingCallURL from '../../../sounds/incoming_call.mp3';
 import SocketContext from '../../../contexts/socket-context';
 import { toggleModal } from '../../../utils/general';
-const IncomingCall = ({
-  currentUser,
-  incomingCall,
-  incomingStream,
-  incomingCallAccepted,
-  IncomingCallAcceptedAction,
-  endIncomingCallAction,
-}) => {
+const IncomingCall = props => {
+  const {
+    currentUser,
+    incomingCall,
+    incomingStream,
+    incomingCallAccepted,
+    IncomingCallAcceptedAction,
+    endIncomingCallAction,
+  } = props;
+
   const callAudioRef = useRef(null);
   const callSourceRef = useRef(null);
   const { socket } = useContext(SocketContext);

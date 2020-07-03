@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { GetTimeAgo } from '../../../utils/format-time';
 import Icon from '../../../shared/icon/Icon';
 import { ReactTinyLink } from 'react-tiny-link';
-import M from 'materialize-css';
+import LinkPreview from '../../../shared/link-preview/LinkPreview';
 
 const Message = ({ message, currentUser }) => {
   const sender =
@@ -14,7 +14,7 @@ const Message = ({ message, currentUser }) => {
     if (message) {
       scrollToCurrentMessage(message);
     }
-  }, []);
+  }, [message]);
   const scrollToCurrentMessage = message => {
     if (!message) return;
     const currentMessage = document.getElementById(message.id);
@@ -48,25 +48,6 @@ const Message = ({ message, currentUser }) => {
     }
   };
 
-  const showLinkPreview = message => {
-    var urlRE = new RegExp(
-      '([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+'
-    );
-    const link = message.match(urlRE);
-    if (link) {
-      return (
-        <ReactTinyLink
-          cardSize='small'
-          showGraphic={true}
-          maxLine={2}
-          minLine={1}
-          url={`${link[0]}`}
-        />
-      );
-    } else {
-    }
-  };
-
   if (message) {
     return (
       <div className={`chat-msg ${sender}`} id={message.id}>
@@ -81,7 +62,7 @@ const Message = ({ message, currentUser }) => {
               </div>
             </div>
             <div className='link-preview'>
-              {showLinkPreview(message.message)}
+              <LinkPreview message={message.message} />
             </div>
             <div className='message-footer'>
               <small className='chat-msg-date'></small>
@@ -107,7 +88,7 @@ const Message = ({ message, currentUser }) => {
   return <Fragment />;
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     currentUser: state.auth.currentUser,
   };

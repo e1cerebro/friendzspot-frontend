@@ -31,13 +31,13 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
   {
     return currentUser ? (
       <div className='row chat-section'>
-        <div className='col s12 m4' style={{ padding: 0 }}>
+        <div className='col s12 m4 column'  style={{ padding: 0 }}>
           <SearchField />
           <UserListings />
         </div>
 
         <div
-          className='col s12 m8  hide-on-small-only	'
+          className='col s12 m8  hide-on-small-only	column'
           style={chattingWith ? defaultBgImage : staticBgImage}>
           {chattingWith && (
             <Fragment>

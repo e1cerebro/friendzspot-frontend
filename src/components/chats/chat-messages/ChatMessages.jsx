@@ -6,13 +6,15 @@ import { GetTimeAgo } from '../../../utils/format-time';
 import { fetchMessagesAction } from '../../../redux/actions/chat.actions';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
 
-const ChatMessages = ({
-  chattingWith,
-  chatMessages,
-  currentUser,
-  clearingChatHistory,
-  fetchMessagesAction,
-}) => {
+const ChatMessages = props => {
+  const {
+    chattingWith,
+    chatMessages,
+    currentUser,
+    clearingChatHistory,
+    fetchMessagesAction,
+  } = props;
+
   const [fetchingMessages, setFetchingMessages] = useState(true);
   const chatMessagesRef = useRef(null);
 
@@ -26,17 +28,13 @@ const ChatMessages = ({
     if (chattingWith) {
       fetchMessagesAction(chattingWith.id, currentUser.id);
       updateScroll();
-      setTimeout(() => {
-        setFetchingMessages(false);
-      }, 500);
+      setFetchingMessages(false);
     }
   }, [chattingWith]);
 
   const messageDate = [];
-
   const displayMessageDate = message => {
     const date = GetTimeAgo(message.created_at);
-
     if (!messageDate.includes(date)) {
       messageDate.push(date);
       return (
@@ -78,7 +76,6 @@ const ChatMessages = ({
                 <Fragment
                   key={message.created_at + message._id + message.updated_at}>
                   {displayMessageDate(message)}
-
                   <Message key={message.id} message={message} />
                 </Fragment>
               );

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import './video-caller.style.css';
 import { connect } from 'react-redux';
 
-const VideoCaller = ({ callerStream }) => {
+const VideoCaller = ({ callerStream, incomingStream }) => {
   const callerVideoRef = useRef();
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const VideoCaller = ({ callerStream }) => {
 const mapStateToProps = state => {
   return {
     callerStream: state.call.callerStream,
+    incomingStream: state.call.incomingStream,
   };
 };
 

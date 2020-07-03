@@ -12,33 +12,33 @@ import {
   showCallModalAction,
   startOutgoingCallAction,
 } from '../../../redux/actions/call.action';
+import OnlineIndicator from '../../../shared/online-indicator/OnlineIndicator';
 
-const ChatHeader = ({
-  chattingWith,
-  userTyping,
-  outGoingCall,
-  video_call_initiated,
-  usersOnline,
-  clearChatHistoryAction,
-  showCallModalAction,
-  startOutgoingCallAction,
-}) => {
+const ChatHeader = props => {
+  const {
+    chattingWith,
+    userTyping,
+    outGoingCall,
+    video_call_initiated,
+    usersOnline,
+    clearChatHistoryAction,
+    showCallModalAction,
+    startOutgoingCallAction,
+  } = props;
+
   if (!chattingWith) {
     return <RequestLoading type='bar' show={true} />;
   }
 
   const startVideoCall = async () => {
+    //Ask for video and audio permission
+
     showCallModalAction();
     startOutgoingCallAction();
   };
 
-  const viewProfile = () => {
-    console.log('View Profile clicked');
-  };
-
   const clearChatHistory = () => {
     clearChatHistoryAction(chattingWith.id);
-    console.log('clear Chat History clicked: ' + chattingWith.id);
   };
 
   return (
@@ -47,9 +47,9 @@ const ChatHeader = ({
         <div className='user-avater'>
           <RoundImage size='50px' url={chattingWith.profilePhotoURL} />
           {usersOnline && usersOnline.includes(chattingWith.id) ? (
-            <span className='online-icon'> </span>
+            <OnlineIndicator status='online' />
           ) : (
-            <span className='offline-icon'> </span>
+            <OnlineIndicator status='offline' />
           )}
         </div>
 
@@ -69,9 +69,7 @@ const ChatHeader = ({
           </span>
 
           {userTyping && userTyping.includes(chattingWith.id) && (
-            <span className='user-typing'>
-              {chattingWith.firstname} is typing...
-            </span>
+            <span className='user-typing'>typing...</span>
           )}
         </div>
       </div>
@@ -95,18 +93,11 @@ const ChatHeader = ({
               position='bottom'
             />
           )}
-          <FloatingButtonItem
-            onClick={viewProfile}
-            title={`View ${chattingWith.firstname}'s Profile`}
-            icon='account_circle'
-            iconColor='#fff'
-            colorClass='blue darken-4'
-            position='bottom'
-          />{' '}
+
           <FloatingButtonItem
             onClick={clearChatHistory}
             title={`Clear History`}
-            icon='hourglass_empty'
+            icon='delete_forever'
             iconColor='#fff'
             colorClass='red darken-4'
             position='bottom'

@@ -9,7 +9,8 @@ import { logoutAction } from '../../redux/actions/auth.actions';
 import RoundImage from '../../shared/round-image/RoundImage';
 import DefaultCoverImage from '../../images/default-cover-photo.jpg';
 import Badge from '../../shared/badge/Badge';
-
+import { BuildImageURL } from '../../utils/api-settings';
+import Logo from '../../images/u-chat-logo.png';
 const Navigation = ({
   currentUser,
   unreadMessages,
@@ -18,6 +19,7 @@ const Navigation = ({
   friends,
 }) => {
   let history = useHistory();
+
   useEffect(() => {
     getMyFriendsAction();
     var elems = document.querySelectorAll('.sidenav');
@@ -27,8 +29,6 @@ const Navigation = ({
   const authLogout = () => {
     logoutAction(currentUser.id);
     history.push('/login');
-    // var elems = document.querySelectorAll('.sidenav');
-    // var instances = M.Sidenav.init(elems, { edge: 'left' });
   };
 
   if (currentUser) {
@@ -36,7 +36,7 @@ const Navigation = ({
       <nav className='friendzspot-navigation'>
         <div className='nav-wrapper'>
           <Link to='/' className='brand-logo'>
-            FriendzSpot
+            <img alt={'site-logo'} src={Logo} />
           </Link>
           <a
             href='#'
@@ -45,7 +45,7 @@ const Navigation = ({
             <i className='material-icons'>menu</i>
           </a>
           <ul id='nav-mobile' className='right hide-on-med-and-down'>
-            <li style={{ backgroundColor: '#b30c0c' }}>
+            <li>
               <NavLink to='/messenger'>
                 <Icon color='#fff' className='left' icon='question_answer' />{' '}
                 Chat{' '}
@@ -69,7 +69,7 @@ const Navigation = ({
             </li>{' '}
             {currentUser && (
               <li className='user-account'>
-                <NavLink to='/my-profile'>
+                <NavLink to='/me'>
                   {currentUser.firstname}
                   <Icon color='#fff' className='left' icon='account_circle' />
                 </NavLink>
@@ -85,12 +85,27 @@ const Navigation = ({
               </li>
             )}
           </ul>
-
+          {/* Mobile Navigation */}
           <ul id='slide-out' className='sidenav mobile-side-nav'>
             <li>
               <div className='user-view'>
                 <div className='layer-overlay'></div>
-                <div className='background' style={defaultCoverImage}>
+                <div
+                  className='background'
+                  style={{
+                    backgroundImage: `url(${
+                      currentUser.coverPhotoURL
+                        ? BuildImageURL(currentUser.coverPhotoURL)
+                        : DefaultCoverImage
+                    })`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    padding: '0',
+                    position: 'relative',
+                    minHeight: '320px',
+
+                    backgroundSize: ' cover',
+                  }}>
                   <div className='user-profile-photo'>
                     <RoundImage
                       size='150px'
@@ -133,7 +148,7 @@ const Navigation = ({
             </li>{' '}
             {currentUser && (
               <li>
-                <NavLink to='/my-profile'>
+                <NavLink to='/me'>
                   Profile
                   <Icon color='#fff' className='left' icon='account_circle' />
                 </NavLink>

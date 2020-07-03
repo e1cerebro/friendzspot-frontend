@@ -13,22 +13,24 @@ import Icon from '../../../shared/icon/Icon';
 import { useHistory } from 'react-router-dom';
 import { userItemClicked } from '../../../redux/actions/chat.actions';
 import { GetTimeAgo } from '../../../utils/format-time';
-import { CHAT_API_URL } from '../../../utils/api-settings';
+import { BuildImageURL } from '../../../utils/api-settings';
 import Button from '../../../shared/form-inputs/button/Button';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
+import RoundImage from '../../../shared/round-image/RoundImage';
+const FriendInfoBox = props => {
+  const {
+    friend,
+    id,
+    type,
+    userItemClicked,
+    unfriendFriendAction,
+    unblockFriendAction,
+    blockFriendAction,
+    acceptFriendRequestAction,
+    declineFriendRequestAction,
+    removePendingFriendRequestAction,
+  } = props;
 
-const FriendInfoBox = ({
-  friend,
-  id,
-  type,
-  userItemClicked,
-  unfriendFriendAction,
-  unblockFriendAction,
-  blockFriendAction,
-  acceptFriendRequestAction,
-  declineFriendRequestAction,
-  removePendingFriendRequestAction,
-}) => {
   const [unblockRequest, setunblockRequest] = useState(false);
   const [blockRequest, setblockRequest] = useState(false);
   const [cancelRequest, setcancelRequest] = useState(false);
@@ -90,24 +92,14 @@ const FriendInfoBox = ({
   const declineUnacceptedFriendRequest = () => {
     setDeclineFriendRequest(true);
     setAcceptRequest(true);
-    setTimeout(() => {
-      declineFriendRequestAction(id);
-      setDeclineFriendRequest(false);
-      setAcceptRequest(false);
-    }, 5000);
+    declineFriendRequestAction(id);
+    setDeclineFriendRequest(false);
+    setAcceptRequest(false);
   };
 
   const goToMessenger = () => {
     userItemClicked(friend);
     history.push('/messenger');
-  };
-
-  const getImageURL = friend => {
-    if (friend.profilePhotoURL) {
-      return CHAT_API_URL + '/' + friend.profilePhotoURL;
-    } else {
-      return 'https://www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png';
-    }
   };
 
   const showActionButton = () => {
@@ -258,19 +250,9 @@ const FriendInfoBox = ({
   };
 
   return (
-    <div className='friend-item friend-info-box hoverable scale-transition scale-in'>
+    <div className='friend-item'>
       <div className='friend-item__left'>
-        <div
-          className='circle'
-          style={{
-            height: '150px',
-            width: '150px',
-            border: '6px solid rgb(228, 225, 225)',
-            backgroundImage: `url(${getImageURL(friend)})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: ' no-repeat',
-          }}></div>
+        <RoundImage url={friend.profilePhotoURL} size='150px' />
       </div>
 
       <div className='friend-item__right'>

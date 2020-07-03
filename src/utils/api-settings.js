@@ -1,7 +1,13 @@
 export const CHAT_API_URL = 'http://127.0.0.1:4000';
 
+export const BuildImageURL = path => {
+  if (!path) {
+    return 'https://www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png';
+  }
+  return CHAT_API_URL + '/' + path;
+};
+
 export const get_audio_permission = async () => {
-  //Request the audio capability of the device
   try {
     let audioStream = await navigator.mediaDevices.getUserMedia({
       audio: true,
@@ -30,6 +36,8 @@ export const stopVideoOnly = stream => {
         track.stop();
       }
     });
+
+    return stream;
   }
 };
 

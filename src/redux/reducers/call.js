@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   incomingCall: false,
   incomingCallAccepted: false,
   incomingStream: null,
+  peersConnected: false,
   showModal: false,
 };
 
@@ -20,6 +21,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         video_call_initiated: true,
         receiver_info: action.payload,
+      };
+    case audio_call_actions.CALL_PEERS_CONNECTED:
+      return {
+        ...state,
+        peersConnected: action.payload,
       };
     case audio_call_actions.AUDIO_STREAM:
       return {

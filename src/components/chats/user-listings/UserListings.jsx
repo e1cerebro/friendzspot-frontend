@@ -1,31 +1,27 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import ListItem from '../list-item/ListItem';
-import './user-listings-style.css';
 import RequestLoading from '../../../shared/request-loading/RequestLoading';
 import { fetchLastMessagesAction } from '../../../redux/actions/chat.actions';
-const UserListings = ({
-  last_messages,
-  currentUser,
-  fetchLastMessagesAction,
-}) => {
+import { UserCollection } from './UserListing.styled';
+import './user-listings-style.css';
+
+const UserListings = props => {
+  const { last_messages, currentUser, fetchLastMessagesAction } = props;
   useEffect(() => {
     fetchLastMessagesAction();
   }, []);
 
   const userID = currentUser.id;
-  const senderCollection = [];
-  const receiverCollection = [];
 
   const userCollection = [];
 
   return (
     <section className='users-collection'>
-      <ul className='collection scroll'>
+      <UserCollection className='collection scroll'>
         {last_messages ? (
           last_messages.map(message => {
             let senderID = message.sender.id;
-            let receiverID = message.receiver.id;
             let id;
 
             if (userID === senderID) {
@@ -45,7 +41,7 @@ const UserListings = ({
         ) : (
           <RequestLoading type='bar' show={true} />
         )}
-      </ul>
+      </UserCollection>
     </section>
   );
 };

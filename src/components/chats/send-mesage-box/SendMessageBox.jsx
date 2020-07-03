@@ -3,17 +3,14 @@ import './send-message-box.style.css';
 import { connect } from 'react-redux';
 import {
   sendChatMessageAction,
-  fetchLastMessagesAction,
   notifyTypingStartedAction,
   notifyTypingStoppedAction,
 } from '../../../redux/actions/chat.actions';
-import { autoExpand } from '../../../utils/inputs';
 import Icon from '../../../shared/icon/Icon';
 
 const SendMessageBox = ({
   chattingWith,
   sendChatMessageAction,
-  fetchLastMessagesAction,
   notifyTypingStartedAction,
   notifyTypingStoppedAction,
   currentUser,
@@ -24,14 +21,11 @@ const SendMessageBox = ({
   });
 
   const messageBoxRef = useRef(null);
-  const messageFormRef = useRef(null);
   const inputFileRef = useRef(null);
 
   const handleInputChange = event => {
-    //autoExpand(event.target);
     if (event.keyCode !== 13) {
       setInput({ ...input, [event.target.id]: event.target.value });
-      //autoExpand(event.target);
     }
   };
 
@@ -114,7 +108,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps, {
-  fetchLastMessagesAction,
   sendChatMessageAction,
   notifyTypingStartedAction,
   notifyTypingStoppedAction,

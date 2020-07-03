@@ -203,3 +203,13 @@ export const endIncomingCallAction = callerID => {
     } catch (e) {}
   };
 };
+export const PeersConnectedAction = status => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: audio_call_actions.CALL_PEERS_CONNECTED,
+        payload: status,
+      });
+    } catch (e) {}
+  };
+};

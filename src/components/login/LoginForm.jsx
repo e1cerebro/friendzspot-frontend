@@ -40,7 +40,6 @@ const LoginForm = ({ loginAction, currentUser }) => {
             value={inputs.email}
             className='validate email'
           />
-          <label htmlFor='email'></label>
         </div>
 
         <div className='input-field'>
@@ -52,7 +51,6 @@ const LoginForm = ({ loginAction, currentUser }) => {
             value={inputs.password}
             className='validate password'
           />
-          <label htmlFor='password'></label>
         </div>
 
         <CustomButton

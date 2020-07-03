@@ -9,6 +9,7 @@ export const reaction_actions = {
 };
 
 export const user_actions = {
+  CHECK_IS_USER_ONLINE: 'CHECK_IS_USER_ONLINE',
   SIGNUP_ACTION: 'SIGNUP_ACTION',
   SIGNIN_ACTION: 'SIGNIN_ACTION',
   SIGNOUT_ACTION: 'SIGNOUT_ACTION',
@@ -67,6 +68,7 @@ export const audio_call_actions = {
   SHOW_CALL_MODAL: 'SHOW_CALL_MODAL',
   HIDE_CALL_MODAL: 'HIDE_CALL_MODAL',
   ACCEPT_CALL: 'ACCEPT_CALL',
+  CALL_PEERS_CONNECTED: 'CALL_PEERS_CONNECTED',
 };
 
 export const api_loader_action = {

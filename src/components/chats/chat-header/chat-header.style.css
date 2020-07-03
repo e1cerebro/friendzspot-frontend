@@ -55,14 +55,3 @@ span.user-info__username {
 .user-avater {
     position: relative;
 }
-
-span.online-icon {
-    position: absolute;
-    height: 15px;
-    width: 15px;
-    background-color: #009906;
-    border-radius: 50%;
-    display: inline-block;
-    right: 2px;
-    top: 1px;
-}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, Fragment } from 'react';
 import { connect } from 'react-redux';
 import Peer from 'simple-peer';
 import SocketContext from '../../../contexts/socket-context';
@@ -19,12 +19,14 @@ import {
   endIncomingCallAction,
   endOutgoingCallAction,
   hideCallModalAction,
+  PeersConnectedAction,
 } from '../../../redux/actions/call.action';
 
 /*--------------------- Styling ---------------------*/
 import './video-container.style.css';
 import { streamIsValid, toggleModal } from '../../../utils/general';
 import { destroyPeer } from '../../../utils/api-settings';
+import CallTimer from '../timer/CallTimer';
 
 const VideoContainer = ({
   currentUser,
@@ -42,6 +44,7 @@ const VideoContainer = ({
   endOutgoingCallAction,
   endIncomingCallAction,
   hideCallModalAction,
+  PeersConnectedAction,
 }) => {
   const [outgoingPeerStatus, setOutgoingPeerStatus] = useState(null);
   const [incomingPeerStatus, setIncomingPeerStatus] = useState(null);
@@ -122,17 +125,18 @@ const VideoContainer = ({
         audioCallInitiated(callInfo);
 
         //End the call if the user doesnt pick the call after 2 mins
-        setTimeout(() => {
-          if (!receiverStream) {
-            console.log(receiverStream);
-            endInitiatorCall(peer);
-            endOutgoingCallAction(chattingWith.id);
-          }
-        }, 20000);
+        // setTimeout(() => {
+        //   if (!receiverStream) {
+        //     console.log(receiverStream);
+        //     endInitiatorCall(peer);
+        //     endOutgoingCallAction(chattingWith.id);
+        //   }
+        // }, 20000);
       });
 
       peer.on('stream', stream => {
         addReceiverStreamAction(stream);
+        PeersConnectedAction(true);
       });
 
       peer.on('close', data => {
@@ -187,6 +191,7 @@ const VideoContainer = ({
     receiverPeer.on('close', () => {
       if (receiverPeer) {
         destroyPeer(receiverPeer);
+        PeersConnectedAction(false);
       }
       setIncomingPeerStatus('closed');
       setTimeout(() => {
@@ -197,6 +202,7 @@ const VideoContainer = ({
 
     receiverPeer.on('stream', stream => {
       addReceiverStreamAction(stream);
+      PeersConnectedAction(true);
     });
 
     receiverPeer.signal(incomingStream.signalData);
@@ -204,6 +210,7 @@ const VideoContainer = ({
     socket.on('callEnded', data => {
       if (receiverPeer) {
         destroyPeer(receiverPeer);
+        PeersConnectedAction(false);
       }
       setIncomingPeerStatus('closed');
       setTimeout(() => {
@@ -216,6 +223,7 @@ const VideoContainer = ({
   const endInitiatorCall = (peer, message) => {
     if (peer) {
       destroyPeer(peer);
+      PeersConnectedAction(false);
     }
     setOutgoingPeerStatus('closed');
     setTimeout(() => {
@@ -228,7 +236,6 @@ const VideoContainer = ({
     <Modal
       modalClose={modalClose}
       id='video-id'
-      footer={<ActionButtons />}
       header={
         <CallHeader
           name={chattingWith ? chattingWith.firstname : ''}
@@ -239,6 +246,10 @@ const VideoContainer = ({
       <section className='video-convo-container'>
         <VideoCaller />
         <VideoReceiver requestMessage={requestMessage} />
+        <div className='floating-content'>
+          <CallTimer />
+          <ActionButtons />
+        </div>
         {incomingPeerStatus === 'closed' && (
           <div className='call-ended'>Call Ended</div>
         )}{' '}
@@ -272,4 +283,5 @@ export default connect(mapStateToProps, {
   endOutgoingCallAction,
   endIncomingCallAction,
   hideCallModalAction,
+  PeersConnectedAction,
 })(VideoContainer);

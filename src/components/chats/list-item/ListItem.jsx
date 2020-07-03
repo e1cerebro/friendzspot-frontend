@@ -1,31 +1,41 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   userItemClicked,
   fetchMessagesAction,
   readUnreadMessagesAction,
 } from '../../../redux/actions/chat.actions';
+
 import { GetTimeAgo } from '../../../utils/format-time';
 import './list-item.style.css';
-import { CHAT_API_URL } from '../../../utils/api-settings';
 import M from 'materialize-css';
 import { shortenString } from '../../../utils/text-utils';
 import RoundImage from '../../../shared/round-image/RoundImage';
+import OnlineIndicator from '../../../shared/online-indicator/OnlineIndicator';
+import { checkUserIsOnlineAction } from '../../../redux/actions/user.actions';
 
-const ListItem = ({
-  message,
-  currentUser,
-  unreadMessages,
-  usersOnline,
-  userTyping,
-  userItemClicked,
-  fetchMessagesAction,
-  readUnreadMessagesAction,
-}) => {
+const ListItem = props => {
+  const {
+    message,
+    currentUser,
+    unreadMessages,
+    usersOnline,
+    userTyping,
+    userItemClicked,
+    fetchMessagesAction,
+    readUnreadMessagesAction,
+    checkUserIsOnlineAction,
+  } = props;
   let instance;
 
   const user =
     message.sender.id === currentUser.id ? message.receiver : message.sender;
+
+  useEffect(() => {
+    // setInterval(() => {
+    //   //checkUserIsOnlineAction(user._id);
+    // }, 15000);
+  }, []);
 
   //When a user item is clicked.
   const userClicked = () => {
@@ -33,15 +43,6 @@ const ListItem = ({
     fetchMessagesAction(data.id, data.currentUser);
     userItemClicked(data);
     readUnreadMessagesAction(data);
-  };
-
-  //get the right user profile photo
-  const getImageURL = user => {
-    if (user.profilePhotoURL) {
-      return CHAT_API_URL + '/' + user.profilePhotoURL;
-    } else {
-      return 'https://www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png';
-    }
   };
 
   const mobileUserClicked = () => {
@@ -71,9 +72,9 @@ const ListItem = ({
         className='chat-listing-single hide-on-small-only'>
         <div className='user-avater'>
           {friendOnline(message) ? (
-            <span className='online-icon'> </span>
+            <OnlineIndicator status='online' />
           ) : (
-            <span className='offline-icon'> </span>
+            <OnlineIndicator status='offline' />
           )}
 
           <RoundImage size='50px' url={user.profilePhotoURL} />
@@ -100,7 +101,7 @@ const ListItem = ({
 
           {userTyping && userTyping.includes(user.id) && (
             <span className='user-typing'>
-              <span className='content'>{user.firstname} is typing...</span>
+              <span className='content'>typing...</span>
             </span>
           )}
         </div>
@@ -166,4 +167,5 @@ export default connect(mapStateToProps, {
   userItemClicked,
   fetchMessagesAction,
   readUnreadMessagesAction,
+  checkUserIsOnlineAction,
 })(ListItem);

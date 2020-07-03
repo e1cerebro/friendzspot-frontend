@@ -10,8 +10,8 @@ section.video-convo-container .modal.modal-fixed-footer .modal-footer {
 }
 
 div#video-id.call-modal {
-    width: 485px;
-    height: 510px;
+    width: 500px;
+    height: 488px;
 }
 
 div#video-id.call-modal .modal.modal-fixed-footer {
@@ -21,6 +21,7 @@ div#video-id.call-modal .modal.modal-fixed-footer {
 
 div#video-id.call-modal .modal-content {
     padding: 0;
+    overflow: hidden;
 }
 
 div#video-id.call-modal .modal-header {
@@ -50,4 +51,26 @@ div#video-id.call-modal .modal-close-container {
     text-align: center;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.floating-content {
+    position: absolute;
+    bottom: 30px;
+    width: 200px;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#video-id.call-modal .modal-footer {
+    display: none;
+}
+
+
+@media only screen and (max-width: 600px) {
+    div#video-id.call-modal {
+        width: 392px;
+    }
 }

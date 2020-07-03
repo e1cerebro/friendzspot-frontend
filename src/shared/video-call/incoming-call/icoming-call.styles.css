@@ -28,3 +28,9 @@ div#incoming-call-alert .modal-header {
     padding-bottom: 10px;
     font-size: 30px;
 }
+
+@media only screen and (max-width: 600px) {
+    div#incoming-call-alert {
+        width: 90%;
+    }
+}

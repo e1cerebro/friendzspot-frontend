@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { acceptFriendRequestAction } from '../../../redux/actions/user.actions';
-import Loading from '../../../shared/loading/loading';
 const FriendRequestListItems = ({ request, acceptFriendRequestAction }) => {
   const acceptRequest = event => {
     event.preventDefault();
@@ -9,6 +8,7 @@ const FriendRequestListItems = ({ request, acceptFriendRequestAction }) => {
   };
   const declineRequest = event => {
     event.preventDefault();
+    console.log(request._id);
   };
 
   return (

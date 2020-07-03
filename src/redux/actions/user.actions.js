@@ -318,3 +318,19 @@ export const updateCoverPhotoAction = data => {
     }
   };
 };
+
+export const checkUserIsOnlineAction = userId => {
+  return async dispatch => {
+    try {
+      const response = await apiConfig.get(
+        `/api/users/check-is-online/${userId}`
+      );
+      if (200 === response.status) {
+        dispatch({
+          type: user_actions.CHECK_IS_USER_ONLINE,
+          payload: userId,
+        });
+      }
+    } catch (e) {}
+  };
+};
