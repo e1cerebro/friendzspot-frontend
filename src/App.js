@@ -17,6 +17,7 @@ import IncomingCall from './shared/video-call/incoming-call/IncomingCall';
 import FloatingCallButton from './shared/video-call/floating-call-button/FloatingCallButton';
 import SocketObservers from './shared/socket-observers/SocketObservers';
 import './App.css';
+import Footer from './components/footer/Footer';
 
 const App = ({
   browerMediaStream,
@@ -43,34 +44,40 @@ const App = ({
   }, []);
 
   return (
-    <div className='container'>
-      <audio
-        id='musicaudio'
-        preload='none'
-        style={{ display: 'none' }}
-        className='raw-player'
-        controls
-        ref={audioRef}>
-        <source
-          ref={sourceRef}
-          src={messageURL ? messageURL : ''}
-          type='audio/mpeg'
-        />
-      </audio>
-
-      <Navigation />
-      <Switch>
-        <Route exact path='/' component={ChatMessagesPage} />
-        <Route exact path='/login' component={AuthPage} />
-        <Route exact path='/messenger' component={ChatMessagesPage} />
-        <Route exact path='/people' component={People} />
-        <Route exact path='/me' component={UserProfilePage} />
-        <Route exact path='/friends' component={FriendsPage} />
-      </Switch>
-      <SocketObservers audioRef={audioRef} />
-      <IncomingCall />
-      <VideoContainer />
-      <FloatingCallButton />
+    <div className='container u-chat-container'>
+      <div className='header'>
+        <Navigation />
+      </div>
+      <div className='main'>
+        <audio
+          id='musicaudio'
+          preload='none'
+          style={{ display: 'none' }}
+          className='raw-player'
+          controls
+          ref={audioRef}>
+          <source
+            ref={sourceRef}
+            src={messageURL ? messageURL : ''}
+            type='audio/mpeg'
+          />
+        </audio>
+        <Switch>
+          <Route exact path='/' component={ChatMessagesPage} />
+          <Route exact path='/login' component={AuthPage} />
+          <Route exact path='/messenger' component={ChatMessagesPage} />
+          <Route exact path='/people' component={People} />
+          <Route exact path='/me' component={UserProfilePage} />
+          <Route exact path='/friends' component={FriendsPage} />
+        </Switch>
+        <SocketObservers audioRef={audioRef} />
+        <IncomingCall />
+        <VideoContainer />
+        <FloatingCallButton />
+      </div>
+      <div className='footer'>
+        <Footer />
+      </div>
     </div>
   );
 };

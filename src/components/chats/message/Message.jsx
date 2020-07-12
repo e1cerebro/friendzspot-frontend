@@ -8,7 +8,9 @@ import LinkPreview from '../../../shared/link-preview/LinkPreview';
 
 const Message = ({ message, currentUser }) => {
   const sender =
-    message && message.sender.id === currentUser.id ? 'owner' : 'friend';
+    message && message.sender && message.sender.id === currentUser.id
+      ? 'owner'
+      : 'friend';
 
   useEffect(() => {
     if (message) {
@@ -48,7 +50,7 @@ const Message = ({ message, currentUser }) => {
     }
   };
 
-  if (message) {
+  if (message && message.sender) {
     return (
       <div className={`chat-msg ${sender}`} id={message.id}>
         <div className='chat-msg-content'>

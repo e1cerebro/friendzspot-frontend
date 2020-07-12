@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import CustomButton from '../../shared/custom-button/CustomButton';
 import Icon from '../../shared/icon/Icon';
-import { registerAction } from '../../redux/actions/auth.actions';
+import {
+  registerAction,
+  resetErrorAction,
+} from '../../redux/actions/auth.actions';
+import { useHistory } from 'react-router-dom';
+import './register-form.style.css';
 
-const RegisterForm = ({ registerAction }) => {
+const RegisterForm = ({ signupError, resetErrorAction, registerAction }) => {
   const [inputs, setInputs] = useState({
     firstname: '',
     lastname: '',
     email: '',
     password: '',
-    confirmpassword: '',
   });
 
-  const handleSubmit = event => {
+  useEffect(() => {
+    resetErrorAction();
+  }, []);
+
+  let history = useHistory();
+
+  const handleSubmit = async event => {
     event.preventDefault();
-    registerAction(inputs);
+    const response = await registerAction(inputs);
+    if (response) {
+      history.push('/');
+    }
   };
 
   const handleInputChange = event => {
@@ -69,26 +82,23 @@ const RegisterForm = ({ registerAction }) => {
           />
           <label htmlFor='password'></label>
         </div>
-        <div className='input-field'>
-          <input
-            placeholder='Enter your confirm password'
-            id='confirmpassword'
-            onChange={handleInputChange}
-            type='password'
-            value={inputs.confirmpassword}
-            className='validate confirmpassword'
-          />
-          <label htmlFor='confirmpassword'></label>
-        </div>
         <CustomButton
           className='waves-effect red darken-4'
           type='submit'
           name='login'>
           Register Account <Icon icon='create' color='#fff' />
         </CustomButton>
+        {signupError && <p className='auth-error-message'>{signupError}</p>}
       </form>
     </div>
   );
 };
 
-export default connect(null, { registerAction })(RegisterForm);
+const mapStateToProps = state => {
+  return {
+    signupError: state.auth.signupError,
+  };
+};
+export default connect(mapStateToProps, { registerAction, resetErrorAction })(
+  RegisterForm
+);

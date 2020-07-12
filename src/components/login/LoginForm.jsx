@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import './login-form.style.css';
 import CustomButton from '../../shared/custom-button/CustomButton';
 import Icon from '../../shared/icon/Icon';
-import { loginAction } from '../../redux/actions/auth.actions';
+import {
+  loginAction,
+  resetLoginErrorAction,
+} from '../../redux/actions/auth.actions';
 import { useHistory } from 'react-router-dom';
 
-const LoginForm = ({ loginAction, currentUser }) => {
+const LoginForm = ({
+  signinError,
+  loginAction,
+  resetLoginErrorAction,
+  currentUser,
+}) => {
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
   });
 
   let history = useHistory();
+
+  useEffect(() => {
+    resetLoginErrorAction();
+  }, []);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -59,6 +71,8 @@ const LoginForm = ({ loginAction, currentUser }) => {
           name='login'>
           Login <Icon icon='send' color='#fff' />
         </CustomButton>
+
+        {signinError && <p className='auth-error-message'>{signinError}</p>}
       </form>
     </div>
   );
@@ -67,7 +81,10 @@ const LoginForm = ({ loginAction, currentUser }) => {
 const mapStateToProps = state => {
   return {
     currentUser: state.auth.currentUser,
+    signinError: state.auth.signinError,
   };
 };
 
-export default connect(mapStateToProps, { loginAction })(LoginForm);
+export default connect(mapStateToProps, { loginAction, resetLoginErrorAction })(
+  LoginForm
+);

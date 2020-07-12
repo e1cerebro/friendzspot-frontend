@@ -1,4 +1,4 @@
-import { chat_actions } from '../types';
+import { chat_actions, user_actions } from '../types';
 
 const INITIAL_STATE = {
   chattingWith: null,

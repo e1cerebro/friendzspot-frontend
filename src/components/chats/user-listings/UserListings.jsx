@@ -21,20 +21,22 @@ const UserListings = props => {
       <UserCollection className='collection scroll'>
         {last_messages ? (
           last_messages.map(message => {
-            let senderID = message.sender.id;
-            let id;
+            if (message.sender && message.receiver) {
+              let senderID = message.sender.id;
+              let id;
 
-            if (userID === senderID) {
-              id = message.receiver.id;
-              if (!userCollection.includes(id)) {
-                userCollection.push(id);
-                return <ListItem key={message.id} message={message} />;
-              }
-            } else if (userID !== senderID) {
-              id = message.sender.id;
-              if (!userCollection.includes(id)) {
-                userCollection.push(id);
-                return <ListItem key={message.id} message={message} />;
+              if (userID === senderID) {
+                id = message.receiver.id;
+                if (!userCollection.includes(id)) {
+                  userCollection.push(id);
+                  return <ListItem key={message.id} message={message} />;
+                }
+              } else if (userID !== senderID) {
+                id = message.sender.id;
+                if (!userCollection.includes(id)) {
+                  userCollection.push(id);
+                  return <ListItem key={message.id} message={message} />;
+                }
               }
             }
           })

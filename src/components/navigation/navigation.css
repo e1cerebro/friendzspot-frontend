@@ -8,6 +8,10 @@ nav.friendzspot-navigation li.user-account {
   margin: 0 10px;
 }
 
+nav.friendzspot-navigation ul a {
+  font-size: 0.8rem;
+}
+
 ul.mobile-side-nav .user-view {
   padding: 0;
   margin-bottom: 0;
@@ -64,12 +68,12 @@ nav .brand-logo img {
     background-color: #092548;
   }
 
-  .sidenav li > a {
+  .sidenav li>a {
     color: rgba(255, 255, 255, 0.87);
     font-size: 19px;
   }
 
-  .sidenav li > a > i.material-icons {
+  .sidenav li>a>i.material-icons {
     color: rgba(255, 255, 255, 0.54);
   }
 }

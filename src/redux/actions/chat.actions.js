@@ -178,3 +178,24 @@ export const clearChatHistoryAction = friendId => {
     }
   };
 };
+
+export const checkUserIsOnlineAction = userId => {
+  return async dispatch => {
+    try {
+      const response = await apiConfig.get(
+        `/api/users/check-is-online/${userId}`
+      );
+      if ('online' === response.data.status) {
+        dispatch({
+          type: chat_actions.CURRENT_USERS_ONLINE,
+          payload: response.data.id,
+        });
+      } else if ('offline' === response.data.status) {
+        dispatch({
+          type: chat_actions.REMOVE_CURRENT_USER_ONLINE,
+          payload: userId,
+        });
+      }
+    } catch (error) {}
+  };
+};

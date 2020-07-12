@@ -6,15 +6,19 @@ import {
   readUnreadMessagesAction,
 } from '../../../redux/actions/chat.actions';
 
-import { GetTimeAgo } from '../../../utils/format-time';
+import { GetTimeAgo, diff_minutes } from '../../../utils/format-time';
 import './list-item.style.css';
 import M from 'materialize-css';
 import { shortenString } from '../../../utils/text-utils';
 import RoundImage from '../../../shared/round-image/RoundImage';
 import OnlineIndicator from '../../../shared/online-indicator/OnlineIndicator';
-import { checkUserIsOnlineAction } from '../../../redux/actions/user.actions';
+import { checkUserIsOnlineAction } from '../../../redux/actions/chat.actions';
+import { useState } from 'react';
 
 const ListItem = props => {
+  const [userOnlineLastChecked, setUserOnlineLastChecked] = useState(
+    new Date()
+  );
   const {
     message,
     currentUser,
@@ -32,10 +36,16 @@ const ListItem = props => {
     message.sender.id === currentUser.id ? message.receiver : message.sender;
 
   useEffect(() => {
-    // setInterval(() => {
-    //   //checkUserIsOnlineAction(user._id);
-    // }, 15000);
+    checkIsUserOnline();
   }, []);
+
+  const checkIsUserOnline = () => {
+    let currentTime = new Date();
+    if (user) {
+      checkUserIsOnlineAction(user._id);
+      setUserOnlineLastChecked(new Date());
+    }
+  };
 
   //When a user item is clicked.
   const userClicked = () => {
@@ -67,6 +77,7 @@ const ListItem = props => {
   return (
     <Fragment>
       <li
+        onMouseEnter={checkIsUserOnline}
         onClick={userClicked}
         id={user.id}
         className='chat-listing-single hide-on-small-only'>
@@ -82,7 +93,7 @@ const ListItem = props => {
         <div className='chat-info'>
           <div className='chat-info__single-item'>
             <span className='username'>
-              {user.firstname} {user.lastname}
+              {user.firstname} .{user.lastname[0]}
             </span>
             <span className='secondary-content message-time '>
               {unreadMessages && unreadMessages.length > 0 && (

@@ -70,7 +70,7 @@ const Navigation = ({
             {currentUser && (
               <li className='user-account'>
                 <NavLink to='/me'>
-                  {currentUser.firstname}
+                  Account ({currentUser.firstname})
                   <Icon color='#fff' className='left' icon='account_circle' />
                 </NavLink>
               </li>
@@ -149,7 +149,7 @@ const Navigation = ({
             {currentUser && (
               <li>
                 <NavLink to='/me'>
-                  Profile
+                  Account
                   <Icon color='#fff' className='left' icon='account_circle' />
                 </NavLink>
               </li>

@@ -60,41 +60,37 @@ const SendMessageBox = ({
     <div className='submit-text-box'>
       <div
         className=' message-box'
-        style={{ margin: '0', backgroundColor: ' #fff', zIndex: '1000' }}>
-        <div className='attach-file'>
+        style={{
+          margin: '0',
+          backgroundColor: ' #fff',
+          zIndex: '1000',
+          height: '70px',
+        }}>
+        {/* <div className='attach-file'>
           <i
             onClick={() => inputFileRef.current.click()}
             className='material-icons prefix  attach-files'>
             attach_file
           </i>
-        </div>
-        <div className='input-field' style={{ marginTop: '9px' }}>
-          <input
-            style={{ display: 'none' }}
-            type='file'
-            ref={inputFileRef}
-            className='form-control-file'
-            name='attachments'
-            id='attachments'
-            onChange={handleInputChange}
-          />
+        </div> */}
 
-          <textarea
-            onFocus={notifyTypingStarted}
-            onBlur={notifyTypingStopped}
-            ref={messageBoxRef}
-            onChange={handleInputChange}
-            id='message'
-            defaultValue={input.message}
-            placeholder='Enter your message...'
-            className='message-textbox scroll'></textarea>
-        </div>
-
-        <div className='send-btn'>
-          <span className='submit-btn ' onClick={handleMessageSubmit}>
-            <Icon icon='send' color='danger' size='40px' />
-          </span>
-        </div>
+        <textarea
+          onFocus={notifyTypingStarted}
+          onBlur={notifyTypingStopped}
+          ref={messageBoxRef}
+          onChange={handleInputChange}
+          id='message'
+          defaultValue={input.message}
+          placeholder='Enter your message...'
+          className='message-textbox scroll'></textarea>
+        {input.message.length > 0 && (
+          <div className='send-btn' onClick={handleMessageSubmit}>
+            {/* <span className='submit-btn ' onClick={handleMessageSubmit}>
+           <Icon icon='send' color='neutral' size='50px' />
+         </span> */}
+            SEND
+          </div>
+        )}
       </div>
     </div>
   );

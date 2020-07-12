@@ -2,8 +2,6 @@ import React, { useContext, Fragment, useEffect } from 'react';
 import SearchField from '../../shared/search-field/SearchField';
 import BackgroundImage from '../../images/chat-wallpaper.jpg';
 import StaticImage from '../../images/static-logo.png';
-import './chat-messages.style.css';
-
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ChatHeader from '../../components/chats/chat-header/ChatHeader';
@@ -12,8 +10,17 @@ import UserListings from '../../components/chats/user-listings/UserListings';
 import SendMessageBox from '../../components/chats/send-mesage-box/SendMessageBox';
 import Modal from '../../shared/modal/Modal';
 import M from 'materialize-css';
+import './chat-messages.style.css';
+import Button from '../../shared/form-inputs/button/Button';
+import Icon from '../../shared/icon/Icon';
+import WelcomeScreen from '../../shared/welcome-screen/WelcomeScreen';
 
-const ChatMessagesPage = ({ chattingWith, currentUser }) => {
+const ChatMessagesPage = ({
+  last_messages,
+  friends,
+  chattingWith,
+  currentUser,
+}) => {
   let history = useHistory();
 
   useEffect(() => {
@@ -30,23 +37,38 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
 
   {
     return currentUser ? (
-      <div className='row chat-section'>
-        <div className='col s12 m4 column'  style={{ padding: 0 }}>
-          <SearchField />
-          <UserListings />
-        </div>
+      <div className='chat-page'>
+        {last_messages.length > 0 && (
+          <div className='last-message-listings'>
+            <UserListings />
+          </div>
+        )}
 
-        <div
-          className='col s12 m8  hide-on-small-only	column'
-          style={chattingWith ? defaultBgImage : staticBgImage}>
-          {chattingWith && (
-            <Fragment>
-              <ChatHeader />
-              <ChatMessages />
-              <SendMessageBox />
-            </Fragment>
-          )}
-        </div>
+        {last_messages.length <= 0 && (
+          <div className='hide-on-med-and-up'>
+            <WelcomeScreen />
+          </div>
+        )}
+
+        {last_messages.length > 0 && chattingWith ? (
+          <div
+            className='chat-panels'
+            style={chattingWith ? defaultBgImage : staticBgImage}>
+            {chattingWith && (
+              <Fragment>
+                <ChatHeader />
+                <ChatMessages />
+                <SendMessageBox />
+              </Fragment>
+            )}
+          </div>
+        ) : (
+          <div className='hide-on-small-only welcome-splash-message'>
+            {' '}
+            <WelcomeScreen />
+          </div>
+        )}
+
         <Modal
           modalClose={modalClose}
           bgImage={chattingWith ? defaultBgImage : staticBgImage}
@@ -60,7 +82,7 @@ const ChatMessagesPage = ({ chattingWith, currentUser }) => {
         </Modal>
       </div>
     ) : (
-      <p></p>
+      <Fragment></Fragment>
     );
   }
 };
@@ -80,13 +102,16 @@ const staticBgImage = {
   backgroundPosition: 'center',
   backgroundSize: 'contain',
   padding: '0',
-  minHeight: '14vh',
+  minHeight: '80vh',
+  backgroundColor: '#fff',
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
     chattingWith: state.chat.chattingWith,
     currentUser: state.auth.currentUser,
+    friends: state.app.friends,
+    last_messages: state.chat.last_messages,
   };
 };
 

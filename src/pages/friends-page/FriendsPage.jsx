@@ -14,21 +14,22 @@ import Notify from '../../shared/notify/Notify';
 import M from 'materialize-css';
 import RequestLoading from '../../shared/request-loading/RequestLoading';
 
-const FriendsPage = ({
-  currentUser,
-  myfriends,
-  blockedFriends,
-  sentFriendRequests,
-  unacceptedFriendRequests,
-  getMyFriendsAction,
-  previousFriendsList,
-  lastRemovedFriend,
-  undoUnfriendAction,
-  confirmUnfriendingAction,
-  getBlockedFriendsAction,
-  getPendingFriendRequestsAction,
-  receivedFriendRequestAction,
-}) => {
+const FriendsPage = props => {
+  const {
+    currentUser,
+    myfriends,
+    blockedFriends,
+    sentFriendRequests,
+    unacceptedFriendRequests,
+    getMyFriendsAction,
+    previousFriendsList,
+    lastRemovedFriend,
+    undoUnfriendAction,
+    confirmUnfriendingAction,
+    getBlockedFriendsAction,
+    getPendingFriendRequestsAction,
+    receivedFriendRequestAction,
+  } = props;
   useEffect(() => {
     getMyFriendsAction();
     const el = document.getElementById('tabs');
@@ -122,14 +123,16 @@ const FriendsPage = ({
         <div className='my-friend-list'>
           {unacceptedFriendRequests ? (
             unacceptedFriendRequests.map(request => {
-              return (
-                <FriendInfoBox
-                  type='unaccepted-friend-requests'
-                  key={request.sender.id}
-                  friend={request.sender}
-                  id={request._id}
-                />
-              );
+              if (request.sender) {
+                return (
+                  <FriendInfoBox
+                    type='unaccepted-friend-requests'
+                    key={request.sender.id}
+                    friend={request.sender}
+                    id={request._id}
+                  />
+                );
+              }
             })
           ) : (
             <RequestLoading type='bar' show='true' />
