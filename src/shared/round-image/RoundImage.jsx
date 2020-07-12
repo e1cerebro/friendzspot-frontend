@@ -6,7 +6,7 @@ const RoundImage = ({ url, size = '50px' }) => {
   const imageURl = url
     ? CHAT_API_URL + '/' + url
     : 'https://www.mobileworldlive.com/wp-content/uploads/2015/10/Dorsey-iamge.png';
-  return <Image url={imageURl} size={size} />;
+  return <Image url={imageURl} size={size} position='centered' />;
 };
 
 export default RoundImage;

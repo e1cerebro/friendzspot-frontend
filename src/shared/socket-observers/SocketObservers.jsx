@@ -15,8 +15,10 @@ import {
 } from '../../redux/actions/reaction.actions';
 import messageURL from '../../sounds/message_received2.mp3';
 import userTypingSound from '../../sounds/user_typing.mp3';
+import newNotificationSound from '../../sounds/stuffed-and-dropped.mp3';
 import { get_audio_permission } from '../../utils/api-settings';
 import { startIncomingCallAction } from '../../redux/actions/call.action';
+import M from 'materialize-css';
 
 const SocketObservers = props => {
   const {
@@ -70,6 +72,13 @@ const SocketObservers = props => {
 
       socket.on('user connected', userId => {
         updateUsersOnlineAction(userId);
+      });
+
+      socket.on('notification', message => {
+        M.toast({ html: message });
+        audioRef.current.src = newNotificationSound;
+        audioRef.current.volume = 0.5;
+        audioRef.current.play();
       });
 
       socket.on('user disconnected', userId => {

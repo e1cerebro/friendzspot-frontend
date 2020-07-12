@@ -88,7 +88,9 @@ const IncomingCall = props => {
             <span>Incoming call from {incomingStream.callerName}</span>
           </div>
           <div className='incoming-call-alert-section-image'>
-            <RoundImage size='150px' />
+            <div style={{ margin: ' 0 auto' }}>
+              <RoundImage size='150px' />
+            </div>
           </div>
           <div className='incoming-call-alert-section-buttons'>
             <Button

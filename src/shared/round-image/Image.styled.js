@@ -11,4 +11,5 @@ export const Image = styled.div.attrs(props => ({
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 50%;
+  margin: 0px auto;
 `;

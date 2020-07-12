@@ -93,7 +93,7 @@ const ListItem = props => {
         <div className='chat-info'>
           <div className='chat-info__single-item'>
             <span className='username'>
-              {user.firstname} .{user.lastname[0]}
+              {user.firstname} {user.lastname}
             </span>
             <span className='secondary-content message-time '>
               {unreadMessages && unreadMessages.length > 0 && (

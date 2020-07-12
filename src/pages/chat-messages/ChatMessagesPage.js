@@ -38,36 +38,36 @@ const ChatMessagesPage = ({
   {
     return currentUser ? (
       <div className='chat-page'>
-        {last_messages.length > 0 && (
-          <div className='last-message-listings'>
-            <UserListings />
-          </div>
-        )}
+        {/* {last_messages.length > 0 && chattingWith && ( */}
+        <div className='last-message-listings'>
+          <UserListings />
+        </div>
+        {/* )} */}
 
-        {last_messages.length <= 0 && (
+        {/* {last_messages.length <= 0 && !chattingWith && (
           <div className='hide-on-med-and-up'>
             <WelcomeScreen />
           </div>
-        )}
+        )} */}
 
-        {last_messages.length > 0 && chattingWith ? (
-          <div
-            className='chat-panels'
-            style={chattingWith ? defaultBgImage : staticBgImage}>
-            {chattingWith && (
-              <Fragment>
-                <ChatHeader />
-                <ChatMessages />
-                <SendMessageBox />
-              </Fragment>
-            )}
-          </div>
-        ) : (
-          <div className='hide-on-small-only welcome-splash-message'>
-            {' '}
-            <WelcomeScreen />
-          </div>
-        )}
+        {/* {chattingWith && ( */}
+        <div
+          className='chat-panels'
+          style={chattingWith ? defaultBgImage : staticBgImage}>
+          {chattingWith && (
+            <Fragment>
+              <ChatHeader />
+              <ChatMessages />
+              <SendMessageBox />
+            </Fragment>
+          )}
+        </div>
+        {/* )} */}
+
+        {/* <div className='hide-on-small-only welcome-splash-message'>
+          {' '}
+          <WelcomeScreen />
+        </div> */}
 
         <Modal
           modalClose={modalClose}

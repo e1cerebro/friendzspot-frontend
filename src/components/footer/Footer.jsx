@@ -3,7 +3,13 @@ import './footer.style.css';
 const Footer = () => {
   return (
     <div className='site-footer'>
-      <span>Site Design / Logo &copy; 2020 Devxtian Technologies</span>
+      <span>Site Design / Logo &copy; 2020 Devxtian Technologies / </span>
+      <span className='support'>
+        For support, email{' '}
+        <a href='mailto:dev.christian.uche@gmail.com'>
+          dev.christian.uche@gmail.com
+        </a>
+      </span>
     </div>
   );
 };

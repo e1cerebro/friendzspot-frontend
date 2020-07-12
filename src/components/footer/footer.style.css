@@ -1,7 +1,8 @@
 .site-footer {
     background-color: #134b90;
-    height: 80px;
+    min-height: 80px;
     color: #fff;
+    padding: 10px;
     text-align: center;
 }
 
@@ -10,9 +11,13 @@
     font-size: 14px;
 }
 
+.support a {
+    color: #ffa724;
+}
+
 @media only screen and (max-width: 600px) {
     .site-footer span {
-        line-height: 80px;
+        line-height: 0px;
         font-size: 12px;
     }
 }
